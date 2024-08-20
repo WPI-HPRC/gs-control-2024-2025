@@ -5,16 +5,30 @@
 #ifndef GS_BACKEND_2024_2025_BACKEND_H
 #define GS_BACKEND_2024_2025_BACKEND_H
 
-#include <QObject>
+#include <QTimer>
 
-class Backend: public QObject
+#include "RadioModule.h"
+#include "WebServer.h"
+//#include "DataSimulator.h"
+#include "DataLogger.h"
+//#include "ByteParser.h"
+
+class Backend : public QObject
 {
 public:
     explicit Backend(QObject *parent = nullptr);
+
+    QList<RadioModule *> radioModules;
     int loopCount;
 
-private:
+    void flushFiles();
 
+private:
+    WebServer *webServer;
+//    DataSimulator *dataSimulator;
+    DataLogger *dataLogger;
+
+    QTimer *timer;
 };
 
 
