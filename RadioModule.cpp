@@ -103,7 +103,7 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger) : XBeeDevice(UART)
     if (targetPort.isNull())
     {
         qDebug() << "Couldn't find radio module";
-//        exit(1);
+        exit(1);
     }
 #endif
 
@@ -173,12 +173,12 @@ void RadioModule::incorrectChecksum(uint8_t calculated, uint8_t received)
     std::string str = QString::asprintf("\nWRONG CHECKSUM. calculated: %02x, received: %02x\n\n", calculated & 0xFF,
                                         received & 0xFF).toStdString();
 
-    log(str.c_str());
+//    log(str.c_str());
 
-    dataLogger->writeToByteFile(str.c_str(), str.length());
+//    dataLogger->writeToByteFile(str.c_str(), str.length());
     dataLogger->writeToTextFile(str.c_str(), str.length());
 
-    dataLogger->flushByteFile();
+//    dataLogger->flushByteFile();
     dataLogger->flushTextFile();
 }
 
