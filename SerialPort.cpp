@@ -214,17 +214,16 @@ void SerialPort::readyRead()
                 }
             }
         }
-
         if (currentFrameBytesLeftToRead == 0)
         {
-            /*
-            std::cout << "Frame: ";
+
+            std::cout << "Frame2: ";
             for (int j = 0; j < currentFrame[2] + 4; j++)
             {
                 std::cout << std::hex << std::setfill('0') << std::setw(2) << (int) (currentFrame[j] & 0xFF) << " ";
             }
             std::cout << std::endl;
-             */
+
             currentFrameBytesLeftToRead = -1;
 
             dataLogger->writeToByteFile("\n", 1);
@@ -248,5 +247,5 @@ void SerialPort::read(uint8_t *buffer, size_t length_bytes)
 
 bool SerialPort::areBytesAvailable()
 {
-    return isCircularQueueEmpty(readQueue);
+    return !isCircularQueueEmpty(readQueue);
 }
