@@ -103,7 +103,7 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger) : XBeeDevice(UART)
     if (targetPort.isNull())
     {
         qDebug() << "Couldn't find radio module";
-        exit(1);
+//        exit(1);
     }
 #endif
 
