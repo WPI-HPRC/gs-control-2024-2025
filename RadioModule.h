@@ -30,8 +30,6 @@ public:
 
     void configureRadio();
 
-    void readBytes(uint8_t *buffer, size_t length_bytes) override;
-
     size_t readBytes_uart(char *buffer, size_t max_bytes) override;
 
     void writeBytes(const char *data, size_t length_bytes) override;
@@ -42,16 +40,12 @@ public:
 
     void handleReceivePacket64Bit(XBee::ReceivePacket64Bit::Struct *frame) override;
 
-    void start() override;
-
     void incorrectChecksum(uint8_t calculated, uint8_t received) override;
 
     void
     _handleRemoteAtCommandResponse(const uint8_t *frame, uint8_t length_bytes) override;
 
     void _handleExtendedTransmitStatus(const uint8_t *frame, uint8_t length_bytes) override;
-
-    bool areBytesAvailable() override;
 
     void sentFrame(uint8_t frameID) override;
 

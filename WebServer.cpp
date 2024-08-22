@@ -55,14 +55,6 @@ void WebServer::newConnection()
 
     connect(newSocket, SIGNAL(stateChanged(WebSocket * , QAbstractSocket::SocketState)), this,
             SLOT(clientStateChanged(WebSocket * , const QAbstractSocket::SocketState &)));
-
-    /*
-    QObject::connect(socket, &QWebSocket::errorOccurred,
-                     [](QAbstractSocket::SocketError error)
-                     {
-                         qDebug() << "Socket error occurred: " << error;
-                     });
-*/
 }
 
 void WebServer::alertReceived(QSsl::AlertLevel level, QSsl::AlertType type, const QString &description)
