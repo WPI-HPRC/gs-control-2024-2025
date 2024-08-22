@@ -31,9 +31,9 @@ private:
 
     CircularQueue<uint8_t> *readQueue;
 
-    char readBuffer[SERIAL_PORT_READ_BUF_SIZE];
+    char readBuffer[SERIAL_PORT_READ_BUF_SIZE]{};
 
-    uint8_t currentFrame[XBee::MaxFrameBytes];
+    uint8_t currentFrame[XBee::MaxFrameBytes]{};
 
     uint8_t currentFrameByteIndex = 0;
 
@@ -50,7 +50,7 @@ public:
 
     int write(const char *buf, const int &size);
 
-    void read(uint8_t *buffer, size_t length_bytes);
+    size_t read(char *buffer, size_t max_bytes);
 
     bool isOpen();
 
@@ -60,39 +60,9 @@ public:
 
     XBee::ApiOptions::ApiOptions apiOptions;
 
-    bool areBytesAvailable();
-
 public slots:
 
-    void readyRead();
-
-    static void baudRateChanged(qint32 baudRate, QSerialPort::Directions directions);
-
-    static void breakEnabledChanged(bool set);
-
-    static void dataBitsChanged(QSerialPort::DataBits dataBits);
-
-    static void dataTerminalReadyChanged(bool set);
-
     static void errorOccurred(QSerialPort::SerialPortError error);
-
-    static void flowControlChanged(QSerialPort::FlowControl flow);
-
-    static void parityChanged(QSerialPort::Parity parity);
-
-    static void requestToSendChanged(bool set);
-
-    static void stopBitsChanged(QSerialPort::StopBits stopBits);
-
-    static void aboutToClose();
-
-    void bytesWritten(qint64 bytes);
-
-    static void channelBytesWritten(int channel, qint64 bytes);
-
-    static void channelReadyRead(int channel);
-
-    static void readChannelFinished();
 };
 
 
