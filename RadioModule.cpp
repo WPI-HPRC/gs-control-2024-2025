@@ -151,6 +151,11 @@ void RadioModule::packetRead()
     serialPort->packetsNotYetRead -= 1;
 }
 
+size_t RadioModule::readBytes_uart(char *buffer, size_t max_bytes)
+{
+
+}
+
 void RadioModule::readBytes(uint8_t *buffer, size_t length_bytes)
 {
     serialPort->read(buffer, length_bytes);

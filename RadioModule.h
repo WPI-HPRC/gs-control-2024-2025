@@ -18,19 +18,21 @@ public:
 
     RadioModule(int baudRate, DataLogger *logger);
 
-    DataLogger *dataLogger;
+    DataLogger *dataLogger{};
 
-    SerialPort *serialPort;
+    SerialPort *serialPort{};
 
     QString name;
 
     DataLogger::Packet lastPacket;
 
-    unsigned int cycleCountsFromFrameID[255];
+    unsigned int cycleCountsFromFrameID[255]{};
 
     void configureRadio();
 
     void readBytes(uint8_t *buffer, size_t length_bytes) override;
+
+    size_t readBytes_uart(char *buffer, size_t max_bytes) override;
 
     void writeBytes(const char *data, size_t length_bytes) override;
 
