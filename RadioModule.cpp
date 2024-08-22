@@ -110,11 +110,6 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger) : XBeeDevice(UART)
     *this = RadioModule(baudRate, logger, targetPort);
 }
 
-void RadioModule::start()
-{
-    // Do nothing (only need this for SPI)
-}
-
 void RadioModule::writeBytes(const char *data, size_t length_bytes)
 {
 #ifndef REQUIRE_XBEE_MODULE
@@ -141,11 +136,6 @@ void RadioModule::writeBytes(const char *data, size_t length_bytes)
 
 }
 
-bool RadioModule::areBytesAvailable()
-{
-    return serialPort->areBytesAvailable();
-}
-
 void RadioModule::packetRead()
 {
     serialPort->packetsNotYetRead -= 1;
@@ -153,12 +143,7 @@ void RadioModule::packetRead()
 
 size_t RadioModule::readBytes_uart(char *buffer, size_t max_bytes)
 {
-
-}
-
-void RadioModule::readBytes(uint8_t *buffer, size_t length_bytes)
-{
-    serialPort->read(buffer, length_bytes);
+    return serialPort->read(buffer, max_bytes);
 }
 
 void RadioModule::handleReceivePacket(XBee::ReceivePacket::Struct *frame)
