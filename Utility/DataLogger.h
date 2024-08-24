@@ -9,7 +9,7 @@
 #include "QJsonObject"
 #include "QDir"
 #include <iostream>
-#include "Constants.h"
+#include "../Constants.h"
 
 #define DEBUG_CSV false
 

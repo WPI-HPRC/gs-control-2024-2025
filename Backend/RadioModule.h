@@ -5,11 +5,11 @@
 #ifndef GS_BACKEND_2024_2025_RADIOMODULE_H
 #define GS_BACKEND_2024_2025_RADIOMODULE_H
 
-#include "xbee/XBeeDevice.h"
-#include "DataLogger.h"
-#include "SerialPort.h"
-#include "Utility.h"
-#include "WebServer.h"
+#include "../xbee/XBeeDevice.h"
+#include "../Utility/DataLogger.h"
+#include "../Utility/SerialPort.h"
+#include "../Utility/Utility.h"
+#include "../Utility/WebServer.h"
 
 class RadioModule : public XBeeDevice
 {

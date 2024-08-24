@@ -16,20 +16,20 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 add_executable(gs_backend_2024_2025 main.cpp
-        Backend.cpp
-        Backend.h
-        RadioModule.cpp
-        RadioModule.h
-        DataLogger.cpp
-        DataLogger.h
+        Backend/Backend.cpp
+        Backend/Backend.h
+        Backend/RadioModule.cpp
+        Backend/RadioModule.h
+        Utility/DataLogger.cpp
+        Utility/DataLogger.h
         Constants.h
-        SerialPort.cpp
-        SerialPort.h
-        WebServer.cpp
-        WebServer.h
-        Utility.h
-        json_struct.h
-        json_struct.h
+        Utility/SerialPort.cpp
+        Utility/SerialPort.h
+        Utility/WebServer.cpp
+        Utility/WebServer.h
+        Utility/Utility.h
+        Utility/json_struct.h
+        Utility/json_struct.h
         xbee/XBeeDevice.cpp
 )
 target_link_libraries(gs_backend_2024_2025
