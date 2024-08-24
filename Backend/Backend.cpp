@@ -41,6 +41,12 @@ QSerialPortInfo getTargetPort(const QString& portName)
     return targetPort;
 }
 
+void Backend::getPorts()
+{
+    QList serialPorts = QSerialPortInfo::availablePorts();
+    emit foundSerialPorts(serialPorts);
+}
+
 void Backend::flushFiles()
 {
     for (RadioModule *radioModule: this->radioModules)
@@ -83,8 +89,9 @@ void Backend::connectToModule(const QString& name, RadioModuleType moduleType)
     std::cout << "Found module " << name.toStdString() << std::endl;
 }
 
-Backend::Backend(QObject *parent) : QObject(parent)
+void Backend::start()
 {
+    getPorts();
 #ifdef SIMULATE_DATA
     webServer = new WebServer(8001);
 
@@ -95,7 +102,7 @@ Backend::Backend(QObject *parent) : QObject(parent)
 
 //    ByteParser parser("/Users/will/Desktop/test.txt");
 
-    connectToModule("A28DMVHS", Serving);
+//    connectToModule("A28DMVHS", Serving);
 
     timer = new QTimer();
     timer->setInterval(5);
@@ -112,4 +119,9 @@ Backend::Backend(QObject *parent) : QObject(parent)
     );
     timer->start();
 #endif
+}
+
+Backend::Backend(QObject *parent) : QObject(parent)
+{
+    loopCount = 0;
 }

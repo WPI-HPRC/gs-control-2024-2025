@@ -1,16 +1,21 @@
 
 #include <QApplication>
-#include <QPushButton>
 #include "Backend/Backend.h"
+#include "Frontend/Windows/MainWindow/mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QPushButton button("Hello world!", nullptr);
-    button.resize(200, 100);
-    button.show();
 
-    Backend backend;
+    Backend &backend = Backend::getInstance();
+
+    MainWindow mainWindow;
+    mainWindow.showNormal();
+    mainWindow.update();
+    mainWindow.setWindowTitle("Ground Station Control");
+
+    backend.start();
+
 
     int code = QApplication::exec();
 
