@@ -5,7 +5,6 @@
 
 int main(int argc, char *argv[])
 {
-    /*
     QApplication a(argc, argv);
     QPushButton button("Hello world!", nullptr);
     button.resize(200, 100);
@@ -13,14 +12,7 @@ int main(int argc, char *argv[])
 
     Backend backend;
 
-    return QApplication::exec();
-     */
-
-    QCoreApplication a(argc, argv);
-
-    Backend backend;
-
-    int code = QCoreApplication::exec();
+    int code = QApplication::exec();
 
     backend.flushFiles();
     return code;
