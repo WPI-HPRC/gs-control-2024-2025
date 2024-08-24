@@ -6,6 +6,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 find_package(Qt6 COMPONENTS
         Core
@@ -31,6 +32,11 @@ add_executable(gs_backend_2024_2025 main.cpp
         Utility/json_struct.h
         Utility/json_struct.h
         xbee/XBeeDevice.cpp
+        Frontend/Windows/MainWindow/mainwindow.cpp
+        Frontend/Windows/MainWindow/mainwindow.h
+        Frontend/Windows/MainWindow/mainwindow.ui
+        SerialPortList.cpp
+        SerialPortList.h
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core
