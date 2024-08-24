@@ -8,9 +8,9 @@
 #include <QTimer>
 
 #include "RadioModule.h"
-#include "WebServer.h"
+#include "../Utility/WebServer.h"
 //#include "DataSimulator.h"
-#include "DataLogger.h"
+#include "../Utility/DataLogger.h"
 //#include "ByteParser.h"
 
 enum RadioModuleType
