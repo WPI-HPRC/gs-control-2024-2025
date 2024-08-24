@@ -13,6 +13,13 @@
 #include "DataLogger.h"
 //#include "ByteParser.h"
 
+enum RadioModuleType
+{
+    Serving,
+    Rocket,
+    Payload
+};
+
 class Backend : public QObject
 {
 public:
@@ -26,7 +33,9 @@ public:
 private:
     WebServer *webServer;
 //    DataSimulator *dataSimulator;
-    DataLogger *dataLogger;
+    DataLogger *dataLogger{};
+
+    void connectToModule(const QString& name, RadioModuleType moduleType);
 
     QTimer *timer;
 };

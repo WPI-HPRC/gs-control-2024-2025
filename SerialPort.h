@@ -19,7 +19,6 @@
 #include "xbee/circularQueue.hpp"
 
 //#define DEBUG_SERIAL
-#define REQUIRE_XBEE_MODULE
 #define SERIAL_PORT_READ_BUF_SIZE 65536
 
 class SerialPort : public QObject
@@ -27,7 +26,9 @@ class SerialPort : public QObject
 Q_OBJECT
 
 private:
-    QSerialPort *m_serialPort;
+    QSerialPort serialPort;
+
+    QSerialPortInfo portInfo;
 
     CircularQueue<uint8_t> *readQueue;
 
@@ -43,9 +44,11 @@ private:
 
     bool nextByteIsEscaped = false;
 
+    void openPort();
+
 public:
 
-    SerialPort(QSerialPortInfo port, int baudRate, DataLogger *dataLogger,
+    SerialPort(const QSerialPortInfo& port, int baudRate, DataLogger *dataLogger,
                XBee::ApiOptions::ApiOptions apiOptions);
 
     int write(const char *buf, const int &size);
@@ -62,7 +65,7 @@ public:
 
 public slots:
 
-    static void errorOccurred(QSerialPort::SerialPortError error);
+    void errorOccurred(QSerialPort::SerialPortError error);
 };
 
 

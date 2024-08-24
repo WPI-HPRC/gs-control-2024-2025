@@ -51,6 +51,38 @@ void Backend::flushFiles()
     }
 }
 
+void Backend::connectToModule(const QString& name, RadioModuleType moduleType)
+{
+    std::cout << "Trying to connect to module " << name.toStdString() << std::endl;
+    QSerialPortInfo targetPort = getTargetPort(name);
+    if(targetPort.isNull())
+    {
+        qDebug() << "Could not find module " << name;
+        QTimer::singleShot(1000, [this, name, moduleType]()
+        {
+           this->connectToModule(name, moduleType);
+        });
+        return;
+    }
+    RadioModule *module;
+    switch(moduleType)
+    {
+        case Serving:
+            module = new ServingRadioModule(921600, new DataLogger(), targetPort, new WebServer(8001));
+            break;
+        case Rocket:
+            module = new RocketTestModule(921600, new DataLogger(), targetPort);
+            break;
+        case Payload:
+            module = new PayloadTestModule(921600, new DataLogger(), targetPort);
+            break;
+        default:
+            module = new RadioModule(921600, new DataLogger(), targetPort);
+    }
+    radioModules.append(module);
+    std::cout << "Found module " << name.toStdString() << std::endl;
+}
+
 Backend::Backend(QObject *parent) : QObject(parent)
 {
 #ifdef SIMULATE_DATA
@@ -63,20 +95,12 @@ Backend::Backend(QObject *parent) : QObject(parent)
 
 //    ByteParser parser("/Users/will/Desktop/test.txt");
 
+    connectToModule("A28DMVHS", Serving);
 
-    webServer = new WebServer(8001);
-
-    auto *groundModule = new ServingRadioModule(921600, new DataLogger(), webServer);
-    radioModules.append(groundModule);
-/*
-    auto *testModule = new RocketTestModule(921600, new DataLogger());
-    radioModules.append(testModule);
-*/
     timer = new QTimer();
     timer->setInterval(5);
 
     loopCount = 0;
-
 
     connect(timer, &QTimer::timeout, [this]()
             {

@@ -95,23 +95,28 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo
     configureRadio();
 }
 
+void RadioModule::initializeModule()
+{
+
+}
+
 RadioModule::RadioModule(int baudRate, DataLogger *logger) : XBeeDevice(UART)
 {
     QSerialPortInfo targetPort = getTargetPort();
 
-#ifdef REQUIRE_XBEE_MODULE
     if (targetPort.isNull())
     {
         qDebug() << "Couldn't find radio module";
         exit(1);
     }
-#endif
 
     *this = RadioModule(baudRate, logger, targetPort);
 }
 
 void RadioModule::writeBytes(const char *data, size_t length_bytes)
 {
+    if(!serialPort->isOpen())
+        return;
 #ifndef REQUIRE_XBEE_MODULE
     if(!serialPort->isOpen())
     {
@@ -136,13 +141,11 @@ void RadioModule::writeBytes(const char *data, size_t length_bytes)
 
 }
 
-void RadioModule::packetRead()
-{
-    serialPort->packetsNotYetRead -= 1;
-}
-
 size_t RadioModule::readBytes_uart(char *buffer, size_t max_bytes)
 {
+    if(!serialPort->isOpen())
+        return 0;
+
     return serialPort->read(buffer, max_bytes);
 }
 
@@ -262,4 +265,30 @@ void ServingRadioModule::handleReceivePacket(XBee::ReceivePacket::Struct *frame)
     RadioModule::handleReceivePacket(frame);
 
     webServer->broadcast(QString::fromStdString(lastPacket.data));
+}
+
+void RocketTestModule::didCycle()
+{
+    constexpr int interval = 4;
+    if (cycleCount % interval == 0)
+    {
+        packet.timestamp = cycleCount / interval;
+        packet.epochTime = QDateTime::currentMSecsSinceEpoch();
+
+        sendTransmitRequestCommand(GROUND_STATION_ADDR, (uint8_t *)&packet, sizeof(packet));
+    }
+    cycleCount++;
+}
+
+void PayloadTestModule::didCycle()
+{
+    constexpr int interval = 4;
+    if (cycleCount % interval == 0)
+    {
+        packet.timestamp = cycleCount / interval;
+        packet.epochTime = QDateTime::currentMSecsSinceEpoch();
+
+        sendTransmitRequestCommand(GROUND_STATION_ADDR, (uint8_t *)&packet, sizeof(packet));
+    }
+    cycleCount++;
 }

@@ -16,6 +16,8 @@ class RadioModule : public XBeeDevice
 public:
     RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo &portInfo);
 
+    void initializeModule();
+
     RadioModule(int baudRate, DataLogger *logger);
 
     DataLogger *dataLogger{};
@@ -33,8 +35,6 @@ public:
     size_t readBytes_uart(char *buffer, size_t max_bytes) override;
 
     void writeBytes(const char *data, size_t length_bytes) override;
-
-    void packetRead() override;
 
     void handleReceivePacket(XBee::ReceivePacket::Struct *frame) override;
 
@@ -69,6 +69,37 @@ public:
     void handleReceivePacket(XBee::ReceivePacket::Struct *frame) override;
 
     void handleReceivePacket64Bit(XBee::ReceivePacket64Bit::Struct *frame) override;
+};
+
+
+class RocketTestModule : public RadioModule
+{
+public:
+    RocketTestModule(int baudRate, DataLogger *logger, const QSerialPortInfo &portInfo) : RadioModule(baudRate, logger,
+                                                                                                      portInfo)
+    {}
+
+    RocketTestModule(int baudRate, DataLogger *logger) : RadioModule(baudRate, logger)
+    {}
+
+    RocketTxPacket packet;
+
+    void didCycle() override;
+};
+
+class PayloadTestModule : public RadioModule
+{
+public:
+    PayloadTestModule(int baudRate, DataLogger *logger, const QSerialPortInfo &portInfo) : RadioModule(baudRate, logger,
+                                                                                                       portInfo)
+    {}
+
+    PayloadTestModule(int baudRate, DataLogger *logger) : RadioModule(baudRate, logger)
+    {}
+
+    PayloadTxPacket packet;
+
+    void didCycle() override;
 };
 
 
