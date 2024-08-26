@@ -83,8 +83,7 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo
 {
     dataLogger = logger;
 
-    serialPort = new SerialPort(portInfo, baudRate, dataLogger,
-                                XBee::ApiOptions::ApiWithoutEscapes);
+    serialPort = new SerialPort(portInfo, baudRate, dataLogger);
 
     sendTransmitRequestsImmediately = false;
 
