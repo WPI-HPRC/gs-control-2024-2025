@@ -48,7 +48,7 @@ public:
 
         QString valueLine = "";
 
-        for (QString value: headers)
+        for (const QString& value: headers)
         {
             valueLine.append(toJsonString(jsonData.value(value)).append(","));
         }
@@ -112,14 +112,6 @@ private:
 class DataLogger
 {
 public:
-    static QString enclosingDirectory;
-
-    DataLogger(QString dirPrefix = "", bool needFiles = true);
-
-    QDir logDir;
-
-    QString directoryPrefix;
-
     enum PacketType
     {
         Unknown = -1,
@@ -132,6 +124,8 @@ public:
         std::string data;
         PacketType packetType;
     };
+
+    explicit DataLogger(QString dirPrefix = "", bool needFiles = true);
 
     void writeData(const QJsonObject &jsonData, PacketType packetType);
 
@@ -155,8 +149,17 @@ public:
 
     void flushDataFiles();
 
+    static QString enclosingDirectory;
+
+    QDir logDir;
+
+    QString directoryPrefix;
+
 private:
-    bool needtoCreateFiles;
+    void createDirectory(const QString &dirName);
+    void createFiles();
+
+    bool needToCreateFiles;
 
     CSVWriter rocketLogFile;
     CSVWriter payloadLogFile;
@@ -165,11 +168,6 @@ private:
 
     QFile byteLog;
     QFile textLog;
-
-    void createDirectory(const QString &dirName);
-
-    void createFiles();
-
 };
 
 #endif //GS_BACKEND_2024_2025_DATALOGGER_H

@@ -36,21 +36,19 @@ public:
     QList<RadioModule *> radioModules;
     int loopCount;
 
+signals:
+    void foundSerialPorts(QList<QSerialPortInfo>);
+
 private:
     explicit Backend(QObject *parent = nullptr);
 
     void getPorts();
 
-    WebServer *webServer;
+    WebServer *webServer{};
 //    DataSimulator *dataSimulator;
     DataLogger *dataLogger{};
 
-
-    QTimer *timer;
-
-signals:
-    void foundSerialPorts(QList<QSerialPortInfo>);
-
+    QTimer *timer{};
 };
 
 

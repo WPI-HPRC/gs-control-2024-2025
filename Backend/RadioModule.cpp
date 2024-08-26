@@ -95,11 +95,6 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo
     configureRadio();
 }
 
-void RadioModule::initializeModule()
-{
-
-}
-
 RadioModule::RadioModule(int baudRate, DataLogger *logger) : XBeeDevice(UART)
 {
     QSerialPortInfo targetPort = getTargetPort();

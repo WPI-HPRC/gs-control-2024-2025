@@ -4,9 +4,9 @@
 
 #include "DataLogger.h"
 #include "QDateTime"
-#include "../Constants.h"
 #include <QJsonDocument>
 #include <iostream>
+#include <utility>
 
 //#define OFFICIAL_TEST
 
@@ -14,8 +14,8 @@ QString DataLogger::enclosingDirectory = Constants::LogDirPath;
 
 DataLogger::DataLogger(QString dirPrefix, bool needFiles)
 {
-    needtoCreateFiles = needFiles;
-    directoryPrefix = dirPrefix;
+    needToCreateFiles = needFiles;
+    directoryPrefix = std::move(dirPrefix);
     createFiles();
 }
 
@@ -56,7 +56,7 @@ void DataLogger::createFiles()
 
     createDirectory(directoryPrefix.isEmpty() ? timeString : directoryPrefix.append("/"));
 
-    if (needtoCreateFiles)
+    if (needToCreateFiles)
     {
 #ifndef OFFICIAL_TEST
         rocketLogFile.open(logDir.path().append("/").append(timeString).append("_rocket.csv"));
@@ -91,7 +91,7 @@ void DataLogger::logTransmitStatus(const QJsonObject &jsonData)
 
 void DataLogger::writeToByteFile(const char *text, size_t size)
 {
-    byteLog.write(text, size);
+    byteLog.write(text, (qint64)size);
 }
 
 void DataLogger::writeToByteFile(const QString &str)
@@ -131,7 +131,6 @@ void DataLogger::writeData(const QJsonObject &jsonData, DataLogger::PacketType p
     switch (packetType)
     {
         case Rocket:
-//            std::cout << "Writing rocket data\n";
             rocketLogFile.write(jsonData);
             break;
         case Payload:

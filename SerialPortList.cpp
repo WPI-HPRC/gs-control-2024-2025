@@ -10,8 +10,8 @@ SerialPortList::SerialPortList(QWidget *parent) : QListWidget(parent)
 {
     Backend &backend = Backend::getInstance();
 
-    connect(&backend, SIGNAL(foundSerialPorts(QList<QSerialPortInfo>)), this, SLOT(serialPortsFound(const QList<QSerialPortInfo> &)));
-    connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(portChosen(QListWidgetItem *)));
+    connect(&backend, SIGNAL(foundSerialPorts(QList<QSerialPortInfo>)), this, SLOT(serialPortsFound(QList<QSerialPortInfo>)));
+    connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(portChosen(QListWidgetItem*)));
 }
 
 void SerialPortList::serialPortsFound(const QList<QSerialPortInfo>& ports)
@@ -31,5 +31,7 @@ void SerialPortList::serialPortsFound(const QList<QSerialPortInfo>& ports)
 
 void SerialPortList::portChosen(QListWidgetItem *item)
 {
-    Backend::getInstance().connectToModule(serialPorts.at(indexFromItem(item).row()).portName(), Serving);
+    int rowIndex = indexFromItem(item).row();
+    QString portName = serialPorts.at(rowIndex).portName();
+    Backend::getInstance().connectToModule(portName, Serving);
 }
