@@ -14,12 +14,12 @@ class SerialPortList: public QListWidget
 public:
     explicit SerialPortList(QWidget *parent = nullptr);
 
-private:
-    QList<QSerialPortInfo> serialPorts;
-
 public slots:
     void serialPortsFound(const QList<QSerialPortInfo>&);
     void portChosen(QListWidgetItem *);
+
+private:
+    QList<QSerialPortInfo> serialPorts;
 };
 
 

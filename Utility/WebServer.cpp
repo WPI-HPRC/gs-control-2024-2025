@@ -13,7 +13,6 @@ WebServer::WebServer(int port, QObject *parent) : QObject(parent), port(port),
                                                   server("Local Server",
                                                          QWebSocketServer::NonSecureMode)
 {
-
     server.listen(QHostAddress::Any, port);
 
     std::cout << "Started local server on " << server.serverAddress().toString().toStdString() << ":"
@@ -53,8 +52,8 @@ void WebServer::newConnection()
 
     clients.append(newSocket);
 
-    connect(newSocket, SIGNAL(stateChanged(WebSocket * , QAbstractSocket::SocketState)), this,
-            SLOT(clientStateChanged(WebSocket * , const QAbstractSocket::SocketState &)));
+    connect(newSocket, SIGNAL(stateChanged(WebSocket*,QAbstractSocket::SocketState)), this,
+            SLOT(clientStateChanged(WebSocket*,QAbstractSocket::SocketState)));
 }
 
 void WebServer::alertReceived(QSsl::AlertLevel level, QSsl::AlertType type, const QString &description)

@@ -28,12 +28,9 @@ void SerialPort::openPort()
     }
 }
 
-SerialPort::SerialPort(const QSerialPortInfo& port, int baudRate, DataLogger *dataLogger,
-                       XBee::ApiOptions::ApiOptions apiOptions) : dataLogger(
-        dataLogger), apiOptions(apiOptions), portInfo(port)
+SerialPort::SerialPort(const QSerialPortInfo& port, int baudRate, DataLogger *dataLogger) : dataLogger(
+        dataLogger), portInfo(port)
 {
-    readQueue = circularQueueCreate<uint8_t>(65536);
-
     serialPort.setBaudRate(baudRate);
     serialPort.setPort(port);
     serialPort.setDataBits(QSerialPort::Data8);
@@ -79,7 +76,6 @@ void SerialPort::errorOccurred(QSerialPort::SerialPortError error)
     else
     {
         qDebug() << "Serial port error occurred for " << portInfo.portName() << ": " << error;
-
     }
 }
 
