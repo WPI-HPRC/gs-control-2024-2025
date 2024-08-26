@@ -32,6 +32,8 @@ void SerialPortList::serialPortsFound(const QList<QSerialPortInfo>& ports)
 void SerialPortList::portChosen(QListWidgetItem *item)
 {
     int rowIndex = indexFromItem(item).row();
+    if(rowIndex >= serialPorts.length())
+        return;
     QString portName = serialPorts.at(rowIndex).portName();
     Backend::getInstance().connectToModule(portName, Serving);
 }

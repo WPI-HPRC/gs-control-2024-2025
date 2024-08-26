@@ -18,8 +18,15 @@
     <bool>true</bool>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
+    <item row="1" column="0">
+     <widget class="SerialPortList" name="serialPortList"/>
+    </item>
     <item row="0" column="0">
-     <widget class="SerialPortList" name="listWidget"/>
+     <widget class="QLabel" name="ConnectToRadioModuleLabel">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
