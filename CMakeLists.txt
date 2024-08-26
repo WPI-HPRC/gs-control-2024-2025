@@ -35,8 +35,8 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Windows/MainWindow/mainwindow.cpp
         Frontend/Windows/MainWindow/mainwindow.h
         Frontend/Windows/MainWindow/mainwindow.ui
-        SerialPortList.cpp
-        SerialPortList.h
+        Frontend/Widgets/SerialPortList.cpp
+        Frontend/Widgets/SerialPortList.h
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core

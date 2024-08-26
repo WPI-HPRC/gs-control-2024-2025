@@ -28,7 +28,7 @@
   <customwidget>
    <class>SerialPortList</class>
    <extends>QListWidget</extends>
-   <header>SerialPortList.h</header>
+   <header>Frontend/Widgets/SerialPortList.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
