@@ -87,6 +87,11 @@ void Backend::flushFiles()
     }
 }
 
+void Backend::runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations)
+{
+    getModuleWithName(GROUND_STATION_MODULE)->sendLinkTestRequest(destinationAddress, payloadSize, iterations);
+}
+
 void Backend::disconnectFromModule(const QString &name)
 {
     RadioModule *module = getModuleWithName(name);

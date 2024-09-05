@@ -11,6 +11,8 @@
 
 #include <QPushButton>
 #include <QTableWidget>
+#include <QLineEdit>
+#include <QSpinBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -36,6 +38,11 @@ private:
 
     QPushButton *radioModuleButton;
     QTableWidget *serialPortList;
+
+    QLineEdit *linkTest_destinationAddress;
+    QPushButton *linkTest_button;
+    QSpinBox *linkTest_payloadSize;
+    QSpinBox *linkTest_iterations;
 };
 
 
