@@ -32,6 +32,7 @@ public:
     void disconnectFromModule(const QString& name);
     bool moduleExistsWithName(const QString &name);
 
+    void runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations);
 
     void start();
     void flushFiles();
