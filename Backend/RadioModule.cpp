@@ -72,9 +72,19 @@ DataLogger::Packet parsePacket(const uint8_t *frame)
     return {str, packetType};
 }
 
+void RadioModule::disconnectPort()
+{
+    serialPort->close();
+}
+
+void RadioModule::connectPort()
+{
+    serialPort->open();
+}
+
 void RadioModule::configureRadio()
 {
-    std::cout << "Configuring radio" << std::endl; // Does nothing right now
+//    std::cout << "Configuring radio" << std::endl; // Does nothing right now
 //    setParameter(XBee::AtCommand::ApiOptions, 0x02);
 //    setParameterRemote(, XBee::AtCommand::PowerLevel, 0x02);
 }
@@ -192,6 +202,8 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
 {
     using namespace XBee::ExtendedTransmitStatus;
 
+    auto *data = (Struct *)(&frame[4]);
+
     auto *status = (Struct *)(&frame[BytesBeforeFrameID]);
 
     QJsonObject json;
@@ -204,6 +216,13 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
 //    log("Transmit status for frame ID %03x: %02x. RetryCount: %03x, Discovery: %02x\n", status->frameID, status->deliveryStatus, status->retryCount, status->discovery);
 
     dataLogger->logTransmitStatus(json);
+}
+
+void RadioModule::handleLinkTest(XBee::ExplicitRxIndicator::LinkTest data)
+{
+    log("Finished link test.\n\tPayload Size: %d\n\tIterations: %d\n\tSuccess: %d\n\tRetries: %d\n\tResult: %02x\n\tRR: %d\n\tMax RSSI: %d\n\tMin RSSI: %d\n\tAvg RSSI: %d",
+        data.payloadSize, data.iterations, data.success, data.retries, data.result, data.RR, data.maxRssi, data.minRssi, data.avgRssi
+        );
 }
 
 void RadioModule::sentFrame(uint8_t frameID)

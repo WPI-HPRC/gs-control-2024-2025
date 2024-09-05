@@ -6,6 +6,9 @@
 #define GS_BACKEND_2024_2025_CONSTANTS_H
 
 #include <QString>
+
+#define GROUND_STATION_MODULE "A28DMVHS"
+
 namespace Constants
 {
     const QString LogDirPath = "~/Documents/HPRC/Logs";

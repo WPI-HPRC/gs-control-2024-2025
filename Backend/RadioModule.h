@@ -22,6 +22,8 @@ public:
     size_t readBytes_uart(char *buffer, size_t max_bytes) override;
     void writeBytes(const char *data, size_t length_bytes) override;
 
+    void handleLinkTest(XBee::ExplicitRxIndicator::LinkTest data) override;
+
     void handleReceivePacket(XBee::ReceivePacket::Struct *frame) override;
     void handleReceivePacket64Bit(XBee::ReceivePacket64Bit::Struct *frame) override;
     void
@@ -33,6 +35,10 @@ public:
     void sentFrame(uint8_t frameID) override;
 
     void log(const char *format, ...) override;
+
+    void disconnectPort();
+
+    void connectPort();
 
     DataLogger *dataLogger{};
     SerialPort *serialPort{};

@@ -7,9 +7,10 @@
 
 #include <QMainWindow>
 
-#include <QLabel>
-#include <QListWidget>
+#include <string>
 
+#include <QPushButton>
+#include <QTableWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -27,14 +28,14 @@ public:
 
     ~MainWindow() override;
 
-public slots:
-    void serialPortChosen(QListWidgetItem *, QListWidgetItem *);
+//public slots:
+//    void serialPortChosen(QListWidgetItem *, QListWidgetItem *);
 
 private:
     Ui::MainWindow *ui;
 
-    QLabel *connectToRadioModuleLabel;
-    QListWidget *serialPortList;
+    QPushButton *radioModuleButton;
+    QTableWidget *serialPortList;
 };
 
 
