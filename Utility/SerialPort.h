@@ -32,9 +32,17 @@ public:
     size_t read(char *buffer, size_t max_bytes);
 
     bool isOpen();
+    bool shouldBeOpen;
+    void close();
+    void open();
+    QString name();
 
 public slots:
     void errorOccurred(QSerialPort::SerialPortError error);
+
+signals:
+    void portOpened(QSerialPortInfo, bool);
+    void portClosed(QSerialPortInfo);
 
 private:
     void openPort();

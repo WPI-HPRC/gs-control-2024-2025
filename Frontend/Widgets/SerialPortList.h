@@ -5,10 +5,14 @@
 #ifndef GS_BACKEND_2024_2025_SERIALPORTLIST_H
 #define GS_BACKEND_2024_2025_SERIALPORTLIST_H
 
-#include <QListWidget>
+#include <QTableWidget>
 #include <QSerialPortInfo>
+#include <QPushButton>
+#include <QLabel>
+#include <QThread>
+#include <Utility/SerialPortManager.h>
 
-class SerialPortList: public QListWidget
+class SerialPortList: public QTableWidget
 {
     Q_OBJECT
 public:
@@ -16,7 +20,13 @@ public:
 
 public slots:
     void serialPortsFound(const QList<QSerialPortInfo>&);
-    void portChosen(QListWidgetItem *);
+    void buttonClicked();
+    void serialPortOpened(const QSerialPortInfo&, bool);
+    void serialPortClosed(const QSerialPortInfo&);
+
+signals:
+    void openSerialPort(const QString&, RadioModuleType);
+    void closeSerialPort(const QString&);
 
 private:
     QList<QSerialPortInfo> serialPorts;

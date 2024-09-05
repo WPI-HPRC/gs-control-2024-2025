@@ -33,7 +33,7 @@ void DataLogger::createDirectory(const QString &dirName)
     {
         if (logDir.mkpath("."))
         {
-            std::cout << "Created log directory at " << logDir.path().toStdString() << std::endl;
+//            std::cout << "Created log directory at " << logDir.path().toStdString() << std::endl;
         }
         else
         {

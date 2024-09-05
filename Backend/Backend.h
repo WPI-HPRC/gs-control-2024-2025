@@ -12,7 +12,7 @@
 
 enum RadioModuleType
 {
-    Serving,
+    Default,
     Rocket,
     Payload
 };
@@ -28,7 +28,10 @@ public:
     }
     Backend(const Backend&) = delete;
     Backend &operator=(const Backend&) = delete;
-    void connectToModule(const QString& name, RadioModuleType moduleType);
+    bool connectToModule(const QString& name, RadioModuleType moduleType);
+    void disconnectFromModule(const QString& name);
+    bool moduleExistsWithName(const QString &name);
+
 
     void start();
     void flushFiles();
@@ -36,13 +39,20 @@ public:
     QList<RadioModule *> radioModules;
     int loopCount;
 
+public slots:
+    void portOpened(const QSerialPortInfo&, bool);
+    void portClosed(const QSerialPortInfo&);
+
 signals:
     void foundSerialPorts(QList<QSerialPortInfo>);
+    void serialPortOpened(QSerialPortInfo, bool);
+    void serialPortClosed(QSerialPortInfo);
 
 private:
     explicit Backend(QObject *parent = nullptr);
 
     void getPorts();
+    RadioModule *getModuleWithName(const QString& name);
 
     WebServer *webServer{};
 //    DataSimulator *dataSimulator;

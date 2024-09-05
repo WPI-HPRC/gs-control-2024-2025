@@ -4,6 +4,8 @@
 
 #include "Backend.h"
 #include <QSerialPort>
+#include <string>
+#include "Constants.h"
 //#define SIMULATE_DATA
 
 QSerialPortInfo getTargetPort(const QString& portName)
@@ -41,6 +43,34 @@ QSerialPortInfo getTargetPort(const QString& portName)
     return targetPort;
 }
 
+void Backend::portOpened(const QSerialPortInfo& portInfo, bool success)
+{
+    emit(serialPortOpened(portInfo, success));
+}
+
+void Backend::portClosed(const QSerialPortInfo& portInfo)
+{
+    emit(serialPortClosed(portInfo));
+}
+
+RadioModule *Backend::getModuleWithName(const QString& name)
+{
+    RadioModule *module;
+    for(int i = 0; i < radioModules.count(); i++)
+    {
+        if(radioModules.at(i)->serialPort->name().contains(name))
+        {
+            return radioModules.at(i);
+        }
+    }
+    return nullptr;
+}
+
+bool Backend::moduleExistsWithName(const QString &name)
+{
+    return getModuleWithName(name) != nullptr;
+}
+
 void Backend::getPorts()
 {
     QList serialPorts = QSerialPortInfo::availablePorts();
@@ -57,25 +87,46 @@ void Backend::flushFiles()
     }
 }
 
-void Backend::connectToModule(const QString& name, RadioModuleType moduleType)
+void Backend::disconnectFromModule(const QString &name)
 {
-    std::cout << "Trying to connect to module " << name.toStdString() << std::endl;
+    RadioModule *module = getModuleWithName(name);
+
+    if(!module)
+        return;
+
+    module->disconnectPort();
+}
+
+bool Backend::connectToModule(const QString& name, RadioModuleType moduleType)
+{
+
+    RadioModule *existingModule = getModuleWithName(name);
+    if(existingModule)
+    {
+        if(!existingModule->serialPort->isOpen())
+        {
+            existingModule->connectPort();
+        }
+        return true;
+    }
+
     QSerialPortInfo targetPort = getTargetPort(name);
+
     if(targetPort.isNull())
     {
+        /*
         qDebug() << "Could not find module " << name;
         QTimer::singleShot(1000, [this, name, moduleType]()
         {
-           this->connectToModule(name, moduleType);
+            this->connectToModule(name, moduleType);
         });
-        return;
+        */
+        return false;
     }
+
     RadioModule *module;
     switch(moduleType)
     {
-        case Serving:
-            module = new ServingRadioModule(921600, new DataLogger(), targetPort, new WebServer(8001));
-            break;
         case Rocket:
             module = new RocketTestModule(921600, new DataLogger(), targetPort);
             break;
@@ -83,15 +134,18 @@ void Backend::connectToModule(const QString& name, RadioModuleType moduleType)
             module = new PayloadTestModule(921600, new DataLogger(), targetPort);
             break;
         default:
-            module = new RadioModule(921600, new DataLogger(), targetPort);
+            module = new ServingRadioModule(115200, new DataLogger(), targetPort, webServer);
     }
     radioModules.append(module);
-    std::cout << "Found module " << name.toStdString() << std::endl;
+    return true;
 }
 
 void Backend::start()
 {
     getPorts();
+
+    webServer = new WebServer(8001);
+
 #ifdef SIMULATE_DATA
     webServer = new WebServer(8001);
 
@@ -102,7 +156,13 @@ void Backend::start()
 
 //    ByteParser parser("/Users/will/Desktop/test.txt");
 
-//    connectToModule("A28DMVHS", Serving);
+    QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);
+    if(!modem.isNull())
+    {
+        connectToModule(GROUND_STATION_MODULE, Default);
+    }
+
+//    getModuleWithName("A28DMVHS")->sendLinkTestRequest(0x0013A200422CDAC2, 300, 4000);
 
     timer = new QTimer();
     timer->setInterval(5);
