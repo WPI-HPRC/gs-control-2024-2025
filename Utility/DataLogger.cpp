@@ -62,6 +62,7 @@ void DataLogger::createFiles()
         rocketLogFile.open(logDir.path().append("/").append(timeString).append("_rocket.csv"));
         payloadLogFile.open(logDir.path().append("/").append(timeString).append("_payload.csv"));
         transmitStatusLog.open(logDir.path().append("/").append(timeString).append("_transmit_status.csv"));
+        linkTestLogFile.open(logDir.path().append("/").append(timeString).append("_linkTest.csv"));
 
         byteLog.setFileName(logDir.path().append("/").append(timeString).append("_bytes.txt"));
         byteLog.open(QIODeviceBase::WriteOnly | QIODeviceBase::Text);
@@ -81,6 +82,12 @@ void DataLogger::createFiles()
 #endif
     }
 
+}
+
+void DataLogger::logLinkTest(const QJsonObject &jsonData)
+{
+    linkTestLogFile.write(jsonData);
+    linkTestLogFile.file.flush();
 }
 
 void DataLogger::logTransmitStatus(const QJsonObject &jsonData)

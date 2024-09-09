@@ -9,6 +9,7 @@
 #include "RadioModule.h"
 #include "../Utility/WebServer.h"
 #include "../Utility/DataLogger.h"
+#include "Utility/json_struct.h"
 
 enum RadioModuleType
 {
@@ -32,13 +33,17 @@ public:
     void disconnectFromModule(const QString& name);
     bool moduleExistsWithName(const QString &name);
 
-    void runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations);
+    void runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations, uint8_t repeat);
+    void cancelLinkTest();
+    void sendEnergyDetectCommand(uint16_t msPerChannel);
 
     void start();
     void flushFiles();
 
     QList<RadioModule *> radioModules;
     int loopCount;
+
+    void linkTestComplete(LinkTestResults results, int iterationsLeft);
 
 public slots:
     void portOpened(const QSerialPortInfo&, bool);
@@ -48,6 +53,7 @@ signals:
     void foundSerialPorts(QList<QSerialPortInfo>);
     void serialPortOpened(QSerialPortInfo, bool);
     void serialPortClosed(QSerialPortInfo);
+    void linkTestDataAvailable(LinkTestResults, int);
 
 private:
     explicit Backend(QObject *parent = nullptr);

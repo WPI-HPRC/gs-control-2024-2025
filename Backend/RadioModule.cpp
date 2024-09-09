@@ -3,9 +3,11 @@
 //
 
 #include "RadioModule.h"
+#include "Backend.h"
 
 #include <QSerialPortInfo>
 #include <regex>
+#include <QJsonDocument>
 
 QSerialPortInfo getTargetPort()
 {
@@ -97,9 +99,11 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo
 
     sendTransmitRequestsImmediately = false;
 
-    sendFramesImmediately = true;
+    sendFramesImmediately = false;
 
     logWrongChecksums = true;
+
+    linkTestsLeft = 100;
 
     configureRadio();
 }
@@ -220,9 +224,41 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
 
 void RadioModule::handleLinkTest(XBee::ExplicitRxIndicator::LinkTest data)
 {
-    log("Finished link test.\n\tPayload Size: %d\n\tIterations: %d\n\tSuccess: %d\n\tRetries: %d\n\tResult: %02x\n\tRR: %d\n\tMax RSSI: %d\n\tMin RSSI: %d\n\tAvg RSSI: %d",
+    LinkTestResults results{};
+    memcpy(&results, &data, sizeof(data));
+    results.noiseFloor = lastNoiseFloor;
+
+    std::string str = JS::serializeStruct(results);
+
+    QJsonObject obj = QJsonDocument::fromJson(str.c_str()).object();
+
+    dataLogger->logLinkTest(obj);
+
+    Backend::getInstance().linkTestComplete(results, linkTestsLeft);
+
+    /*
+    log("Finished link test.\n\tPayload Size: %d\n\tIterations: %d\n\tSuccess: %d\n\tRetries: %d\n\tResult: %02x\n\tRR: %d\n\tMax RSSI: %d\n\tMin RSSI: %d\n\tAvg RSSI: %d\n",
         data.payloadSize, data.iterations, data.success, data.retries, data.result, data.RR, data.maxRssi, data.minRssi, data.avgRssi
         );
+
+     */
+
+    if(linkTestsLeft > 0)
+    {
+        sendLinkTestRequest(data.destinationAddress, 200, 100);
+        linkTestsLeft--;
+    }
+}
+
+void RadioModule::handleEnergyDetectResponse(uint8_t *energyValues, uint8_t numChannels)
+{
+    uint8_t average = 0;
+
+    for(int i = 0; i < numChannels; i++)
+    {
+        average += energyValues[i]/numChannels;
+    }
+    lastNoiseFloor = average;
 }
 
 void RadioModule::sentFrame(uint8_t frameID)

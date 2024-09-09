@@ -137,6 +137,8 @@ public:
 
     void writeToByteFile(const QString &str);
 
+    void logLinkTest(const QJsonObject &jsonData);
+
     void logTransmitStatus(const QJsonObject &jsonData);
 
     void flushByteFile();
@@ -163,6 +165,8 @@ private:
 
     CSVWriter rocketLogFile;
     CSVWriter payloadLogFile;
+
+    CSVWriter linkTestLogFile;
 
     CSVWriter transmitStatusLog;
 
