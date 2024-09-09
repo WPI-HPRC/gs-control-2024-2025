@@ -87,9 +87,34 @@ void Backend::flushFiles()
     }
 }
 
-void Backend::runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations)
+void Backend::runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations, uint8_t repeat)
 {
-    getModuleWithName(GROUND_STATION_MODULE)->sendLinkTestRequest(destinationAddress, payloadSize, iterations);
+    if(getTargetPort(GROUND_STATION_MODULE).isNull())
+        return;
+
+    RadioModule *module = getModuleWithName(GROUND_STATION_MODULE);
+
+    module->linkTestsLeft = repeat;
+    module->sendEnergyDetectCommand(150);
+    module->sendLinkTestRequest(destinationAddress, payloadSize, iterations);
+}
+
+void Backend::cancelLinkTest()
+{
+    getModuleWithName(GROUND_STATION_MODULE)->linkTestsLeft = 0;
+}
+
+void Backend::sendEnergyDetectCommand(uint16_t msPerChannel)
+{
+    if(getTargetPort(GROUND_STATION_MODULE).isNull())
+        return;
+
+    getModuleWithName(GROUND_STATION_MODULE)->sendEnergyDetectCommand(msPerChannel);
+}
+
+void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
+{
+    emit linkTestDataAvailable(results, iterationsLeft);
 }
 
 void Backend::disconnectFromModule(const QString &name)

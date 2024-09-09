@@ -11,6 +11,34 @@
 #include "../Utility/Utility.h"
 #include "../Utility/WebServer.h"
 
+struct LinkTestResults
+{
+    uint64_t destinationAddress;
+    uint16_t payloadSize;
+    uint16_t iterations;
+    uint16_t success;
+    uint16_t retries;
+    uint8_t result;
+    uint8_t RR;
+    uint8_t maxRssi;
+    uint8_t minRssi;
+    uint8_t avgRssi;
+    uint8_t noiseFloor;
+    JS_OBJ(
+            destinationAddress,
+            payloadSize,
+            iterations,
+            success,
+            retries,
+            result,
+            RR,
+            maxRssi,
+            minRssi,
+            avgRssi,
+            noiseFloor
+    );
+};
+
 class RadioModule : public XBeeDevice
 {
 public:
@@ -23,6 +51,7 @@ public:
     void writeBytes(const char *data, size_t length_bytes) override;
 
     void handleLinkTest(XBee::ExplicitRxIndicator::LinkTest data) override;
+    void handleEnergyDetectResponse(uint8_t *energyValues, uint8_t numChannels) override;
 
     void handleReceivePacket(XBee::ReceivePacket::Struct *frame) override;
     void handleReceivePacket64Bit(XBee::ReceivePacket64Bit::Struct *frame) override;
@@ -48,6 +77,10 @@ public:
     DataLogger::Packet lastPacket;
     unsigned int cycleCountsFromFrameID[255]{};
     unsigned int cycleCount = 0;
+
+    uint8_t lastNoiseFloor{};
+
+    int linkTestsLeft{};
 };
 
 class ServingRadioModule

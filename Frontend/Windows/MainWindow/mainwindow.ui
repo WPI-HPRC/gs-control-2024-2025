@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>622</width>
-    <height>600</height>
+    <height>492</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,24 +98,63 @@
         <string>Link Test</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_3">
+        <item row="10" column="1">
+         <widget class="QLabel" name="LinkTestResult_MinRssi">
+          <property name="frameShape">
+           <enum>QFrame::Shape::Panel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
+          </property>
           <property name="text">
-           <string>Iterations</string>
+           <string>0 dBm</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Destination</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0" colspan="2">
+        <item row="4" column="0" colspan="2">
          <widget class="QPushButton" name="LinkTest_Button">
           <property name="text">
            <string>Run link test</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Repeat</string>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="1">
+         <widget class="QLabel" name="LinkTestResult_Success">
+          <property name="frameShape">
+           <enum>QFrame::Shape::Panel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QSpinBox" name="LinkTest_Repeat">
+          <property name="minimum">
+           <number>100</number>
+          </property>
+          <property name="maximum">
+           <number>200</number>
+          </property>
+          <property name="singleStep">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Success</string>
           </property>
          </widget>
         </item>
@@ -131,9 +170,103 @@
            <number>20</number>
           </property>
           <property name="value">
-           <number>100</number>
+           <number>200</number>
           </property>
          </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Noise Floor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Iterations</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="LinkTest_DestinationAddress">
+          <property name="inputMask">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>0013A200422CDAC2</string>
+          </property>
+          <property name="maxLength">
+           <number>16</number>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Results</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Retries</string>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="1">
+         <widget class="QLabel" name="LinkTestResult_Retries">
+          <property name="frameShape">
+           <enum>QFrame::Shape::Panel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Destination</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Min RSSI</string>
+          </property>
+         </widget>
+        </item>
+        <item row="21" column="0" colspan="2">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item row="2" column="1">
          <widget class="QSpinBox" name="LinkTest_Iterations">
@@ -147,20 +280,20 @@
            <number>100</number>
           </property>
           <property name="value">
-           <number>1000</number>
+           <number>200</number>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="LinkTest_DestinationAddress">
-          <property name="inputMask">
-           <string notr="true"/>
+        <item row="17" column="1">
+         <widget class="QLabel" name="LinkTestResult_RR">
+          <property name="frameShape">
+           <enum>QFrame::Shape::Panel</enum>
           </property>
-          <property name="maxLength">
-           <number>16</number>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
+          <property name="text">
+           <string>0</string>
           </property>
          </widget>
         </item>
@@ -171,18 +304,65 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
+        <item row="17" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>RR</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QLabel" name="LinkTestResult_NoiseFloor">
+          <property name="frameShape">
+           <enum>QFrame::Shape::Panel</enum>
           </property>
-         </spacer>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
+          </property>
+          <property name="text">
+           <string>0 dBm</string>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="1">
+         <widget class="QLabel" name="LinkTestResult_AvgRssi">
+          <property name="frameShape">
+           <enum>QFrame::Shape::Panel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
+          </property>
+          <property name="text">
+           <string>0 dBm</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Max RSSI</string>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Avg RSSI</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QLabel" name="LinkTestResult_MaxRssi">
+          <property name="frameShape">
+           <enum>QFrame::Shape::Panel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
+          </property>
+          <property name="text">
+           <string>0 dBm</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

@@ -13,6 +13,9 @@
 #include <QTableWidget>
 #include <QLineEdit>
 #include <QSpinBox>
+#include <QLabel>
+
+#include "Backend/Backend.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -34,6 +37,8 @@ public:
 //    void serialPortChosen(QListWidgetItem *, QListWidgetItem *);
 
 private:
+    void getChildren();
+
     Ui::MainWindow *ui;
 
     QPushButton *radioModuleButton;
@@ -43,6 +48,18 @@ private:
     QPushButton *linkTest_button;
     QSpinBox *linkTest_payloadSize;
     QSpinBox *linkTest_iterations;
+    QSpinBox *linkTest_repeat;
+
+    QLabel *linkTestResults_NoiseFloor;
+    QLabel *linkTestResults_MaxRssi;
+    QLabel *linkTestResults_MinRssi;
+    QLabel *linkTestResults_AvgRssi;
+    QLabel *linkTestResults_Success;
+    QLabel *linkTestResults_Retries;
+    QLabel *linkTestResults_RR;
+
+public slots:
+    void linkTestDataAvailable(LinkTestResults results, int iterationsLeft);
 };
 
 
