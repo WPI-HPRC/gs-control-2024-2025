@@ -50,6 +50,7 @@ public:
     size_t readBytes_uart(char *buffer, size_t max_bytes) override;
     void writeBytes(const char *data, size_t length_bytes) override;
 
+    void sendLinkTestRequest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations) override;
     void handleLinkTest(XBee::ExplicitRxIndicator::LinkTest data) override;
     void handleEnergyDetectResponse(uint8_t *energyValues, uint8_t numChannels) override;
 

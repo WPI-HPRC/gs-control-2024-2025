@@ -10,6 +10,7 @@
 #include <string>
 
 #include <QPushButton>
+#include <QCheckBox>
 #include <QTableWidget>
 #include <QLineEdit>
 #include <QSpinBox>
@@ -44,11 +45,14 @@ private:
     QPushButton *radioModuleButton;
     QTableWidget *serialPortList;
 
+    QPushButton *refreshSerialPortsButton;
+
     QLineEdit *linkTest_destinationAddress;
     QPushButton *linkTest_button;
     QSpinBox *linkTest_payloadSize;
     QSpinBox *linkTest_iterations;
     QSpinBox *linkTest_repeat;
+    QCheckBox *linkTest_loop;
 
     QLabel *linkTestResults_NoiseFloor;
     QLabel *linkTestResults_MaxRssi;
@@ -58,8 +62,16 @@ private:
     QLabel *linkTestResults_Retries;
     QLabel *linkTestResults_RR;
 
+    QLabel *linkTestResults_TotalPackets;
+    QLabel *linkTestResults_PercentSuccess;
+
+    bool loopLinkTest = false;
+    bool lastLinkTestFailed = false;
+
 public slots:
     void linkTestDataAvailable(LinkTestResults results, int iterationsLeft);
+    void linkTestButtonPressed();
+    void linkTestFailed();
 };
 
 
