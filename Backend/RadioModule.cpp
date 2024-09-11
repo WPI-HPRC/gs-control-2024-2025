@@ -103,7 +103,7 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo
 
     logWrongChecksums = true;
 
-    linkTestsLeft = 100;
+    linkTestsLeft = 0;
 
     configureRadio();
 }
@@ -202,6 +202,13 @@ void RadioModule::log(const char *format, ...)
     va_end(args);
 }
 
+void RadioModule::sendLinkTestRequest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations)
+{
+    std::cout << "Sending link test request" << std::endl;
+    sendEnergyDetectCommand(150);
+    XBeeDevice::sendLinkTestRequest(destinationAddress, payloadSize, iterations);
+}
+
 void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t length_bytes)
 {
     using namespace XBee::ExtendedTransmitStatus;
@@ -220,6 +227,17 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
 //    log("Transmit status for frame ID %03x: %02x. RetryCount: %03x, Discovery: %02x\n", status->frameID, status->deliveryStatus, status->retryCount, status->discovery);
 
     dataLogger->logTransmitStatus(json);
+
+    std::cout << "Got transmit status: " << std::hex << (int)status->deliveryStatus << std::endl;
+
+    if(status->deliveryStatus != 0x00)
+    {
+        if(linkTestsLeft != 0)
+        {
+            std::cout << "Link test failed!" << std::endl;
+            Backend::getInstance().linkTestFailed();
+        }
+    }
 }
 
 void RadioModule::handleLinkTest(XBee::ExplicitRxIndicator::LinkTest data)
@@ -242,23 +260,25 @@ void RadioModule::handleLinkTest(XBee::ExplicitRxIndicator::LinkTest data)
         );
 
      */
+    std::cout << "Got link test result" << std::endl;
 
-    if(linkTestsLeft > 0)
+    if(linkTestsLeft != 0)
     {
-        sendLinkTestRequest(data.destinationAddress, 200, 100);
+        std::cout << "Sending new link test request. " << std::dec << ((int)linkTestsLeft) << " left" << std::endl;
+        sendLinkTestRequest(data.destinationAddress, data.payloadSize, data.iterations);
         linkTestsLeft--;
     }
 }
 
 void RadioModule::handleEnergyDetectResponse(uint8_t *energyValues, uint8_t numChannels)
 {
-    uint8_t average = 0;
+    float average = 0;
 
     for(int i = 0; i < numChannels; i++)
     {
-        average += energyValues[i]/numChannels;
+        average += (float)energyValues[i]/numChannels;
     }
-    lastNoiseFloor = average;
+    lastNoiseFloor = (uint8_t)average;
 }
 
 void RadioModule::sentFrame(uint8_t frameID)

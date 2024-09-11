@@ -33,12 +33,14 @@ public:
     void disconnectFromModule(const QString& name);
     bool moduleExistsWithName(const QString &name);
 
-    void runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations, uint8_t repeat);
+    void runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations, uint8_t repeat, bool loop=false);
     void cancelLinkTest();
+    void linkTestFailed();
     void sendEnergyDetectCommand(uint16_t msPerChannel);
 
     void start();
     void flushFiles();
+    void getPorts();
 
     QList<RadioModule *> radioModules;
     int loopCount;
@@ -54,11 +56,11 @@ signals:
     void serialPortOpened(QSerialPortInfo, bool);
     void serialPortClosed(QSerialPortInfo);
     void linkTestDataAvailable(LinkTestResults, int);
+    void linkTestFailedSignal();
 
 private:
     explicit Backend(QObject *parent = nullptr);
 
-    void getPorts();
     RadioModule *getModuleWithName(const QString& name);
 
     WebServer *webServer{};

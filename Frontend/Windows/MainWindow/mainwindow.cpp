@@ -39,6 +39,8 @@ QByteArray hexToBytes(const QString &hexString)
 
 void MainWindow::getChildren()
 {
+    refreshSerialPortsButton = this->findChild<QPushButton *>("RefreshSerialPortsButton");
+
     serialPortList = this->findChild<QTableWidget *>("serialPortList");
     linkTest_destinationAddress = this->findChild<QLineEdit *>("LinkTest_DestinationAddress");
 
@@ -46,6 +48,7 @@ void MainWindow::getChildren()
     linkTest_iterations = this->findChild<QSpinBox *>("LinkTest_Iterations");
     linkTest_button = this->findChild<QPushButton *>("LinkTest_Button");
     linkTest_repeat = this->findChild<QSpinBox *>("LinkTest_Repeat");
+    linkTest_loop = this->findChild<QCheckBox *>("LinkTest_Loop");
 
     linkTestResults_NoiseFloor = this->findChild<QLabel *>("LinkTestResult_NoiseFloor");
     linkTestResults_MaxRssi = this->findChild<QLabel *>("LinkTestResult_MaxRssi");
@@ -54,6 +57,21 @@ void MainWindow::getChildren()
     linkTestResults_Success = this->findChild<QLabel *>("LinkTestResult_Success");
     linkTestResults_Retries = this->findChild<QLabel *>("LinkTestResult_Retries");
     linkTestResults_RR = this->findChild<QLabel *>("LinkTestResult_RR");
+
+    linkTestResults_TotalPackets = this->findChild<QLabel *>("LinkTestResults_TotalPackets");
+    linkTestResults_PercentSuccess = this->findChild<QLabel *>("LinkTestResults_PercentSuccess");
+}
+
+void MainWindow::linkTestFailed()
+{
+    /*
+    this->linkTest_button->setEnabled(true);
+    this->linkTest_button->setText("Run Link Test");
+    */
+    lastLinkTestFailed = true;
+    this->linkTestButtonPressed();
+    this->linkTest_button->setEnabled(true);
+    this->linkTest_button->setText("STOP");
 }
 
 void MainWindow::linkTestDataAvailable(LinkTestResults results, int iterationsLeft)
@@ -79,14 +97,57 @@ void MainWindow::linkTestDataAvailable(LinkTestResults results, int iterationsLe
     linkTestResults_RR->setEnabled(true);
     linkTestResults_RR->setText(QString::asprintf("%d", results.RR));
 
+    linkTestResults_TotalPackets->setEnabled(true);
+    linkTestResults_TotalPackets->setText(QString::asprintf("%d", results.iterations + results.retries));
+
+    linkTestResults_PercentSuccess->setEnabled(true);
+    linkTestResults_PercentSuccess->setText(QString::asprintf("%d", (int)((float)results.success / ((float)results.iterations + (float)results.retries) * 100)));
+
     this->linkTest_button->setEnabled(true);
     if(iterationsLeft == 0)
     {
         this->linkTest_button->setText("Run Link Test");
     }
-    else
+    else if(iterationsLeft > 0)
     {
         linkTest_button->setText(QString::asprintf("STOP - %d left", iterationsLeft));
+    }
+    else
+    {
+        linkTest_button->setText("STOP");
+    }
+
+    std::cout << "New link test data" << std::endl;
+}
+
+void MainWindow::linkTestButtonPressed()
+{
+    loopLinkTest = this->linkTest_loop->isChecked();
+    if(!lastLinkTestFailed)
+    {
+        if (this->linkTest_button->text().startsWith("STOP"))
+        {
+            std::cout << "Stopping link test" << std::endl;
+            Backend::getInstance().cancelLinkTest();
+            this->linkTest_button->setText("Run Link Test");
+            loopLinkTest = false;
+            return;
+        }
+    }
+
+    int payloadSize = this->linkTest_payloadSize->value();
+    int iterations = this->linkTest_iterations->value();
+    int repeat = this->linkTest_repeat->value();
+    QByteArray bytes = hexToBytes(linkTest_destinationAddress->text());
+    uint64_t address = getAddressBigEndian((uint8_t *)bytes.data());
+
+    linkTest_button->setText("Running link test...");
+    linkTest_button->setEnabled(false);
+    std::cout << "Last link test failed ? " << (lastLinkTestFailed ? "YES" : "NO") << std::endl;
+    Backend::getInstance().runLinkTest(address, payloadSize, iterations, lastLinkTestFailed ? 0 : repeat, loopLinkTest);
+    if(lastLinkTestFailed)
+    {
+        lastLinkTestFailed = false;
     }
 }
 
@@ -105,23 +166,14 @@ MainWindow::MainWindow(QWidget *parent) :
     linkTestResults_Retries->setEnabled(false);
     linkTestResults_RR->setEnabled(false);
 
-    connect(linkTest_button, &QPushButton::pressed, [this](){
+    linkTestResults_TotalPackets->setEnabled(false);
+    linkTestResults_PercentSuccess->setEnabled(false);
 
-        if(this->linkTest_button->text().startsWith("STOP"))
-        {
-            Backend::getInstance().cancelLinkTest();
-            this->linkTest_button->setText("Run Link Test");
-            return;
-        }
+    connect(linkTest_button, &QPushButton::pressed, this, &MainWindow::linkTestButtonPressed);
+    connect(&Backend::getInstance(), &Backend::linkTestFailedSignal, this, &MainWindow::linkTestFailed);
 
-        int payloadSize = this->linkTest_payloadSize->value();
-        int iterations = this->linkTest_iterations->value();
-        int repeat = this->linkTest_repeat->value();
-        QByteArray bytes = hexToBytes(linkTest_destinationAddress->text());
-        uint64_t address = getAddressBigEndian((uint8_t *)bytes.data());
-
-        linkTest_button->setEnabled(false);
-        Backend::getInstance().runLinkTest(address, payloadSize, iterations, repeat);
+    connect(refreshSerialPortsButton, &QPushButton::pressed, []() {
+        Backend::getInstance().getPorts();
     });
 
     connect(&Backend::getInstance(), &Backend::linkTestDataAvailable, this, &MainWindow::linkTestDataAvailable);

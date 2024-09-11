@@ -40,6 +40,7 @@ SerialPortList::SerialPortList(QWidget *parent) : QTableWidget(parent)
 
 void SerialPortList::serialPortsFound(const QList<QSerialPortInfo>& ports)
 {
+    this->serialPorts.clear();
     for(const QSerialPortInfo& port : ports)
     {
         if(port.portName().contains("Bluetooth") || port.portName().contains("debug-console") || !port.portName().contains("tty"))
@@ -54,7 +55,7 @@ void SerialPortList::serialPortsFound(const QList<QSerialPortInfo>& ports)
 
     for(int i = 0; i < this->serialPorts.count(); i++)
     {
-        auto *button = new QPushButton("Connect");
+        auto *button = new QPushButton(Backend::getInstance().moduleExistsWithName(serialPorts.at(i).portName()) ? "Disconnect" : "Connect");
         button->setProperty("row", i);
         button->setStyleSheet("margin: 0 10px 0 10px");
         button->setObjectName(this->serialPorts.at(i).portName());
@@ -103,6 +104,9 @@ void SerialPortList::serialPortOpened(const QSerialPortInfo& info, bool success)
     qDebug() << "Serial port opened: " << info.portName();
 
     auto *button = this->findChild<QPushButton *>(info.portName());
+
+    if(!button)
+        return;
 
     button->setText(success ? "Disconnect" : "Connect");
     button->setEnabled(true);

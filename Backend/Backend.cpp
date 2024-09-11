@@ -87,20 +87,38 @@ void Backend::flushFiles()
     }
 }
 
-void Backend::runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations, uint8_t repeat)
+void Backend::linkTestFailed()
+{
+    emit linkTestFailedSignal();
+}
+
+void Backend::runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations, uint8_t repeat, bool loop)
 {
     if(getTargetPort(GROUND_STATION_MODULE).isNull())
         return;
 
     RadioModule *module = getModuleWithName(GROUND_STATION_MODULE);
 
-    module->linkTestsLeft = repeat;
-    module->sendEnergyDetectCommand(150);
+    std::cout << "Running link test" << std::endl;
+    if(repeat != 0)
+    {
+        std::cout << "Repeat != 0" << std::endl;
+        module->linkTestsLeft = loop ? -1 : repeat;
+    }
+    else
+    {
+        std::cout << "Repeat == 0" << std::endl;
+        module->linkTestsLeft--;
+    }
+
+    std::cout << "LinkTestsLeft = " << module->linkTestsLeft << std::endl;
+
     module->sendLinkTestRequest(destinationAddress, payloadSize, iterations);
 }
 
 void Backend::cancelLinkTest()
 {
+    std::cout << "Cancelling link test" << std::endl;
     getModuleWithName(GROUND_STATION_MODULE)->linkTestsLeft = 0;
 }
 
