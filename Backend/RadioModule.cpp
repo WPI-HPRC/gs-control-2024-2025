@@ -91,7 +91,7 @@ void RadioModule::configureRadio()
 //    setParameterRemote(, XBee::AtCommand::PowerLevel, 0x02);
 }
 
-RadioModule::RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo &portInfo) : XBeeDevice(UART)
+RadioModule::RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo &portInfo) : XBeeDevice(SerialInterface::UART)
 {
     dataLogger = logger;
 
@@ -108,7 +108,7 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo
     configureRadio();
 }
 
-RadioModule::RadioModule(int baudRate, DataLogger *logger) : XBeeDevice(UART)
+RadioModule::RadioModule(int baudRate, DataLogger *logger) : XBeeDevice(SerialInterface::UART)
 {
     QSerialPortInfo targetPort = getTargetPort();
 

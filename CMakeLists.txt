@@ -32,9 +32,9 @@ add_executable(gs_backend_2024_2025 main.cpp
         Utility/json_struct.h
         Utility/json_struct.h
         xbee/XBeeDevice.cpp
-        Frontend/Windows/MainWindow/mainwindow.cpp
-        Frontend/Windows/MainWindow/mainwindow.h
-        Frontend/Windows/MainWindow/mainwindow.ui
+        Frontend/Windows/RadioControlsWindow/RadioControlsWindow.cpp
+        Frontend/Windows/RadioControlsWindow/RadioControlsWindow.h
+        Frontend/Windows/RadioControlsWindow/RadioControlsWindow.ui
         Frontend/Widgets/SerialPortList.cpp
         Frontend/Widgets/SerialPortList.h
         Utility/SerialPortManager.cpp
