@@ -1,7 +1,7 @@
 
 #include <QApplication>
 #include "Backend/Backend.h"
-#include "Frontend/Windows/MainWindow/mainwindow.h"
+#include "Frontend/Windows/RadioControlsWindow/RadioControlsWindow.h"
 
 struct TestStruct
 {
@@ -16,10 +16,10 @@ int main(int argc, char *argv[])
 
     Backend &backend = Backend::getInstance();
 
-    MainWindow mainWindow;
-    mainWindow.showNormal();
-    mainWindow.update();
-    mainWindow.setWindowTitle("Ground Station Control");
+    RadioControlsWindow radioControlsWindow;
+    radioControlsWindow.showNormal();
+    radioControlsWindow.update();
+    radioControlsWindow.setWindowTitle("Radio Controls");
 
 
     TestStruct test;
