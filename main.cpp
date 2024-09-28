@@ -2,6 +2,7 @@
 #include <QApplication>
 #include "Backend/Backend.h"
 #include "Frontend/Windows/RadioControlsWindow/RadioControlsWindow.h"
+#include "Frontend/Windows/MainWindow/mainwindow.h"
 
 struct TestStruct
 {
@@ -20,6 +21,10 @@ int main(int argc, char *argv[])
     radioControlsWindow.showNormal();
     radioControlsWindow.update();
     radioControlsWindow.setWindowTitle("Radio Controls");
+
+    MainWindow mainWindow;
+    mainWindow.showNormal();
+    mainWindow.setWindowTitle("Main Window");
 
 
     TestStruct test;
