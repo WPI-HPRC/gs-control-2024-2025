@@ -15,6 +15,7 @@ QMainWindow* getMainWindow()
     foreach (QWidget *w, qApp->topLevelWidgets())
         if (auto* mainWin = qobject_cast<QMainWindow*>(w))
             return mainWin;
+
     return nullptr;
 }
 

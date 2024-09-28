@@ -103,6 +103,9 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Windows/TelemetryWindow/raw_telemetry.ui
         Frontend/Widgets/Viewer3D/Viewer3D.cpp
         Frontend/Widgets/Viewer3D/Viewer3D.h
+        Frontend/Windows/MainWindow/mainwindow.cpp
+        Frontend/Windows/MainWindow/mainwindow.h
+        Frontend/Windows/MainWindow/mainwindow.ui
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core
