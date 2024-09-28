@@ -4,9 +4,9 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_MainWindow.h" resolved
 
-#include "mainwindow.h"
+#include "RadioControlsWindow.h"
 #include <QLabel>
-#include "ui_MainWindow.h"
+#include "ui_RadioControlsWindow.h"
 
 uint64_t getAddressBigEndian(const uint8_t *packet, size_t *index_io)
 {
@@ -37,7 +37,7 @@ QByteArray hexToBytes(const QString &hexString)
     return rawBytes;
 }
 
-void MainWindow::getChildren()
+void RadioControlsWindow::getChildren()
 {
     refreshSerialPortsButton = this->findChild<QPushButton *>("RefreshSerialPortsButton");
 
@@ -62,7 +62,7 @@ void MainWindow::getChildren()
     linkTestResults_PercentSuccess = this->findChild<QLabel *>("LinkTestResults_PercentSuccess");
 }
 
-void MainWindow::linkTestFailed()
+void RadioControlsWindow::linkTestFailed()
 {
     /*
     this->linkTest_button->setEnabled(true);
@@ -74,7 +74,7 @@ void MainWindow::linkTestFailed()
     this->linkTest_button->setText("STOP");
 }
 
-void MainWindow::linkTestDataAvailable(LinkTestResults results, int iterationsLeft)
+void RadioControlsWindow::linkTestDataAvailable(LinkTestResults results, int iterationsLeft)
 {
     linkTestResults_NoiseFloor->setText(QString::asprintf("-%d dBm", results.noiseFloor));
     linkTestResults_NoiseFloor->setEnabled(true);
@@ -120,7 +120,7 @@ void MainWindow::linkTestDataAvailable(LinkTestResults results, int iterationsLe
     std::cout << "New link test data" << std::endl;
 }
 
-void MainWindow::linkTestButtonPressed()
+void RadioControlsWindow::linkTestButtonPressed()
 {
     loopLinkTest = this->linkTest_loop->isChecked();
     if(!lastLinkTestFailed)
@@ -151,8 +151,8 @@ void MainWindow::linkTestButtonPressed()
     }
 }
 
-MainWindow::MainWindow(QWidget *parent) :
-        QMainWindow(parent), ui(new Ui::MainWindow)
+RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
+        QMainWindow(parent), ui(new Ui::RadioControlsWindow)
 {
     ui->setupUi(this);
     getChildren();
@@ -169,27 +169,27 @@ MainWindow::MainWindow(QWidget *parent) :
     linkTestResults_TotalPackets->setEnabled(false);
     linkTestResults_PercentSuccess->setEnabled(false);
 
-    connect(linkTest_button, &QPushButton::pressed, this, &MainWindow::linkTestButtonPressed);
-    connect(&Backend::getInstance(), &Backend::linkTestFailedSignal, this, &MainWindow::linkTestFailed);
+    connect(linkTest_button, &QPushButton::pressed, this, &RadioControlsWindow::linkTestButtonPressed);
+    connect(&Backend::getInstance(), &Backend::linkTestFailedSignal, this, &RadioControlsWindow::linkTestFailed);
 
     connect(refreshSerialPortsButton, &QPushButton::pressed, []() {
         Backend::getInstance().getPorts();
     });
 
-    connect(&Backend::getInstance(), &Backend::linkTestDataAvailable, this, &MainWindow::linkTestDataAvailable);
+    connect(&Backend::getInstance(), &Backend::linkTestDataAvailable, this, &RadioControlsWindow::linkTestDataAvailable);
 
 //    connect(serialPortList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(serialPortChosen(QListWidgetItem*, QListWidgetItem*)));
 }
 
 /*
-void MainWindow::serialPortChosen(QListWidgetItem *item, QListWidgetItem *_)
+void RadioControlsWindow::serialPortChosen(QListWidgetItem *item, QListWidgetItem *_)
 {
     radioModuleButton->setText("Connect");
     radioModuleButton->setEnabled(true);
 }
  */
 
-MainWindow::~MainWindow()
+RadioControlsWindow::~RadioControlsWindow()
 {
     delete ui;
 }

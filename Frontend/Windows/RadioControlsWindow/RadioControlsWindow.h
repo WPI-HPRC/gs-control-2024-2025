@@ -21,18 +21,18 @@
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
-    class MainWindow;
+    class RadioControlsWindow;
 }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class RadioControlsWindow : public QMainWindow
 {
 Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit RadioControlsWindow(QWidget *parent = nullptr);
 
-    ~MainWindow() override;
+    ~RadioControlsWindow() override;
 
 //public slots:
 //    void serialPortChosen(QListWidgetItem *, QListWidgetItem *);
@@ -40,7 +40,7 @@ public:
 private:
     void getChildren();
 
-    Ui::MainWindow *ui;
+    Ui::RadioControlsWindow *ui;
 
     QPushButton *radioModuleButton;
     QTableWidget *serialPortList;
