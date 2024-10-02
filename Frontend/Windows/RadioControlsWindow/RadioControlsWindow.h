@@ -84,7 +84,7 @@ public slots:
     void linkTestButtonPressed();
     void linkTestFailed();
 
-    void throughputTestDataAvailable(float percentSuccess, uint numSuccess, uint throughput);
+    void throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput);
     void throughputTestButtonPressed();
 };
 

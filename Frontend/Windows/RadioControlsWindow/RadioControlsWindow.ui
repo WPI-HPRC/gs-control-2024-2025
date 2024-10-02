@@ -609,6 +609,9 @@
         </widget>
        </item>
        <item>
+        <widget class="MyWidget" name="widget_2" native="true"/>
+       </item>
+       <item>
         <widget class="SerialPortList" name="SerialPortListObj">
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
@@ -671,6 +674,12 @@
    <class>SerialPortList</class>
    <extends>QTableWidget</extends>
    <header>Frontend/Widgets/SerialPortList.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyWidget</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Widgets/mywidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

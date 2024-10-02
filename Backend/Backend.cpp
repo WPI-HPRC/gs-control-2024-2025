@@ -4,6 +4,7 @@
 
 #include "Backend.h"
 #include <QSerialPort>
+#include <QJsonDocument>
 #include <string>
 #include "Constants.h"
 //#define SIMULATE_DATA
@@ -174,7 +175,23 @@ void Backend::throughputTestComplete()
 
     float percentReceived = (float)numPacketsReceived / (float)theoreticalPacketsReceived * 100;
 
-    uint throughput = numPacketsReceived * throughputTestParams.payloadSize / throughputTestParams.duration;
+    float throughput = (float)numPacketsReceived * throughputTestParams.payloadSize / throughputTestParams.duration / 1000 * 8;
+
+    ThroughputTestResults results = {
+            .payloadSize = throughputTestParams.payloadSize,
+            .packetRate = throughputTestParams.packetRate,
+            .duration = throughputTestParams.duration,
+            .transmitOptions = throughputTestParams.transmitOptions,
+            .numPacketsReceived = numPacketsReceived,
+            .percentReceived = percentReceived,
+            .throughput = throughput
+    };
+
+    std::string str = JS::serializeStruct(results);
+
+    QJsonObject obj = QJsonDocument::fromJson(str.c_str()).object();
+
+    throughputTestParams.receiveModule->dataLogger->logThroughputTest(obj);
 
     emit throughputTestDataAvailable(percentReceived, numPacketsReceived, throughput);
 }
