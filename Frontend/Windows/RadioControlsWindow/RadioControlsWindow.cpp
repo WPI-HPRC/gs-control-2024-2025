@@ -182,7 +182,7 @@ void RadioControlsWindow::throughputTestButtonPressed()
     Backend::getInstance().runThroughputTest(originatingModulePortName, address, payloadSize, packetRate, duration, transmitOptions);
 }
 
-void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint numSuccess, uint throughput)
+void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput)
 {
     throughputTestResults_PercentSuccess->setEnabled(true);
     throughputTestResults_PercentSuccess->setText(QString::asprintf("%0.1f", percentSuccess));
@@ -191,7 +191,7 @@ void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint
     throughputTestResults_NumSuccess->setText(QString::asprintf("%d", numSuccess));
 
     throughputTestResults_Throughput->setEnabled(true);
-    throughputTestResults_Throughput->setText(QString::asprintf("%f kbps", (float)throughput/1000 * 8));
+    throughputTestResults_Throughput->setText(QString::asprintf("%f kbps", throughput));
 }
 
 RadioControlsWindow::RadioControlsWindow(QWidget *parent) :

@@ -63,6 +63,7 @@ void DataLogger::createFiles()
         payloadLogFile.open(logDir.path().append("/").append(timeString).append("_payload.csv"));
         transmitStatusLog.open(logDir.path().append("/").append(timeString).append("_transmit_status.csv"));
         linkTestLogFile.open(logDir.path().append("/").append(timeString).append("_linkTest.csv"));
+        throughputTestLogFile.open(logDir.path().append("/").append(timeString).append("_throughputTest.csv"));
 
         byteLog.setFileName(logDir.path().append("/").append(timeString).append("_bytes.txt"));
         byteLog.open(QIODeviceBase::WriteOnly | QIODeviceBase::Text);
@@ -73,7 +74,8 @@ void DataLogger::createFiles()
         rocketLogFile.open(logDir.path().append("/").append(timeString).append("_rocket_OFFICIAL.csv"));
         payloadLogFile.open(logDir.path().append("/").append(timeString).append("_payload_OFFICIAL.csv"));
         transmitStatusLog.open(logDir.path().append("/").append(timeString).append("_transmit_status_OFFICIAL.csv"));
-
+        linkTestLogFile.open(logDir.path().append("/").append(timeString).append("_linkTest_OFFICIAL.csv"));
+        throughputTestLogFile.open(logDir.path().append("/").append(timeString).append("_throughputTest_OFFICIAL.csv"));
         byteLog.setFileName(logDir.path().append("/").append(timeString).append("_bytes_OFFICIAL.txt"));
         byteLog.open(QIODeviceBase::WriteOnly | QIODeviceBase::Text);
 
@@ -88,6 +90,12 @@ void DataLogger::logLinkTest(const QJsonObject &jsonData)
 {
     linkTestLogFile.write(jsonData);
     linkTestLogFile.file.flush();
+}
+
+void DataLogger::logThroughputTest(const QJsonObject &jsonData)
+{
+    throughputTestLogFile.write(jsonData);
+    throughputTestLogFile.file.flush();
 }
 
 void DataLogger::logTransmitStatus(const QJsonObject &jsonData)

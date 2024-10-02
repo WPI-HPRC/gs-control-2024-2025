@@ -35,6 +35,27 @@ public:
         uint8_t transmitOptions;
     };
 
+    struct ThroughputTestResults
+    {
+        uint8_t payloadSize;
+        uint packetRate;
+        uint duration;
+        uint8_t transmitOptions;
+        uint numPacketsReceived;
+        float percentReceived;
+        float throughput;
+
+        JS_OBJ(
+                payloadSize,
+                packetRate,
+                duration,
+                transmitOptions,
+                numPacketsReceived,
+                percentReceived,
+                throughput
+                );
+    };
+
     static Backend &getInstance()
     {
         static Backend instance;
