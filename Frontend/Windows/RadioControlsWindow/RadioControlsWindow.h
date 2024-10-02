@@ -17,6 +17,7 @@
 #include <QLabel>
 
 #include "Backend/Backend.h"
+#include "Frontend/Widgets/SerialPortList.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -42,17 +43,16 @@ private:
 
     Ui::RadioControlsWindow *ui;
 
-    QPushButton *radioModuleButton;
-    QTableWidget *serialPortList;
+    SerialPortList *serialPortListObj;
 
     QPushButton *refreshSerialPortsButton;
 
-    QLineEdit *linkTest_destinationAddress;
-    QPushButton *linkTest_button;
-    QSpinBox *linkTest_payloadSize;
-    QSpinBox *linkTest_iterations;
-    QSpinBox *linkTest_repeat;
-    QCheckBox *linkTest_loop;
+    QLineEdit *linkTest_DestinationAddress;
+    QPushButton *linkTest_Button;
+    QSpinBox *linkTest_PayloadSize;
+    QSpinBox *linkTest_Iterations;
+    QSpinBox *linkTest_Repeat;
+    QCheckBox *linkTest_Loop;
 
     QLabel *linkTestResults_NoiseFloor;
     QLabel *linkTestResults_MaxRssi;
@@ -65,6 +65,17 @@ private:
     QLabel *linkTestResults_TotalPackets;
     QLabel *linkTestResults_PercentSuccess;
 
+    QLineEdit *throughputTest_DestinationAddress;
+    QSpinBox *throughputTest_PayloadSize;
+    QSpinBox *throughputTest_PacketRate;
+    QSpinBox *throughputTest_Duration;
+    QSpinBox *throughputTest_TransmitOptions;
+    QPushButton *throughputTest_Button;
+
+    QLabel *throughputTestResults_PercentSuccess;
+    QLabel *throughputTestResults_NumSuccess;
+    QLabel *throughputTestResults_Throughput;
+
     bool loopLinkTest = false;
     bool lastLinkTestFailed = false;
 
@@ -72,6 +83,9 @@ public slots:
     void linkTestDataAvailable(LinkTestResults results, int iterationsLeft);
     void linkTestButtonPressed();
     void linkTestFailed();
+
+    void throughputTestDataAvailable(float percentSuccess, uint numSuccess, uint throughput);
+    void throughputTestButtonPressed();
 };
 
 

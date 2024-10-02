@@ -27,7 +27,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::TextElideMode::ElideRight</enum>
@@ -92,7 +92,7 @@
          </widget>
         </item>
         <item row="17" column="3">
-         <widget class="QLabel" name="LinkTestResult_Success">
+         <widget class="QLabel" name="LinkTestResults_Success">
           <property name="frameShape">
            <enum>QFrame::Shape::Panel</enum>
           </property>
@@ -112,7 +112,7 @@
          </widget>
         </item>
         <item row="9" column="3">
-         <widget class="QLabel" name="LinkTestResult_NoiseFloor">
+         <widget class="QLabel" name="LinkTestResults_NoiseFloor">
           <property name="frameShape">
            <enum>QFrame::Shape::Panel</enum>
           </property>
@@ -125,7 +125,7 @@
          </widget>
         </item>
         <item row="16" column="3">
-         <widget class="QLabel" name="LinkTestResult_AvgRssi">
+         <widget class="QLabel" name="LinkTestResults_AvgRssi">
           <property name="frameShape">
            <enum>QFrame::Shape::Panel</enum>
           </property>
@@ -172,7 +172,7 @@
          </widget>
         </item>
         <item row="11" column="3">
-         <widget class="QLabel" name="LinkTestResult_MaxRssi">
+         <widget class="QLabel" name="LinkTestResults_MaxRssi">
           <property name="frameShape">
            <enum>QFrame::Shape::Panel</enum>
           </property>
@@ -201,7 +201,7 @@
          </widget>
         </item>
         <item row="12" column="3">
-         <widget class="QLabel" name="LinkTestResult_MinRssi">
+         <widget class="QLabel" name="LinkTestResults_MinRssi">
           <property name="frameShape">
            <enum>QFrame::Shape::Panel</enum>
           </property>
@@ -221,7 +221,7 @@
          </widget>
         </item>
         <item row="18" column="3">
-         <widget class="QLabel" name="LinkTestResult_Retries">
+         <widget class="QLabel" name="LinkTestResults_Retries">
           <property name="frameShape">
            <enum>QFrame::Shape::Panel</enum>
           </property>
@@ -280,7 +280,7 @@
          </spacer>
         </item>
         <item row="19" column="3">
-         <widget class="QLabel" name="LinkTestResult_RR">
+         <widget class="QLabel" name="LinkTestResults_RR">
           <property name="frameShape">
            <enum>QFrame::Shape::Panel</enum>
           </property>
@@ -437,6 +437,9 @@
         </item>
         <item row="5" column="0" colspan="2">
          <widget class="QPushButton" name="ThroughputTest_Button">
+          <property name="focusPolicy">
+           <enum>Qt::FocusPolicy::NoFocus</enum>
+          </property>
           <property name="text">
            <string>Run throughput test</string>
           </property>
@@ -452,13 +455,13 @@
         <item row="3" column="1">
          <widget class="QSpinBox" name="ThroughputTest_Duration">
           <property name="minimum">
-           <number>10</number>
+           <number>1</number>
           </property>
           <property name="maximum">
            <number>600</number>
           </property>
           <property name="value">
-           <number>600</number>
+           <number>5</number>
           </property>
          </widget>
         </item>
@@ -478,23 +481,23 @@
            <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
           </property>
           <property name="minimum">
-           <number>100</number>
+           <number>1</number>
           </property>
           <property name="maximum">
            <number>200</number>
           </property>
           <property name="value">
-           <number>100</number>
+           <number>10</number>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSpinBox" name="ThroughputTest_PayloadTest">
+         <widget class="QSpinBox" name="ThroughputTest_PayloadSize">
           <property name="minimum">
            <number>1</number>
           </property>
           <property name="maximum">
-           <number>255</number>
+           <number>240</number>
           </property>
           <property name="singleStep">
            <number>10</number>
@@ -525,7 +528,7 @@
          </widget>
         </item>
         <item row="8" column="1">
-         <widget class="QLabel" name="ThroughputTestResult_PercentSuccess">
+         <widget class="QLabel" name="ThroughputTestResults_PercentSuccess">
           <property name="frameShape">
            <enum>QFrame::Shape::Panel</enum>
           </property>
@@ -538,7 +541,7 @@
          </widget>
         </item>
         <item row="9" column="1">
-         <widget class="QLabel" name="ThroughputTestResult_NumSuccess">
+         <widget class="QLabel" name="ThroughputTestResults_NumSuccess">
           <property name="frameShape">
            <enum>QFrame::Shape::Panel</enum>
           </property>
@@ -551,7 +554,7 @@
          </widget>
         </item>
         <item row="10" column="1">
-         <widget class="QLabel" name="ThroughputTestResult_Throughput">
+         <widget class="QLabel" name="ThroughputTestResults_Throughput">
           <property name="frameShape">
            <enum>QFrame::Shape::Panel</enum>
           </property>
@@ -565,11 +568,14 @@
         </item>
         <item row="4" column="1">
          <widget class="QSpinBox" name="ThroughputTest_TransmitOptions">
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+          </property>
           <property name="maximum">
            <number>255</number>
           </property>
           <property name="value">
-           <number>18</number>
+           <number>0</number>
           </property>
           <property name="displayIntegerBase">
            <number>16</number>
@@ -603,7 +609,7 @@
         </widget>
        </item>
        <item>
-        <widget class="SerialPortList" name="serialPortList">
+        <widget class="SerialPortList" name="SerialPortListObj">
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
          </property>
@@ -617,7 +623,7 @@
           <bool>true</bool>
          </property>
          <property name="selectionMode">
-          <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+          <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
          </property>
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>

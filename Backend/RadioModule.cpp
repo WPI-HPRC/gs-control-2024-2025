@@ -97,7 +97,7 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo
 
     serialPort = new SerialPort(portInfo, baudRate, dataLogger);
 
-    sendTransmitRequestsImmediately = false;
+    sendTransmitRequestsImmediately = true;
 
     sendFramesImmediately = false;
 
@@ -159,12 +159,21 @@ size_t RadioModule::readBytes_uart(char *buffer, size_t max_bytes)
 
 void RadioModule::handleReceivePacket(XBee::ReceivePacket::Struct *frame)
 {
+    if(receivingThroughputTest)
+    {
+        throughputTestPacketsReceived ++;
+    }
+
     lastPacket = parsePacket(frame->data);
     dataLogger->dataReady(lastPacket.data.c_str(), lastPacket.packetType);
 }
 
 void RadioModule::handleReceivePacket64Bit(XBee::ReceivePacket64Bit::Struct *frame)
 {
+    if(receivingThroughputTest)
+    {
+        throughputTestPacketsReceived ++;
+    }
     lastPacket = parsePacket(frame->data);
     dataLogger->dataReady(lastPacket.data.c_str(), lastPacket.packetType, frame->negativeRssi);
 }
@@ -228,7 +237,7 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
 
     dataLogger->logTransmitStatus(json);
 
-    std::cout << "Got transmit status: " << std::hex << (int)status->deliveryStatus << std::endl;
+//    std::cout << "Got transmit status: " << std::hex << (int)status->deliveryStatus << std::endl;
 
     if(status->deliveryStatus != 0x00)
     {
@@ -236,6 +245,27 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
         {
             std::cout << "Link test failed!" << std::endl;
             Backend::getInstance().linkTestFailed();
+        }
+    }
+
+    if(receivingThroughputTest)
+    {
+        if(status->deliveryStatus == 0x00)
+        {
+            throughputTestPacketsReceived++;
+            std::cout << "Received packet, number of packets received = " << throughputTestPacketsReceived << std::endl;
+        }
+    }
+}
+
+void RadioModule::_handleTransmitStatus(uint8_t frameID, uint8_t statusCode)
+{
+    return;
+    if(receivingThroughputTest)
+    {
+        if(statusCode == 0x00)
+        {
+            throughputTestPacketsReceived++;
         }
     }
 }

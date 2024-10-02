@@ -71,6 +71,14 @@ void SerialPortList::serialPortsFound(const QList<QSerialPortInfo>& ports)
     this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
+QString SerialPortList::getCurrentlySelectedPortName()
+{
+    if(this->selectedIndexes().count() == 0)
+        return "";
+    int index = this->selectedIndexes().at(0).row();
+    return serialPorts.at(index).portName();
+}
+
 void SerialPortList::buttonClicked()
 {
     auto *button = qobject_cast<QPushButton*>(sender());
