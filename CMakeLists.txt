@@ -40,6 +40,9 @@ add_executable(gs_backend_2024_2025 main.cpp
         Utility/SerialPortManager.cpp
         Utility/SerialPortManager.h
         Utility/DataSimulator.cpp
+        Frontend/Windows/TelemetryWindow/raw_telemetry.cpp
+        Frontend/Windows/TelemetryWindow/raw_telemetry.h
+        Frontend/Windows/TelemetryWindow/raw_telemetry.ui
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core
