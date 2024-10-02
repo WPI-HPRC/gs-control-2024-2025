@@ -60,6 +60,8 @@ public:
     _handleRemoteAtCommandResponse(const uint8_t *frame, uint8_t length_bytes) override;
     void _handleExtendedTransmitStatus(const uint8_t *frame, uint8_t length_bytes) override;
 
+    void _handleTransmitStatus(uint8_t frameID, uint8_t statusCode) override;
+
     void incorrectChecksum(uint8_t calculated, uint8_t received) override;
 
     void sentFrame(uint8_t frameID) override;
@@ -82,6 +84,9 @@ public:
     uint8_t lastNoiseFloor{};
 
     int linkTestsLeft{};
+
+    bool receivingThroughputTest = false;
+    uint throughputTestPacketsReceived = 0;
 };
 
 class ServingRadioModule

@@ -8,6 +8,8 @@
 #include <QLabel>
 #include "ui_RadioControlsWindow.h"
 
+#define FindChild(name) name = findChild<decltype(name)>(QStringLiteral(#name).replace(0, 1, QString(#name)[0].toUpper()))
+
 uint64_t getAddressBigEndian(const uint8_t *packet, size_t *index_io)
 {
     uint64_t address = 0;
@@ -39,39 +41,50 @@ QByteArray hexToBytes(const QString &hexString)
 
 void RadioControlsWindow::getChildren()
 {
-    refreshSerialPortsButton = this->findChild<QPushButton *>("RefreshSerialPortsButton");
+    FindChild(refreshSerialPortsButton);
+    FindChild(serialPortListObj);
 
-    serialPortList = this->findChild<QTableWidget *>("serialPortList");
-    linkTest_destinationAddress = this->findChild<QLineEdit *>("LinkTest_DestinationAddress");
+    FindChild(linkTest_DestinationAddress);
 
-    linkTest_payloadSize = this->findChild<QSpinBox *>("LinkTest_PayloadSize");
-    linkTest_iterations = this->findChild<QSpinBox *>("LinkTest_Iterations");
-    linkTest_button = this->findChild<QPushButton *>("LinkTest_Button");
-    linkTest_repeat = this->findChild<QSpinBox *>("LinkTest_Repeat");
-    linkTest_loop = this->findChild<QCheckBox *>("LinkTest_Loop");
+    FindChild(linkTest_PayloadSize);
+    FindChild(linkTest_Iterations);
+    FindChild(linkTest_Button);
+    FindChild(linkTest_Repeat);
+    FindChild(linkTest_Loop);
 
-    linkTestResults_NoiseFloor = this->findChild<QLabel *>("LinkTestResult_NoiseFloor");
-    linkTestResults_MaxRssi = this->findChild<QLabel *>("LinkTestResult_MaxRssi");
-    linkTestResults_MinRssi = this->findChild<QLabel *>("LinkTestResult_MinRssi");
-    linkTestResults_AvgRssi = this->findChild<QLabel *>("LinkTestResult_AvgRssi");
-    linkTestResults_Success = this->findChild<QLabel *>("LinkTestResult_Success");
-    linkTestResults_Retries = this->findChild<QLabel *>("LinkTestResult_Retries");
-    linkTestResults_RR = this->findChild<QLabel *>("LinkTestResult_RR");
+    FindChild(linkTestResults_NoiseFloor);
+    FindChild(linkTestResults_MaxRssi);
+    FindChild(linkTestResults_MinRssi);
+    FindChild(linkTestResults_AvgRssi);
+    FindChild(linkTestResults_Success);
+    FindChild(linkTestResults_Retries);
+    FindChild(linkTestResults_RR);
 
-    linkTestResults_TotalPackets = this->findChild<QLabel *>("LinkTestResults_TotalPackets");
-    linkTestResults_PercentSuccess = this->findChild<QLabel *>("LinkTestResults_PercentSuccess");
+    FindChild(linkTestResults_TotalPackets);
+    FindChild(linkTestResults_PercentSuccess);
+
+    FindChild(throughputTest_DestinationAddress);
+    FindChild(throughputTest_PayloadSize);
+    FindChild(throughputTest_PacketRate);
+    FindChild(throughputTest_Duration);
+    FindChild(throughputTest_TransmitOptions);
+    FindChild(throughputTest_Button);
+
+    FindChild(throughputTestResults_NumSuccess);
+    FindChild(throughputTestResults_PercentSuccess);
+    FindChild(throughputTestResults_Throughput);
 }
 
 void RadioControlsWindow::linkTestFailed()
 {
     /*
-    this->linkTest_button->setEnabled(true);
-    this->linkTest_button->setText("Run Link Test");
+    this->linkTest_Button->setEnabled(true);
+    this->linkTest_Button->setText("Run Link Test");
     */
     lastLinkTestFailed = true;
     this->linkTestButtonPressed();
-    this->linkTest_button->setEnabled(true);
-    this->linkTest_button->setText("STOP");
+    this->linkTest_Button->setEnabled(true);
+    this->linkTest_Button->setText("STOP");
 }
 
 void RadioControlsWindow::linkTestDataAvailable(LinkTestResults results, int iterationsLeft)
@@ -103,18 +116,18 @@ void RadioControlsWindow::linkTestDataAvailable(LinkTestResults results, int ite
     linkTestResults_PercentSuccess->setEnabled(true);
     linkTestResults_PercentSuccess->setText(QString::asprintf("%d", (int)((float)results.success / ((float)results.iterations + (float)results.retries) * 100)));
 
-    this->linkTest_button->setEnabled(true);
+    this->linkTest_Button->setEnabled(true);
     if(iterationsLeft == 0)
     {
-        this->linkTest_button->setText("Run Link Test");
+        this->linkTest_Button->setText("Run Link Test");
     }
     else if(iterationsLeft > 0)
     {
-        linkTest_button->setText(QString::asprintf("STOP - %d left", iterationsLeft));
+        linkTest_Button->setText(QString::asprintf("STOP - %d left", iterationsLeft));
     }
     else
     {
-        linkTest_button->setText("STOP");
+        linkTest_Button->setText("STOP");
     }
 
     std::cout << "New link test data" << std::endl;
@@ -122,27 +135,27 @@ void RadioControlsWindow::linkTestDataAvailable(LinkTestResults results, int ite
 
 void RadioControlsWindow::linkTestButtonPressed()
 {
-    loopLinkTest = this->linkTest_loop->isChecked();
+    loopLinkTest = this->linkTest_Loop->isChecked();
     if(!lastLinkTestFailed)
     {
-        if (this->linkTest_button->text().startsWith("STOP"))
+        if (this->linkTest_Button->text().startsWith("STOP"))
         {
             std::cout << "Stopping link test" << std::endl;
             Backend::getInstance().cancelLinkTest();
-            this->linkTest_button->setText("Run Link Test");
+            this->linkTest_Button->setText("Run Link Test");
             loopLinkTest = false;
             return;
         }
     }
 
-    int payloadSize = this->linkTest_payloadSize->value();
-    int iterations = this->linkTest_iterations->value();
-    int repeat = this->linkTest_repeat->value();
-    QByteArray bytes = hexToBytes(linkTest_destinationAddress->text());
+    int payloadSize = this->linkTest_PayloadSize->value();
+    int iterations = this->linkTest_Iterations->value();
+    int repeat = this->linkTest_Repeat->value();
+    QByteArray bytes = hexToBytes(linkTest_DestinationAddress->text());
     uint64_t address = getAddressBigEndian((uint8_t *)bytes.data());
 
-    linkTest_button->setText("Running link test...");
-    linkTest_button->setEnabled(false);
+    linkTest_Button->setText("Running link test...");
+    linkTest_Button->setEnabled(false);
     std::cout << "Last link test failed ? " << (lastLinkTestFailed ? "YES" : "NO") << std::endl;
     Backend::getInstance().runLinkTest(address, payloadSize, iterations, lastLinkTestFailed ? 0 : repeat, loopLinkTest);
     if(lastLinkTestFailed)
@@ -151,13 +164,43 @@ void RadioControlsWindow::linkTestButtonPressed()
     }
 }
 
+void RadioControlsWindow::throughputTestButtonPressed()
+{
+
+    QString originatingModulePortName = serialPortListObj->getCurrentlySelectedPortName();
+
+    if(originatingModulePortName == "")
+        return;
+
+    QByteArray bytes = hexToBytes(throughputTest_DestinationAddress->text());
+    uint64_t address = getAddressBigEndian((uint8_t *)bytes.data());
+    uint8_t payloadSize = throughputTest_PayloadSize->value();
+    uint packetRate = throughputTest_PacketRate->value();
+    uint duration = throughputTest_Duration->value();
+    uint8_t transmitOptions = throughputTest_TransmitOptions->value();
+
+    Backend::getInstance().runThroughputTest(originatingModulePortName, address, payloadSize, packetRate, duration, transmitOptions);
+}
+
+void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint numSuccess, uint throughput)
+{
+    throughputTestResults_PercentSuccess->setEnabled(true);
+    throughputTestResults_PercentSuccess->setText(QString::asprintf("%0.1f", percentSuccess));
+
+    throughputTestResults_NumSuccess->setEnabled(true);
+    throughputTestResults_NumSuccess->setText(QString::asprintf("%d", numSuccess));
+
+    throughputTestResults_Throughput->setEnabled(true);
+    throughputTestResults_Throughput->setText(QString::asprintf("%f kbps", (float)throughput/1000 * 8));
+}
+
 RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::RadioControlsWindow)
 {
     ui->setupUi(this);
     getChildren();
 
-    linkTest_destinationAddress->setInputMask("HH HH HH HH HH HH HH HH");
+    linkTest_DestinationAddress->setInputMask("HH HH HH HH HH HH HH HH");
     linkTestResults_NoiseFloor->setEnabled(false);
     linkTestResults_MaxRssi->setEnabled(false);
     linkTestResults_MinRssi->setEnabled(false);
@@ -169,16 +212,25 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
     linkTestResults_TotalPackets->setEnabled(false);
     linkTestResults_PercentSuccess->setEnabled(false);
 
-    connect(linkTest_button, &QPushButton::pressed, this, &RadioControlsWindow::linkTestButtonPressed);
+    throughputTest_DestinationAddress->setInputMask("HH HH HH HH HH HH HH HH");
+    throughputTestResults_NumSuccess->setEnabled(false);
+    throughputTestResults_PercentSuccess->setEnabled(false);
+    throughputTestResults_Throughput->setEnabled(false);
+
+    connect(linkTest_Button, &QPushButton::pressed, this, &RadioControlsWindow::linkTestButtonPressed);
+    connect(&Backend::getInstance(), &Backend::linkTestDataAvailable, this, &RadioControlsWindow::linkTestDataAvailable);
+
     connect(&Backend::getInstance(), &Backend::linkTestFailedSignal, this, &RadioControlsWindow::linkTestFailed);
+
+    connect(throughputTest_Button, &QPushButton::pressed, this, &RadioControlsWindow::throughputTestButtonPressed);
+    connect(&Backend::getInstance(), &Backend::throughputTestDataAvailable, this, &RadioControlsWindow::throughputTestDataAvailable);
 
     connect(refreshSerialPortsButton, &QPushButton::pressed, []() {
         Backend::getInstance().getPorts();
     });
 
-    connect(&Backend::getInstance(), &Backend::linkTestDataAvailable, this, &RadioControlsWindow::linkTestDataAvailable);
 
-//    connect(serialPortList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(serialPortChosen(QListWidgetItem*, QListWidgetItem*)));
+//    connect(serialPortListObj, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(serialPortChosen(QListWidgetItem*, QListWidgetItem*)));
 }
 
 /*

@@ -122,6 +122,63 @@ void Backend::cancelLinkTest()
     getModuleWithName(GROUND_STATION_MODULE)->linkTestsLeft = 0;
 }
 
+void Backend::runThroughputTest(const QString& originatingPort, uint64_t destinationAddress, uint8_t payloadSize,
+                                uint packetRate, uint duration, uint8_t transmitOptions)
+{
+    RadioModule *receiveModule = getModuleWithName(originatingPort);
+
+    if(!receiveModule)
+        return;
+
+    throughputTestParams = {
+      .receiveModule = receiveModule,
+      .destinationAddress = destinationAddress,
+      .payloadSize = payloadSize,
+      .packetRate = packetRate,
+      .duration = duration,
+      .transmitOptions = transmitOptions
+    };
+
+    throughputTestTimer->setInterval(1000 / (int)packetRate);
+
+    receiveModule->receivingThroughputTest = true;
+    receiveModule->throughputTestPacketsReceived = 0;
+    receiveModule->logTransmitStatus = false;
+
+    throughputTestStartTime = QDateTime::currentMSecsSinceEpoch();
+    throughputTestTimer->start();
+};
+
+void Backend::throughputTestTimerTicked()
+{
+    qint64 currentMs = QDateTime::currentMSecsSinceEpoch();
+
+    if(currentMs - throughputTestStartTime >= throughputTestParams.duration*1000)
+    {
+        throughputTestTimer->stop();
+        this->throughputTestComplete();
+        return;
+    }
+
+//    std::cout << "Timer ticked. Current ms: " << std::dec << currentMs << std::endl;
+    mutex.lock();
+    throughputTestParams.receiveModule->sendTransmitRequestCommand(throughputTestParams.destinationAddress, throughputTestParams.transmitOptions,
+                                                                   0x00, throughputTestDummyLoad, throughputTestParams.payloadSize);
+    mutex.unlock();
+}
+
+void Backend::throughputTestComplete()
+{
+    uint numPacketsReceived = throughputTestParams.receiveModule->throughputTestPacketsReceived;
+    uint theoreticalPacketsReceived = throughputTestParams.packetRate * throughputTestParams.duration;
+
+    float percentReceived = (float)numPacketsReceived / (float)theoreticalPacketsReceived * 100;
+
+    uint throughput = numPacketsReceived * throughputTestParams.payloadSize / throughputTestParams.duration;
+
+    emit throughputTestDataAvailable(percentReceived, numPacketsReceived, throughput);
+}
+
 void Backend::sendEnergyDetectCommand(uint16_t msPerChannel)
 {
     if(getTargetPort(GROUND_STATION_MODULE).isNull())
@@ -188,6 +245,16 @@ bool Backend::connectToModule(const QString& name, RadioModuleType moduleType)
     return true;
 }
 
+void Backend::runRadioModuleCycles()
+{
+    mutex.lock();
+    for (auto radioModule: this->radioModules)
+    {
+        radioModule->doCycle();
+    }
+    mutex.unlock();
+}
+
 void Backend::start()
 {
     getPorts();
@@ -213,18 +280,11 @@ void Backend::start()
 //    getModuleWithName("A28DMVHS")->sendLinkTestRequest(0x0013A200422CDAC2, 300, 4000);
 
     timer = new QTimer();
-    timer->setInterval(5);
+    timer->setInterval(1);
 
     loopCount = 0;
 
-    connect(timer, &QTimer::timeout, [this]()
-            {
-                for (auto radioModule: this->radioModules)
-                {
-                    radioModule->doCycle();
-                }
-            }
-    );
+    connect(timer, &QTimer::timeout, this, &Backend::runRadioModuleCycles);
     timer->start();
 #endif
 }
@@ -232,4 +292,6 @@ void Backend::start()
 Backend::Backend(QObject *parent) : QObject(parent)
 {
     loopCount = 0;
+    throughputTestTimer = new QTimer();
+    connect(throughputTestTimer, &QTimer::timeout, this, &Backend::throughputTestTimerTicked);
 }
