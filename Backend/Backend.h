@@ -120,6 +120,8 @@ signals:
     void serialPortClosed(QSerialPortInfo);
     void linkTestDataAvailable(LinkTestResults, int);
     void linkTestFailedSignal();
+    void newGroundDate(int year, int month, int day);
+    void newGroundTime(int hour, int minute, int second);
 
     void throughputTestDataAvailable(float, uint, uint);
     void telemetryAvailable(Backend::Telemetry);
@@ -138,6 +140,10 @@ private:
     QMutex mutex;
 
     bool throughputTestShouldStop = false;
+
+    // ground date/time
+    QTimer *rtcTimer{};
+    std::time_t currentGroundEpoch;
 };
 
 
