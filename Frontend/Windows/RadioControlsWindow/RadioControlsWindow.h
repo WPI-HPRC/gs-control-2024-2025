@@ -70,6 +70,15 @@ private:
     QSpinBox *throughputTest_PacketRate;
     QSpinBox *throughputTest_Duration;
     QSpinBox *throughputTest_TransmitOptions;
+
+    QCheckBox *throughputTest_RangeScanning;
+    QSpinBox *throughputTest_MinPayloadSize;
+    QSpinBox *throughputTest_MaxPayloadSize;
+    QSpinBox *throughputTest_PayloadSizeStep;
+    QSpinBox *throughputTest_MinPacketRate;
+    QSpinBox *throughputTest_MaxPacketRate;
+    QSpinBox *throughputTest_PacketRateStep;
+
     QPushButton *throughputTest_Button;
 
     QLabel *throughputTestResults_PercentSuccess;
@@ -83,9 +92,14 @@ public slots:
     void linkTestDataAvailable(LinkTestResults results, int iterationsLeft);
     void linkTestButtonPressed();
     void linkTestFailed();
+    void rangeScanningBoxClicked(bool checked);
 
     void throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput);
     void throughputTestButtonPressed();
+
+private:
+    void disableRangeScanningOptions();
+    void enableRangeScanningOptions();
 };
 
 
