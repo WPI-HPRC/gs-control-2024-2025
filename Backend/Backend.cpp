@@ -7,6 +7,7 @@
 #include <QJsonDocument>
 #include <string>
 #include <utility>
+#include <chrono>
 #include "Constants.h"
 
 //#define SIMULATE_DATA
@@ -352,6 +353,24 @@ void Backend::start()
 
     connect(timer, &QTimer::timeout, this, &Backend::runRadioModuleCycles);
     timer->start();
+
+    rtcTimer = new QTimer();
+    rtcTimer->setInterval(100);
+
+    connect(rtcTimer, &QTimer::timeout, [this]()
+            {
+                currentGroundEpoch = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+                std::tm* currentLocalDateTime = std::localtime(&currentGroundEpoch);
+
+                emit newGroundDate(currentLocalDateTime->tm_year+1900, currentLocalDateTime->tm_mon+1, currentLocalDateTime->tm_mday);
+                emit newGroundTime(currentLocalDateTime->tm_hour, currentLocalDateTime->tm_min, currentLocalDateTime->tm_sec);
+
+                delete currentLocalDateTime;
+            }
+    );
+    rtcTimer->start();
+#endif
 }
 
 Backend::Backend(QObject *parent) : QObject(parent)
