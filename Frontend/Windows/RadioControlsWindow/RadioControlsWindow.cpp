@@ -2,8 +2,6 @@
 // Created by William Scheirey on 8/24/24.
 //
 
-// You may need to build the project (run Qt uic code generator) to get "ui_MainWindow.h" resolved
-
 #include "RadioControlsWindow.h"
 #include <QLabel>
 #include "ui_RadioControlsWindow.h"
@@ -68,6 +66,15 @@ void RadioControlsWindow::getChildren()
     FindChild(throughputTest_PacketRate);
     FindChild(throughputTest_Duration);
     FindChild(throughputTest_TransmitOptions);
+
+    FindChild(throughputTest_RangeScanning);
+    FindChild(throughputTest_MinPayloadSize);
+    FindChild(throughputTest_MaxPayloadSize);
+    FindChild(throughputTest_PayloadSizeStep);
+    FindChild(throughputTest_MinPacketRate);
+    FindChild(throughputTest_MaxPacketRate);
+    FindChild(throughputTest_PacketRateStep);
+
     FindChild(throughputTest_Button);
 
     FindChild(throughputTestResults_NumSuccess);
@@ -166,7 +173,6 @@ void RadioControlsWindow::linkTestButtonPressed()
 
 void RadioControlsWindow::throughputTestButtonPressed()
 {
-
     QString originatingModulePortName = serialPortListObj->getCurrentlySelectedPortName();
 
     if(originatingModulePortName == "")
@@ -194,6 +200,39 @@ void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint
     throughputTestResults_Throughput->setText(QString::asprintf("%f kbps", throughput));
 }
 
+void RadioControlsWindow::disableRangeScanningOptions()
+{
+    throughputTest_MinPayloadSize->setEnabled(false);
+    throughputTest_MaxPayloadSize->setEnabled(false);
+    throughputTest_PayloadSizeStep->setEnabled(false);
+    throughputTest_MinPacketRate->setEnabled(false);
+    throughputTest_MaxPacketRate->setEnabled(false);
+    throughputTest_PacketRateStep->setEnabled(false);
+}
+
+void RadioControlsWindow::enableRangeScanningOptions()
+{
+    throughputTest_MinPayloadSize->setEnabled(true);
+    throughputTest_MaxPayloadSize->setEnabled(true);
+    throughputTest_PayloadSizeStep->setEnabled(true);
+    throughputTest_MinPacketRate->setEnabled(true);
+    throughputTest_MaxPacketRate->setEnabled(true);
+    throughputTest_PacketRateStep->setEnabled(true);
+}
+
+void RadioControlsWindow::rangeScanningBoxClicked(bool checked)
+{
+    std::cout << "FUCK" << std::endl;
+    if(checked)
+    {
+        enableRangeScanningOptions();
+    }
+    else
+    {
+        disableRangeScanningOptions();
+    }
+}
+
 RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::RadioControlsWindow)
 {
@@ -216,6 +255,9 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
     throughputTestResults_NumSuccess->setEnabled(false);
     throughputTestResults_PercentSuccess->setEnabled(false);
     throughputTestResults_Throughput->setEnabled(false);
+
+    disableRangeScanningOptions();
+    connect(throughputTest_RangeScanning, &QCheckBox::clicked, this, &RadioControlsWindow::rangeScanningBoxClicked);
 
     connect(linkTest_Button, &QPushButton::pressed, this, &RadioControlsWindow::linkTestButtonPressed);
     connect(&Backend::getInstance(), &Backend::linkTestDataAvailable, this, &RadioControlsWindow::linkTestDataAvailable);
