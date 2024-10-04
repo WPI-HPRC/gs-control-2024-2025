@@ -12,17 +12,14 @@ GroundTimeWidget::GroundTimeWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::GroundTimeWidget) {
     ui->setupUi(this);
 
-    // get our reference to the text we'll modify
-    groundTimeText = this->findChild<QLabel*>("GroundTime");
-
     // connect our slot to the backend
     connect(&Backend::getInstance(), &Backend::newGroundDateTime, this, &GroundTimeWidget::newTime);
 }
 
 void GroundTimeWidget::newTime(std::tm* currentTime)
 {
-    groundTimeText->setText(QString::asprintf("%02d:%02d:%02d",currentTime->tm_hour,currentTime->tm_min,currentTime->tm_sec));
-    groundTimeText->setEnabled(true);
+    ui->GroundTime->setText(QString::asprintf("%02d:%02d:%02d",currentTime->tm_hour,currentTime->tm_min,currentTime->tm_sec));
+    ui->GroundTime->setEnabled(true);
 }
 
 GroundTimeWidget::~GroundTimeWidget() {

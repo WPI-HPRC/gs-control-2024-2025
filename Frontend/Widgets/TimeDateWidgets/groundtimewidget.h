@@ -26,8 +26,6 @@ public:
 private:
     Ui::GroundTimeWidget *ui;
 
-    QLabel *groundTimeText;
-
 public slots:
     void newTime(std::tm* currentTime);
 };
