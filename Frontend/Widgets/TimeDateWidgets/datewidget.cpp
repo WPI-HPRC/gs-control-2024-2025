@@ -13,9 +13,6 @@ DateWidget::DateWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::DateWidget) {
     ui->setupUi(this);
 
-    // get our reference to the text we'll modify
-    dateText = this->findChild<QLabel*>("Date");
-
     // connect our slot to the backend
     connect(&Backend::getInstance(), &Backend::newGroundDateTime, this, &DateWidget::newDate);
 }
@@ -23,8 +20,8 @@ DateWidget::DateWidget(QWidget *parent) :
 // slot code, this updates the text when the date changes
 void DateWidget::newDate(std::tm* currentDate)
 {
-    dateText->setText(QString::asprintf("%04d-%02d-%02d",currentDate->tm_year+1900, currentDate->tm_mon+1, currentDate->tm_mday));
-    dateText->setEnabled(true);
+    ui->Date->setText(QString::asprintf("%04d-%02d-%02d",currentDate->tm_year+1900, currentDate->tm_mon+1, currentDate->tm_mday));
+    ui->Date->setEnabled(true);
 }
 
 DateWidget::~DateWidget() {
