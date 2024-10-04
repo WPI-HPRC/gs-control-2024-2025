@@ -37,51 +37,6 @@ QByteArray hexToBytes(const QString &hexString)
     return rawBytes;
 }
 
-void RadioControlsWindow::getChildren()
-{
-    FindChild(refreshSerialPortsButton);
-    FindChild(serialPortListObj);
-
-    FindChild(linkTest_DestinationAddress);
-
-    FindChild(linkTest_PayloadSize);
-    FindChild(linkTest_Iterations);
-    FindChild(linkTest_Button);
-    FindChild(linkTest_Repeat);
-    FindChild(linkTest_Loop);
-
-    FindChild(linkTestResults_NoiseFloor);
-    FindChild(linkTestResults_MaxRssi);
-    FindChild(linkTestResults_MinRssi);
-    FindChild(linkTestResults_AvgRssi);
-    FindChild(linkTestResults_Success);
-    FindChild(linkTestResults_Retries);
-    FindChild(linkTestResults_RR);
-
-    FindChild(linkTestResults_TotalPackets);
-    FindChild(linkTestResults_PercentSuccess);
-
-    FindChild(throughputTest_DestinationAddress);
-    FindChild(throughputTest_PayloadSize);
-    FindChild(throughputTest_PacketRate);
-    FindChild(throughputTest_Duration);
-    FindChild(throughputTest_TransmitOptions);
-
-    FindChild(throughputTest_RangeScanning);
-    FindChild(throughputTest_MinPayloadSize);
-    FindChild(throughputTest_MaxPayloadSize);
-    FindChild(throughputTest_PayloadSizeStep);
-    FindChild(throughputTest_MinPacketRate);
-    FindChild(throughputTest_MaxPacketRate);
-    FindChild(throughputTest_PacketRateStep);
-
-    FindChild(throughputTest_Button);
-
-    FindChild(throughputTestResults_NumSuccess);
-    FindChild(throughputTestResults_PercentSuccess);
-    FindChild(throughputTestResults_Throughput);
-}
-
 void RadioControlsWindow::linkTestFailed()
 {
     /*
@@ -90,51 +45,51 @@ void RadioControlsWindow::linkTestFailed()
     */
     lastLinkTestFailed = true;
     this->linkTestButtonPressed();
-    this->linkTest_Button->setEnabled(true);
-    this->linkTest_Button->setText("STOP");
+    ui->LinkTest_Button->setEnabled(true);
+    ui->LinkTest_Button->setText("STOP");
 }
 
 void RadioControlsWindow::linkTestDataAvailable(LinkTestResults results, int iterationsLeft)
 {
-    linkTestResults_NoiseFloor->setText(QString::asprintf("-%d dBm", results.noiseFloor));
-    linkTestResults_NoiseFloor->setEnabled(true);
+    ui->LinkTestResults_NoiseFloor->setText(QString::asprintf("-%d dBm", results.noiseFloor));
+    ui->LinkTestResults_NoiseFloor->setEnabled(true);
 
-    linkTestResults_MaxRssi->setEnabled(true);
-    linkTestResults_MaxRssi->setText(QString::asprintf("-%d dBm", results.maxRssi));
+    ui->LinkTestResults_MaxRssi->setEnabled(true);
+    ui->LinkTestResults_MaxRssi->setText(QString::asprintf("-%d dBm", results.maxRssi));
 
-    linkTestResults_MinRssi->setEnabled(true);
-    linkTestResults_MinRssi->setText(QString::asprintf("-%d dBm", results.minRssi));
+    ui->LinkTestResults_MinRssi->setEnabled(true);
+    ui->LinkTestResults_MinRssi->setText(QString::asprintf("-%d dBm", results.minRssi));
 
-    linkTestResults_AvgRssi->setEnabled(true);
-    linkTestResults_AvgRssi->setText(QString::asprintf("-%d dBm", results.avgRssi));
+    ui->LinkTestResults_AvgRssi->setEnabled(true);
+    ui->LinkTestResults_AvgRssi->setText(QString::asprintf("-%d dBm", results.avgRssi));
 
-    linkTestResults_Success->setEnabled(true);
-    linkTestResults_Success->setText(QString::asprintf("%d", results.success));
+    ui->LinkTestResults_Success->setEnabled(true);
+    ui->LinkTestResults_Success->setText(QString::asprintf("%d", results.success));
 
-    linkTestResults_Retries->setEnabled(true);
-    linkTestResults_Retries->setText(QString::asprintf("%d", results.retries));
+    ui->LinkTestResults_Retries->setEnabled(true);
+    ui->LinkTestResults_Retries->setText(QString::asprintf("%d", results.retries));
 
-    linkTestResults_RR->setEnabled(true);
-    linkTestResults_RR->setText(QString::asprintf("%d", results.RR));
+    ui->LinkTestResults_RR->setEnabled(true);
+    ui->LinkTestResults_RR->setText(QString::asprintf("%d", results.RR));
 
-    linkTestResults_TotalPackets->setEnabled(true);
-    linkTestResults_TotalPackets->setText(QString::asprintf("%d", results.iterations + results.retries));
+    ui->LinkTestResults_TotalPackets->setEnabled(true);
+    ui->LinkTestResults_TotalPackets->setText(QString::asprintf("%d", results.iterations + results.retries));
 
-    linkTestResults_PercentSuccess->setEnabled(true);
-    linkTestResults_PercentSuccess->setText(QString::asprintf("%d", (int)((float)results.success / ((float)results.iterations + (float)results.retries) * 100)));
+    ui->LinkTestResults_PercentSuccess->setEnabled(true);
+    ui->LinkTestResults_PercentSuccess->setText(QString::asprintf("%d", (int)((float)results.success / ((float)results.iterations + (float)results.retries) * 100)));
 
-    this->linkTest_Button->setEnabled(true);
+    ui->LinkTest_Button->setEnabled(true);
     if(iterationsLeft == 0)
     {
-        this->linkTest_Button->setText("Run Link Test");
+        ui->LinkTest_Button->setText("Run Link Test");
     }
     else if(iterationsLeft > 0)
     {
-        linkTest_Button->setText(QString::asprintf("STOP - %d left", iterationsLeft));
+        ui->LinkTest_Button->setText(QString::asprintf("STOP - %d left", iterationsLeft));
     }
     else
     {
-        linkTest_Button->setText("STOP");
+        ui->LinkTest_Button->setText("STOP");
     }
 
     std::cout << "New link test data" << std::endl;
@@ -142,27 +97,27 @@ void RadioControlsWindow::linkTestDataAvailable(LinkTestResults results, int ite
 
 void RadioControlsWindow::linkTestButtonPressed()
 {
-    loopLinkTest = this->linkTest_Loop->isChecked();
+    loopLinkTest = ui->LinkTest_Loop->isChecked();
     if(!lastLinkTestFailed)
     {
-        if (this->linkTest_Button->text().startsWith("STOP"))
+        if (ui->LinkTest_Button->text().startsWith("STOP"))
         {
             std::cout << "Stopping link test" << std::endl;
             Backend::getInstance().cancelLinkTest();
-            this->linkTest_Button->setText("Run Link Test");
+            ui->LinkTest_Button->setText("Run Link Test");
             loopLinkTest = false;
             return;
         }
     }
 
-    int payloadSize = this->linkTest_PayloadSize->value();
-    int iterations = this->linkTest_Iterations->value();
-    int repeat = this->linkTest_Repeat->value();
-    QByteArray bytes = hexToBytes(linkTest_DestinationAddress->text());
+    int payloadSize = ui->LinkTest_PayloadSize->value();
+    int iterations = ui->LinkTest_Iterations->value();
+    int repeat = ui->LinkTest_Repeat->value();
+    QByteArray bytes = hexToBytes(ui->LinkTest_DestinationAddress->text());
     uint64_t address = getAddressBigEndian((uint8_t *)bytes.data());
 
-    linkTest_Button->setText("Running link test...");
-    linkTest_Button->setEnabled(false);
+    ui->LinkTest_Button->setText("Running link test...");
+    ui->LinkTest_Button->setEnabled(false);
     std::cout << "Last link test failed ? " << (lastLinkTestFailed ? "YES" : "NO") << std::endl;
     Backend::getInstance().runLinkTest(address, payloadSize, iterations, lastLinkTestFailed ? 0 : repeat, loopLinkTest);
     if(lastLinkTestFailed)
@@ -173,51 +128,51 @@ void RadioControlsWindow::linkTestButtonPressed()
 
 void RadioControlsWindow::throughputTestButtonPressed()
 {
-    QString originatingModulePortName = serialPortListObj->getCurrentlySelectedPortName();
+    QString originatingModulePortName = ui->SerialPortListObj->getCurrentlySelectedPortName();
 
     if(originatingModulePortName == "")
         return;
 
-    QByteArray bytes = hexToBytes(throughputTest_DestinationAddress->text());
+    QByteArray bytes = hexToBytes(ui->ThroughputTest_DestinationAddress->text());
     uint64_t address = getAddressBigEndian((uint8_t *)bytes.data());
-    uint8_t payloadSize = throughputTest_PayloadSize->value();
-    uint packetRate = throughputTest_PacketRate->value();
-    uint duration = throughputTest_Duration->value();
-    uint8_t transmitOptions = throughputTest_TransmitOptions->value();
+    uint8_t payloadSize = ui->ThroughputTest_PayloadSize->value();
+    uint packetRate = ui->ThroughputTest_PacketRate->value();
+    uint duration = ui->ThroughputTest_Duration->value();
+    uint8_t transmitOptions = ui->ThroughputTest_TransmitOptions->value();
 
     Backend::getInstance().runThroughputTest(originatingModulePortName, address, payloadSize, packetRate, duration, transmitOptions);
 }
 
 void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput)
 {
-    throughputTestResults_PercentSuccess->setEnabled(true);
-    throughputTestResults_PercentSuccess->setText(QString::asprintf("%0.1f", percentSuccess));
+    ui->ThroughputTestResults_PercentSuccess->setEnabled(true);
+    ui->ThroughputTestResults_PercentSuccess->setText(QString::asprintf("%0.1f", percentSuccess));
 
-    throughputTestResults_NumSuccess->setEnabled(true);
-    throughputTestResults_NumSuccess->setText(QString::asprintf("%d", numSuccess));
+    ui->ThroughputTestResults_NumSuccess->setEnabled(true);
+    ui->ThroughputTestResults_NumSuccess->setText(QString::asprintf("%d", numSuccess));
 
-    throughputTestResults_Throughput->setEnabled(true);
-    throughputTestResults_Throughput->setText(QString::asprintf("%f kbps", throughput));
+    ui->ThroughputTestResults_Throughput->setEnabled(true);
+    ui->ThroughputTestResults_Throughput->setText(QString::asprintf("%f kbps", throughput));
 }
 
 void RadioControlsWindow::disableRangeScanningOptions()
 {
-    throughputTest_MinPayloadSize->setEnabled(false);
-    throughputTest_MaxPayloadSize->setEnabled(false);
-    throughputTest_PayloadSizeStep->setEnabled(false);
-    throughputTest_MinPacketRate->setEnabled(false);
-    throughputTest_MaxPacketRate->setEnabled(false);
-    throughputTest_PacketRateStep->setEnabled(false);
+    ui->ThroughputTest_MinPayloadSize->setEnabled(false);
+    ui->ThroughputTest_MaxPayloadSize->setEnabled(false);
+    ui->ThroughputTest_PayloadSizeStep->setEnabled(false);
+    ui->ThroughputTest_MinPacketRate->setEnabled(false);
+    ui->ThroughputTest_MaxPacketRate->setEnabled(false);
+    ui->ThroughputTest_PacketRateStep->setEnabled(false);
 }
 
 void RadioControlsWindow::enableRangeScanningOptions()
 {
-    throughputTest_MinPayloadSize->setEnabled(true);
-    throughputTest_MaxPayloadSize->setEnabled(true);
-    throughputTest_PayloadSizeStep->setEnabled(true);
-    throughputTest_MinPacketRate->setEnabled(true);
-    throughputTest_MaxPacketRate->setEnabled(true);
-    throughputTest_PacketRateStep->setEnabled(true);
+    ui->ThroughputTest_MinPayloadSize->setEnabled(true);
+    ui->ThroughputTest_MaxPayloadSize->setEnabled(true);
+    ui->ThroughputTest_PayloadSizeStep->setEnabled(true);
+    ui->ThroughputTest_MinPacketRate->setEnabled(true);
+    ui->ThroughputTest_MaxPacketRate->setEnabled(true);
+    ui->ThroughputTest_PacketRateStep->setEnabled(true);
 }
 
 void RadioControlsWindow::rangeScanningBoxClicked(bool checked)
@@ -237,37 +192,36 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::RadioControlsWindow)
 {
     ui->setupUi(this);
-    getChildren();
 
-    linkTest_DestinationAddress->setInputMask("HH HH HH HH HH HH HH HH");
-    linkTestResults_NoiseFloor->setEnabled(false);
-    linkTestResults_MaxRssi->setEnabled(false);
-    linkTestResults_MinRssi->setEnabled(false);
-    linkTestResults_AvgRssi->setEnabled(false);
-    linkTestResults_Success->setEnabled(false);
-    linkTestResults_Retries->setEnabled(false);
-    linkTestResults_RR->setEnabled(false);
+    ui->LinkTest_DestinationAddress->setInputMask("HH HH HH HH HH HH HH HH");
+    ui->LinkTestResults_NoiseFloor->setEnabled(false);
+    ui->LinkTestResults_MaxRssi->setEnabled(false);
+    ui->LinkTestResults_MinRssi->setEnabled(false);
+    ui->LinkTestResults_AvgRssi->setEnabled(false);
+    ui->LinkTestResults_Success->setEnabled(false);
+    ui->LinkTestResults_Retries->setEnabled(false);
+    ui->LinkTestResults_RR->setEnabled(false);
 
-    linkTestResults_TotalPackets->setEnabled(false);
-    linkTestResults_PercentSuccess->setEnabled(false);
+    ui->LinkTestResults_TotalPackets->setEnabled(false);
+    ui->LinkTestResults_PercentSuccess->setEnabled(false);
 
-    throughputTest_DestinationAddress->setInputMask("HH HH HH HH HH HH HH HH");
-    throughputTestResults_NumSuccess->setEnabled(false);
-    throughputTestResults_PercentSuccess->setEnabled(false);
-    throughputTestResults_Throughput->setEnabled(false);
+    ui->ThroughputTest_DestinationAddress->setInputMask("HH HH HH HH HH HH HH HH");
+    ui->ThroughputTestResults_NumSuccess->setEnabled(false);
+    ui->ThroughputTestResults_PercentSuccess->setEnabled(false);
+    ui->ThroughputTestResults_Throughput->setEnabled(false);
 
     disableRangeScanningOptions();
-    connect(throughputTest_RangeScanning, &QCheckBox::clicked, this, &RadioControlsWindow::rangeScanningBoxClicked);
+    connect(ui->ThroughputTest_RangeScanning, &QCheckBox::clicked, this, &RadioControlsWindow::rangeScanningBoxClicked);
 
-    connect(linkTest_Button, &QPushButton::pressed, this, &RadioControlsWindow::linkTestButtonPressed);
+    connect(ui->LinkTest_Button, &QPushButton::pressed, this, &RadioControlsWindow::linkTestButtonPressed);
     connect(&Backend::getInstance(), &Backend::linkTestDataAvailable, this, &RadioControlsWindow::linkTestDataAvailable);
 
     connect(&Backend::getInstance(), &Backend::linkTestFailedSignal, this, &RadioControlsWindow::linkTestFailed);
 
-    connect(throughputTest_Button, &QPushButton::pressed, this, &RadioControlsWindow::throughputTestButtonPressed);
+    connect(ui->ThroughputTest_Button, &QPushButton::pressed, this, &RadioControlsWindow::throughputTestButtonPressed);
     connect(&Backend::getInstance(), &Backend::throughputTestDataAvailable, this, &RadioControlsWindow::throughputTestDataAvailable);
 
-    connect(refreshSerialPortsButton, &QPushButton::pressed, []() {
+    connect(ui->RefreshSerialPortsButton, &QPushButton::pressed, []() {
         Backend::getInstance().getPorts();
     });
 
