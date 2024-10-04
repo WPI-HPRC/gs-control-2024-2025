@@ -43,48 +43,6 @@ private:
 
     Ui::RadioControlsWindow *ui;
 
-    SerialPortList *serialPortListObj;
-
-    QPushButton *refreshSerialPortsButton;
-
-    QLineEdit *linkTest_DestinationAddress;
-    QPushButton *linkTest_Button;
-    QSpinBox *linkTest_PayloadSize;
-    QSpinBox *linkTest_Iterations;
-    QSpinBox *linkTest_Repeat;
-    QCheckBox *linkTest_Loop;
-
-    QLabel *linkTestResults_NoiseFloor;
-    QLabel *linkTestResults_MaxRssi;
-    QLabel *linkTestResults_MinRssi;
-    QLabel *linkTestResults_AvgRssi;
-    QLabel *linkTestResults_Success;
-    QLabel *linkTestResults_Retries;
-    QLabel *linkTestResults_RR;
-
-    QLabel *linkTestResults_TotalPackets;
-    QLabel *linkTestResults_PercentSuccess;
-
-    QLineEdit *throughputTest_DestinationAddress;
-    QSpinBox *throughputTest_PayloadSize;
-    QSpinBox *throughputTest_PacketRate;
-    QSpinBox *throughputTest_Duration;
-    QSpinBox *throughputTest_TransmitOptions;
-
-    QCheckBox *throughputTest_RangeScanning;
-    QSpinBox *throughputTest_MinPayloadSize;
-    QSpinBox *throughputTest_MaxPayloadSize;
-    QSpinBox *throughputTest_PayloadSizeStep;
-    QSpinBox *throughputTest_MinPacketRate;
-    QSpinBox *throughputTest_MaxPacketRate;
-    QSpinBox *throughputTest_PacketRateStep;
-
-    QPushButton *throughputTest_Button;
-
-    QLabel *throughputTestResults_PercentSuccess;
-    QLabel *throughputTestResults_NumSuccess;
-    QLabel *throughputTestResults_Throughput;
-
     bool loopLinkTest = false;
     bool lastLinkTestFailed = false;
 
