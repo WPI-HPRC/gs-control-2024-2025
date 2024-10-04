@@ -42,6 +42,18 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Widgets/TimeDateWidgets/datewidget.cpp
         Frontend/Widgets/TimeDateWidgets/datewidget.h
         Frontend/Widgets/TimeDateWidgets/datewidget.ui
+        Frontend/Widgets/TimeDateWidgets/groundtimewidget.cpp
+        Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
+        Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
+        Frontend/Widgets/TimeDateWidgets/datewidget.h
+        Frontend/Widgets/TimeDateWidgets/datewidget.h
+        Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
+        Frontend/Windows/InfoWindow/timetestwindow.cpp
+        Frontend/Windows/InfoWindow/timetestwindow.h
+        Frontend/Windows/InfoWindow/timetestwindow.ui
+        Frontend/Widgets/TimeDateWidgets/datewidget.cpp
+        Frontend/Widgets/TimeDateWidgets/datewidget.h
+        Frontend/Widgets/TimeDateWidgets/datewidget.ui
         Utility/DataSimulator.cpp
 )
 target_link_libraries(gs_backend_2024_2025
