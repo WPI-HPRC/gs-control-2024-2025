@@ -26,8 +26,6 @@ public:
 private:
     Ui::DateWidget *ui;
 
-    QLabel *dateText;
-
 public slots:
     void newDate(std::tm* currentDate);
 };
