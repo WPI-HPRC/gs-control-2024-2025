@@ -130,17 +130,45 @@ void RadioControlsWindow::throughputTestButtonPressed()
 {
     QString originatingModulePortName = ui->SerialPortListObj->getCurrentlySelectedPortName();
 
-    if(originatingModulePortName == "")
-        return;
+//    if(originatingModulePortName == "")
+//        return;
 
     QByteArray bytes = hexToBytes(ui->ThroughputTest_DestinationAddress->text());
     uint64_t address = getAddressBigEndian((uint8_t *)bytes.data());
-    uint8_t payloadSize = ui->ThroughputTest_PayloadSize->value();
-    uint packetRate = ui->ThroughputTest_PacketRate->value();
     uint duration = ui->ThroughputTest_Duration->value();
     uint8_t transmitOptions = ui->ThroughputTest_TransmitOptions->value();
 
-    Backend::getInstance().runThroughputTest(originatingModulePortName, address, payloadSize, packetRate, duration, transmitOptions);
+    if(!ui->ThroughputTest_RangeScanning->isChecked())
+    {
+        uint8_t payloadSize = ui->ThroughputTest_PayloadSize->value();
+        uint packetRate = ui->ThroughputTest_PacketRate->value();
+
+        Backend::getInstance().runThroughputTest(originatingModulePortName, address, payloadSize, packetRate, duration,
+                                                 transmitOptions);
+    }
+    else
+    {
+        QList<QList<int>> testParams;
+        // Yuck
+        for(
+                int payloadSize = ui->ThroughputTest_MinPayloadSize->value();
+                payloadSize <= ui->ThroughputTest_MaxPayloadSize->value() + ui->ThroughputTest_PayloadSizeStep->value();
+                payloadSize += ui->ThroughputTest_PayloadSizeStep->value())
+        {
+            for(
+                    int packetRate = ui->ThroughputTest_MinPacketRate->value();
+                    packetRate <= ui->ThroughputTest_MaxPacketRate->value() + ui->ThroughputTest_PacketRateStep->value();
+                    packetRate += ui->ThroughputTest_PacketRateStep->value())
+            {
+                testParams.append({payloadSize, packetRate});
+//                std::cout << "Payload size: " << payloadSize << "\nPacket Rate: " << packetRate << "\n\n";
+            }
+        }
+        std::cout << testParams.count() << " Tests" << std::endl;
+        std::cout << testParams.count() * duration << " seconds of tests. (" << testParams.count() * duration/60 << " minutes)" << std::endl;
+
+        Backend::getInstance().runThroughputTestsWithRange(originatingModulePortName, address, testParams, duration, transmitOptions);
+    }
 }
 
 void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput)
@@ -177,7 +205,6 @@ void RadioControlsWindow::enableRangeScanningOptions()
 
 void RadioControlsWindow::rangeScanningBoxClicked(bool checked)
 {
-    std::cout << "FUCK" << std::endl;
     if(checked)
     {
         enableRangeScanningOptions();
@@ -192,6 +219,8 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::RadioControlsWindow)
 {
     ui->setupUi(this);
+
+    ui->RefreshSerialPortsButton
 
     ui->LinkTest_DestinationAddress->setInputMask("HH HH HH HH HH HH HH HH");
     ui->LinkTestResults_NoiseFloor->setEnabled(false);

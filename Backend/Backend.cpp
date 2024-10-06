@@ -6,6 +6,7 @@
 #include <QSerialPort>
 #include <QJsonDocument>
 #include <string>
+#include <utility>
 #include "Constants.h"
 //#define SIMULATE_DATA
 
@@ -123,6 +124,18 @@ void Backend::cancelLinkTest()
     getModuleWithName(GROUND_STATION_MODULE)->linkTestsLeft = 0;
 }
 
+void Backend::_runThroughputTest(Backend::ThroughputTestParams params)
+{
+    throughputTestTimer->setInterval(1000 / (int)params.packetRate);
+
+    params.receiveModule->receivingThroughputTest = true;
+    params.receiveModule->throughputTestPacketsReceived = 0;
+    params.receiveModule->logTransmitStatus = false;
+
+    throughputTestStartTime = QDateTime::currentMSecsSinceEpoch();
+    throughputTestTimer->start();
+}
+
 void Backend::runThroughputTest(const QString& originatingPort, uint64_t destinationAddress, uint8_t payloadSize,
                                 uint packetRate, uint duration, uint8_t transmitOptions)
 {
@@ -130,6 +143,8 @@ void Backend::runThroughputTest(const QString& originatingPort, uint64_t destina
 
     if(!receiveModule)
         return;
+
+    throughputTestIndex = -1;
 
     throughputTestParams = {
       .receiveModule = receiveModule,
@@ -140,15 +155,32 @@ void Backend::runThroughputTest(const QString& originatingPort, uint64_t destina
       .transmitOptions = transmitOptions
     };
 
-    throughputTestTimer->setInterval(1000 / (int)packetRate);
-
-    receiveModule->receivingThroughputTest = true;
-    receiveModule->throughputTestPacketsReceived = 0;
-    receiveModule->logTransmitStatus = false;
-
-    throughputTestStartTime = QDateTime::currentMSecsSinceEpoch();
-    throughputTestTimer->start();
+    _runThroughputTest(throughputTestParams);
 };
+
+void Backend::runThroughputTestsWithRange(const QString &originatingPort, uint64_t destinationAddress,
+                                          QList<QList<int>> params, uint duration, uint8_t transmitOptions)
+{
+    RadioModule *receiveModule = getModuleWithName(originatingPort);
+
+    if(!receiveModule)
+        return;
+
+    throughputTestIndex = 0;
+
+    throughputTests = std::move(params);
+
+    throughputTestParams = {
+            .receiveModule = receiveModule,
+            .destinationAddress = destinationAddress,
+            .payloadSize = (uint8_t)throughputTests.at(0).at(0),
+            .packetRate = (uint8_t)throughputTests.at(0).at(1),
+            .duration = duration,
+            .transmitOptions = transmitOptions
+    };
+
+    _runThroughputTest(throughputTestParams);
+}
 
 void Backend::throughputTestTimerTicked()
 {
@@ -194,6 +226,14 @@ void Backend::throughputTestComplete()
     throughputTestParams.receiveModule->dataLogger->logThroughputTest(obj);
 
     emit throughputTestDataAvailable(percentReceived, numPacketsReceived, throughput);
+
+    if(throughputTestIndex >= 0 && throughputTestIndex < throughputTests.count() - 1)
+    {
+        throughputTestIndex++;
+        throughputTestParams.payloadSize = throughputTests.at(throughputTestIndex).at(0);
+        throughputTestParams.packetRate = throughputTests.at(throughputTestIndex).at(1);
+        _runThroughputTest(throughputTestParams);
+    }
 }
 
 void Backend::sendEnergyDetectCommand(uint16_t msPerChannel)

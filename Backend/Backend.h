@@ -72,9 +72,12 @@ public:
     void cancelLinkTest();
     void linkTestFailed();
 
+    void _runThroughputTest(ThroughputTestParams params);
     void throughputTestComplete();
     void runThroughputTest(const QString& originatingPort, uint64_t destinationAddress, uint8_t payloadSize, uint packetRate, uint duration, uint8_t transmitOptions);
     void sendEnergyDetectCommand(uint16_t msPerChannel);
+
+    void runThroughputTestsWithRange(const QString& originatingPort, uint64_t destinationAddress, QList<QList<int>> params, uint duration, uint8_t transmitOptions);
 
     void start();
     void flushFiles();
@@ -87,6 +90,9 @@ public:
     QTimer *throughputTestTimer;
     ThroughputTestParams throughputTestParams{};
     uint8_t throughputTestDummyLoad[255]{};
+
+    QList<QList<int>> throughputTests;
+    int throughputTestIndex;
 
 
 public slots:

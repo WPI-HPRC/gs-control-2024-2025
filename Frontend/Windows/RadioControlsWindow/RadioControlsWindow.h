@@ -34,12 +34,10 @@ public:
     explicit RadioControlsWindow(QWidget *parent = nullptr);
 
     ~RadioControlsWindow() override;
-
 //public slots:
 //    void serialPortChosen(QListWidgetItem *, QListWidgetItem *);
 
 private:
-    void getChildren();
 
     Ui::RadioControlsWindow *ui;
 
