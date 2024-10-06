@@ -6,6 +6,7 @@
 #include <QSerialPort>
 #include <string>
 #include "Constants.h"
+
 //#define SIMULATE_DATA
 
 QSerialPortInfo getTargetPort(const QString& portName)
@@ -199,13 +200,14 @@ void Backend::start()
 
     webServer = new WebServer(8001);
 
-#ifdef SIMULATE_DATA
-    webServer = new WebServer(8001);
-
     dataSimulator = new DataSimulator(
-            "/Users/will/Desktop/irec_trimmed.csv", 50,
+            "../Utility/SamplePayloadData.csv",
             webServer);
-#else
+
+#ifdef SIMULATE_DATA
+    dataSimulator->start();
+#endif
+
     QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);
     if(!modem.isNull())
     {
@@ -226,7 +228,6 @@ void Backend::start()
             }
     );
     timer->start();
-#endif
 }
 
 Backend::Backend(QObject *parent) : QObject(parent)

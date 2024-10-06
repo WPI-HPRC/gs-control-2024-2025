@@ -74,7 +74,7 @@ namespace GroundStation
         int32_t gpsVelocityD = 0;
         uint32_t epochTime = 0;
         uint8_t satellites = 0;
-        bool gpsLock = false;
+        uint8_t gpsLock = false;
 
         uint32_t loopCount = 0;
         uint32_t timestamp = 0;

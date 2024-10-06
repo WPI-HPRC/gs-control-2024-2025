@@ -10,6 +10,7 @@
 #include "../Utility/WebServer.h"
 #include "../Utility/DataLogger.h"
 #include "Utility/json_struct.h"
+#include "Utility/DataSimulator.h"
 
 class Backend : public QObject
 {
@@ -79,7 +80,7 @@ private:
     RadioModule *getModuleWithName(const QString& name);
 
     WebServer *webServer{};
-//    DataSimulator *dataSimulator;
+    DataSimulator *dataSimulator;
     DataLogger *dataLogger{};
 
     QTimer *timer{};
