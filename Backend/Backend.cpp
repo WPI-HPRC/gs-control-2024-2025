@@ -332,7 +332,7 @@ void Backend::start()
     webServer = new WebServer(8001);
 
     dataSimulator = new DataSimulator(
-            "/Users/will/Desktop/irec_trimmed.csv",
+            "../Utility/SamplePayloadData.csv",
             webServer);
 
 #ifdef SIMULATE_DATA
