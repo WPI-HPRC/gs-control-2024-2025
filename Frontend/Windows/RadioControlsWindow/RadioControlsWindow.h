@@ -54,10 +54,6 @@ public slots:
 
     void throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput);
     void throughputTestButtonPressed();
-
-private:
-    void disableRangeScanningOptions();
-    void enableRangeScanningOptions();
 };
 
 
