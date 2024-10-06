@@ -141,14 +141,14 @@ void DataLogger::flushDataFiles()
     payloadLogFile.file.flush();
 }
 
-void DataLogger::writeData(const QJsonObject &jsonData, DataLogger::PacketType packetType)
+void DataLogger::writeData(const QJsonObject &jsonData, GroundStation::PacketType packetType)
 {
     switch (packetType)
     {
-        case Rocket:
+        case GroundStation::Rocket:
             rocketLogFile.write(jsonData);
             break;
-        case Payload:
+        case GroundStation::Payload:
             payloadLogFile.write(jsonData);
             break;
         default:
@@ -157,12 +157,12 @@ void DataLogger::writeData(const QJsonObject &jsonData, DataLogger::PacketType p
 //    flushDataFiles();
 }
 
-void DataLogger::dataReady(const char *data, DataLogger::PacketType packetType)
+void DataLogger::dataReady(const char *data, GroundStation::PacketType packetType)
 {
     writeData(QJsonDocument::fromJson(data).object(), packetType);
 }
 
-void DataLogger::dataReady(const char *data, DataLogger::PacketType packetType, uint8_t rssi)
+void DataLogger::dataReady(const char *data, GroundStation::PacketType packetType, uint8_t rssi)
 {
     QJsonObject json = QJsonDocument::fromJson(data).object();
     json.insert("rssi", -1 * (int) rssi);

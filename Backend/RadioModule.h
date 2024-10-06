@@ -115,7 +115,7 @@ public:
 
     void didCycle() override;
 
-    RocketTxPacket packet;
+    GroundStation::RocketTxPacket packet;
 };
 
 class PayloadTestModule : public RadioModule
@@ -130,7 +130,7 @@ public:
 
     void didCycle() override;
 
-    PayloadTxPacket packet;
+    GroundStation::PayloadTxPacket packet;
 };
 
 
