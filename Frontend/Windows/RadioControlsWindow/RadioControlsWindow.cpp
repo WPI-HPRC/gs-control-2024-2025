@@ -133,13 +133,21 @@ void RadioControlsWindow::throughputTestButtonPressed()
         throughputTestIsRunning = false;
         Backend::getInstance().cancelThroughputTest();
         ui->ThroughputTest_Button->setText("Run throughput test");
+        ui->ThroughputTest_ParamsContainer->setEnabled(true);
         return;
     }
 
     QString originatingModulePortName = ui->SerialPortListObj->getCurrentlySelectedPortName();
 
     if(originatingModulePortName == "")
+    {
+        ui->ThroughputTest_Button->setText("Choose a connected module!");
+        QTimer::singleShot(1000, [this]()
+        {
+            this->ui->ThroughputTest_Button->setText("Run throughput test");
+        });
         return;
+    }
 
     QByteArray bytes = hexToBytes(ui->ThroughputTest_DestinationAddress->text());
     uint64_t address = getAddressBigEndian((uint8_t *)bytes.data());
@@ -169,7 +177,6 @@ void RadioControlsWindow::throughputTestButtonPressed()
                     packetRate += ui->ThroughputTest_PacketRateStep->value())
             {
                 testParams.append({payloadSize, packetRate});
-//                std::cout << "Payload size: " << payloadSize << "\nPacket Rate: " << packetRate << "\n\n";
             }
         }
         std::cout << testParams.count() << " Tests" << std::endl;
@@ -179,6 +186,7 @@ void RadioControlsWindow::throughputTestButtonPressed()
     }
     throughputTestIsRunning = true;
     ui->ThroughputTest_Button->setText("STOP");
+    ui->ThroughputTest_ParamsContainer->setEnabled(false);
 }
 
 void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput)
@@ -192,6 +200,7 @@ void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint
     {
         ui->ThroughputTest_Button->setText("Run throughput test");
         throughputTestIsRunning = false;
+        ui->ThroughputTest_ParamsContainer->setEnabled(true);
     }
 
     ui->ThroughputTestResults_PercentSuccess->setEnabled(true);
@@ -204,35 +213,15 @@ void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint
     ui->ThroughputTestResults_Throughput->setText(QString::asprintf("%f kbps", throughput));
 }
 
-void RadioControlsWindow::disableRangeScanningOptions()
-{
-    ui->ThroughputTest_MinPayloadSize->setEnabled(false);
-    ui->ThroughputTest_MaxPayloadSize->setEnabled(false);
-    ui->ThroughputTest_PayloadSizeStep->setEnabled(false);
-    ui->ThroughputTest_MinPacketRate->setEnabled(false);
-    ui->ThroughputTest_MaxPacketRate->setEnabled(false);
-    ui->ThroughputTest_PacketRateStep->setEnabled(false);
-}
-
-void RadioControlsWindow::enableRangeScanningOptions()
-{
-    ui->ThroughputTest_MinPayloadSize->setEnabled(true);
-    ui->ThroughputTest_MaxPayloadSize->setEnabled(true);
-    ui->ThroughputTest_PayloadSizeStep->setEnabled(true);
-    ui->ThroughputTest_MinPacketRate->setEnabled(true);
-    ui->ThroughputTest_MaxPacketRate->setEnabled(true);
-    ui->ThroughputTest_PacketRateStep->setEnabled(true);
-}
-
 void RadioControlsWindow::rangeScanningBoxClicked(bool checked)
 {
     if(checked)
     {
-        enableRangeScanningOptions();
+        ui->ThroughputTest_RangeScanningParamsContainer->setEnabled(true);
     }
     else
     {
-        disableRangeScanningOptions();
+        ui->ThroughputTest_RangeScanningParamsContainer->setEnabled(false);
     }
 }
 
@@ -258,7 +247,7 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
     ui->ThroughputTestResults_PercentSuccess->setEnabled(false);
     ui->ThroughputTestResults_Throughput->setEnabled(false);
 
-    disableRangeScanningOptions();
+    ui->ThroughputTest_RangeScanningParamsContainer->setEnabled(false);
     connect(ui->ThroughputTest_RangeScanning, &QCheckBox::clicked, this, &RadioControlsWindow::rangeScanningBoxClicked);
 
     connect(ui->LinkTest_Button, &QPushButton::pressed, this, &RadioControlsWindow::linkTestButtonPressed);
