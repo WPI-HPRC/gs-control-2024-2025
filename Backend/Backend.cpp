@@ -4,7 +4,9 @@
 
 #include "Backend.h"
 #include <QSerialPort>
+#include <QJsonDocument>
 #include <string>
+#include <utility>
 #include "Constants.h"
 //#define SIMULATE_DATA
 
@@ -122,6 +124,125 @@ void Backend::cancelLinkTest()
     getModuleWithName(GROUND_STATION_MODULE)->linkTestsLeft = 0;
 }
 
+void Backend::_runThroughputTest(Backend::ThroughputTestParams params)
+{
+    throughputTestTimer->setInterval(1000 / (int)params.packetRate);
+
+    params.receiveModule->receivingThroughputTest = true;
+    params.receiveModule->throughputTestPacketsReceived = 0;
+    params.receiveModule->logTransmitStatus = false;
+
+    throughputTestStartTime = QDateTime::currentMSecsSinceEpoch();
+    throughputTestTimer->start();
+}
+
+void Backend::cancelThroughputTest()
+{
+    throughputTestShouldStop = true;
+    throughputTestIndex = -1;
+}
+
+void Backend::runThroughputTest(const QString& originatingPort, uint64_t destinationAddress, uint8_t payloadSize,
+                                uint packetRate, uint duration, uint8_t transmitOptions)
+{
+    RadioModule *receiveModule = getModuleWithName(originatingPort);
+
+    if(!receiveModule)
+        return;
+
+    throughputTestIndex = -1;
+
+    throughputTestParams = {
+      .receiveModule = receiveModule,
+      .destinationAddress = destinationAddress,
+      .payloadSize = payloadSize,
+      .packetRate = packetRate,
+      .duration = duration,
+      .transmitOptions = transmitOptions
+    };
+
+    _runThroughputTest(throughputTestParams);
+};
+
+void Backend::runThroughputTestsWithRange(const QString &originatingPort, uint64_t destinationAddress,
+                                          QList<QList<int>> params, uint duration, uint8_t transmitOptions)
+{
+    RadioModule *receiveModule = getModuleWithName(originatingPort);
+
+    if(!receiveModule)
+        return;
+
+    throughputTestIndex = 0;
+
+    throughputTests = std::move(params);
+
+    throughputTestParams = {
+            .receiveModule = receiveModule,
+            .destinationAddress = destinationAddress,
+            .payloadSize = (uint8_t)throughputTests.at(0).at(0),
+            .packetRate = (uint8_t)throughputTests.at(0).at(1),
+            .duration = duration,
+            .transmitOptions = transmitOptions
+    };
+
+    _runThroughputTest(throughputTestParams);
+}
+
+void Backend::throughputTestTimerTicked()
+{
+    qint64 currentMs = QDateTime::currentMSecsSinceEpoch();
+
+    if(currentMs - throughputTestStartTime >= throughputTestParams.duration*1000 || throughputTestShouldStop)
+    {
+        throughputTestShouldStop = false;
+        throughputTestTimer->stop();
+        this->throughputTestComplete();
+        return;
+    }
+
+//    std::cout << "Timer ticked. Current ms: " << std::dec << currentMs << std::endl;
+    mutex.lock();
+    throughputTestParams.receiveModule->sendTransmitRequestCommand(throughputTestParams.destinationAddress, throughputTestParams.transmitOptions,
+                                                                   0x00, throughputTestDummyLoad, throughputTestParams.payloadSize);
+    mutex.unlock();
+}
+
+void Backend::throughputTestComplete()
+{
+    uint numPacketsReceived = throughputTestParams.receiveModule->throughputTestPacketsReceived;
+    uint theoreticalPacketsReceived = throughputTestParams.packetRate * throughputTestParams.duration;
+
+    float percentReceived = (float)numPacketsReceived / (float)theoreticalPacketsReceived * 100;
+
+    float throughput = (float)numPacketsReceived * throughputTestParams.payloadSize / throughputTestParams.duration / 1000 * 8;
+
+    ThroughputTestResults results = {
+            .payloadSize = throughputTestParams.payloadSize,
+            .packetRate = throughputTestParams.packetRate,
+            .duration = throughputTestParams.duration,
+            .transmitOptions = throughputTestParams.transmitOptions,
+            .numPacketsReceived = numPacketsReceived,
+            .percentReceived = percentReceived,
+            .throughput = throughput
+    };
+
+    std::string str = JS::serializeStruct(results);
+
+    QJsonObject obj = QJsonDocument::fromJson(str.c_str()).object();
+
+    throughputTestParams.receiveModule->dataLogger->logThroughputTest(obj);
+
+    emit throughputTestDataAvailable(percentReceived, numPacketsReceived, throughput);
+
+    if(throughputTestIndex >= 0 && throughputTestIndex < throughputTests.count() - 1)
+    {
+        throughputTestIndex++;
+        throughputTestParams.payloadSize = throughputTests.at(throughputTestIndex).at(0);
+        throughputTestParams.packetRate = throughputTests.at(throughputTestIndex).at(1);
+        _runThroughputTest(throughputTestParams);
+    }
+}
+
 void Backend::sendEnergyDetectCommand(uint16_t msPerChannel)
 {
     if(getTargetPort(GROUND_STATION_MODULE).isNull())
@@ -188,6 +309,16 @@ bool Backend::connectToModule(const QString& name, RadioModuleType moduleType)
     return true;
 }
 
+void Backend::runRadioModuleCycles()
+{
+    mutex.lock();
+    for (auto radioModule: this->radioModules)
+    {
+        radioModule->doCycle();
+    }
+    mutex.unlock();
+}
+
 void Backend::start()
 {
     getPorts();
@@ -213,18 +344,11 @@ void Backend::start()
 //    getModuleWithName("A28DMVHS")->sendLinkTestRequest(0x0013A200422CDAC2, 300, 4000);
 
     timer = new QTimer();
-    timer->setInterval(5);
+    timer->setInterval(1);
 
     loopCount = 0;
 
-    connect(timer, &QTimer::timeout, [this]()
-            {
-                for (auto radioModule: this->radioModules)
-                {
-                    radioModule->doCycle();
-                }
-            }
-    );
+    connect(timer, &QTimer::timeout, this, &Backend::runRadioModuleCycles);
     timer->start();
 #endif
 }
@@ -232,4 +356,6 @@ void Backend::start()
 Backend::Backend(QObject *parent) : QObject(parent)
 {
     loopCount = 0;
+    throughputTestTimer = new QTimer();
+    connect(throughputTestTimer, &QTimer::timeout, this, &Backend::throughputTestTimerTicked);
 }

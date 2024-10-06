@@ -139,6 +139,8 @@ public:
 
     void logLinkTest(const QJsonObject &jsonData);
 
+    void logThroughputTest(const QJsonObject &jsonData);
+
     void logTransmitStatus(const QJsonObject &jsonData);
 
     void flushByteFile();
@@ -167,6 +169,7 @@ private:
     CSVWriter payloadLogFile;
 
     CSVWriter linkTestLogFile;
+    CSVWriter throughputTestLogFile;
 
     CSVWriter transmitStatusLog;
 

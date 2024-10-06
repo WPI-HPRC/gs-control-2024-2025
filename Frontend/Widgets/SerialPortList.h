@@ -17,6 +17,7 @@ class SerialPortList: public QTableWidget
     Q_OBJECT
 public:
     explicit SerialPortList(QWidget *parent = nullptr);
+    QString getCurrentlySelectedPortName();
 
 public slots:
     void serialPortsFound(const QList<QSerialPortInfo>&);

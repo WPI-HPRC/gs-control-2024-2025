@@ -17,6 +17,7 @@
 #include <QLabel>
 
 #include "Backend/Backend.h"
+#include "Frontend/Widgets/SerialPortList.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -33,45 +34,26 @@ public:
     explicit RadioControlsWindow(QWidget *parent = nullptr);
 
     ~RadioControlsWindow() override;
-
 //public slots:
 //    void serialPortChosen(QListWidgetItem *, QListWidgetItem *);
 
 private:
-    void getChildren();
 
     Ui::RadioControlsWindow *ui;
 
-    QPushButton *radioModuleButton;
-    QTableWidget *serialPortList;
-
-    QPushButton *refreshSerialPortsButton;
-
-    QLineEdit *linkTest_destinationAddress;
-    QPushButton *linkTest_button;
-    QSpinBox *linkTest_payloadSize;
-    QSpinBox *linkTest_iterations;
-    QSpinBox *linkTest_repeat;
-    QCheckBox *linkTest_loop;
-
-    QLabel *linkTestResults_NoiseFloor;
-    QLabel *linkTestResults_MaxRssi;
-    QLabel *linkTestResults_MinRssi;
-    QLabel *linkTestResults_AvgRssi;
-    QLabel *linkTestResults_Success;
-    QLabel *linkTestResults_Retries;
-    QLabel *linkTestResults_RR;
-
-    QLabel *linkTestResults_TotalPackets;
-    QLabel *linkTestResults_PercentSuccess;
-
     bool loopLinkTest = false;
     bool lastLinkTestFailed = false;
+
+    bool throughputTestIsRunning = false;
 
 public slots:
     void linkTestDataAvailable(LinkTestResults results, int iterationsLeft);
     void linkTestButtonPressed();
     void linkTestFailed();
+    void rangeScanningBoxClicked(bool checked);
+
+    void throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput);
+    void throughputTestButtonPressed();
 };
 
 
