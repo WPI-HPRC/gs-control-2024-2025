@@ -11,17 +11,23 @@
 #include "../Utility/DataLogger.h"
 #include "Utility/json_struct.h"
 
-enum RadioModuleType
-{
-    Default,
-    Rocket,
-    Payload
-};
-
 class Backend : public QObject
 {
     Q_OBJECT
 public:
+
+    struct Telmetry
+    {
+
+    };
+
+    enum RadioModuleType
+    {
+        Default,
+        Rocket,
+        Payload
+    };
+
     static Backend &getInstance()
     {
         static Backend instance;

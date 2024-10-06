@@ -50,21 +50,21 @@ DataLogger::Packet parsePacket(const uint8_t *frame)
     std::string str;
 
     // This way of assigning the packet type seems redundant, but the packetType byte can take on any value from 0-255; we want to set it to an enum value that we understand
-    DataLogger::PacketType packetType;
+    GroundStation::PacketType packetType;
 
     switch (frame[0])
     {
-        case DataLogger::Rocket:
-            str = JS::serializeStruct(*(RocketTelemPacket *) (&frame[1]));
-            packetType = DataLogger::Rocket;
+        case GroundStation::Rocket:
+            str = JS::serializeStruct(*(GroundStation::RocketTelemPacket *) (&frame[1]));
+            packetType = GroundStation::Rocket;
             break;
-        case DataLogger::Payload:
-            str = JS::serializeStruct(*(PayloadTelemPacket *) (&frame[1]));
-            packetType = DataLogger::Payload;
+        case GroundStation::Payload:
+            str = JS::serializeStruct(*(GroundStation::PayloadTelemPacket *) (&frame[1]));
+            packetType = GroundStation::Payload;
             break;
         default:
             str = "";
-            packetType = DataLogger::Unknown;
+            packetType = GroundStation::Unknown;
             break;
     }
 

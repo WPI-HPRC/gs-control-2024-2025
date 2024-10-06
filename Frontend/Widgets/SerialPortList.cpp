@@ -87,7 +87,7 @@ void SerialPortList::buttonClicked()
         button->setText("Connecting...");
         button->setEnabled(false);
 
-        emit(openSerialPort(portName, Default));
+        emit(openSerialPort(portName, Backend::Default));
     }
     else
     {
