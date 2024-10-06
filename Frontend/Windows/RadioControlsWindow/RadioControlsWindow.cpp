@@ -128,10 +128,18 @@ void RadioControlsWindow::linkTestButtonPressed()
 
 void RadioControlsWindow::throughputTestButtonPressed()
 {
+    if(throughputTestIsRunning)
+    {
+        throughputTestIsRunning = false;
+        Backend::getInstance().cancelThroughputTest();
+        ui->ThroughputTest_Button->setText("Run throughput test");
+        return;
+    }
+
     QString originatingModulePortName = ui->SerialPortListObj->getCurrentlySelectedPortName();
 
-//    if(originatingModulePortName == "")
-//        return;
+    if(originatingModulePortName == "")
+        return;
 
     QByteArray bytes = hexToBytes(ui->ThroughputTest_DestinationAddress->text());
     uint64_t address = getAddressBigEndian((uint8_t *)bytes.data());
@@ -169,10 +177,23 @@ void RadioControlsWindow::throughputTestButtonPressed()
 
         Backend::getInstance().runThroughputTestsWithRange(originatingModulePortName, address, testParams, duration, transmitOptions);
     }
+    throughputTestIsRunning = true;
+    ui->ThroughputTest_Button->setText("STOP");
 }
 
 void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput)
 {
+    if(Backend::getInstance().throughputTestIndex >= 0 && throughputTestIsRunning)
+    {
+        ui->ThroughputTest_Button->setText(QString::asprintf("STOP - %lld left",
+                                                             Backend::getInstance().throughputTests.count() - Backend::getInstance().throughputTestIndex));
+    }
+    else
+    {
+        ui->ThroughputTest_Button->setText("Run throughput test");
+        throughputTestIsRunning = false;
+    }
+
     ui->ThroughputTestResults_PercentSuccess->setEnabled(true);
     ui->ThroughputTestResults_PercentSuccess->setText(QString::asprintf("%0.1f", percentSuccess));
 
@@ -219,8 +240,6 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::RadioControlsWindow)
 {
     ui->setupUi(this);
-
-    ui->RefreshSerialPortsButton
 
     ui->LinkTest_DestinationAddress->setInputMask("HH HH HH HH HH HH HH HH");
     ui->LinkTestResults_NoiseFloor->setEnabled(false);

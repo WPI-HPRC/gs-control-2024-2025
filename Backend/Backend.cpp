@@ -136,6 +136,12 @@ void Backend::_runThroughputTest(Backend::ThroughputTestParams params)
     throughputTestTimer->start();
 }
 
+void Backend::cancelThroughputTest()
+{
+    throughputTestShouldStop = true;
+    throughputTestIndex = -1;
+}
+
 void Backend::runThroughputTest(const QString& originatingPort, uint64_t destinationAddress, uint8_t payloadSize,
                                 uint packetRate, uint duration, uint8_t transmitOptions)
 {
@@ -186,8 +192,9 @@ void Backend::throughputTestTimerTicked()
 {
     qint64 currentMs = QDateTime::currentMSecsSinceEpoch();
 
-    if(currentMs - throughputTestStartTime >= throughputTestParams.duration*1000)
+    if(currentMs - throughputTestStartTime >= throughputTestParams.duration*1000 || throughputTestShouldStop)
     {
+        throughputTestShouldStop = false;
         throughputTestTimer->stop();
         this->throughputTestComplete();
         return;
