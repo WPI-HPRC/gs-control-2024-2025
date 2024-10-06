@@ -8,7 +8,8 @@
 #include <string>
 #include <utility>
 #include "Constants.h"
-//#define SIMULATE_DATA
+
+#define SIMULATE_DATA
 
 QSerialPortInfo getTargetPort(const QString& portName)
 {
@@ -333,6 +334,10 @@ void Backend::start()
     dataSimulator = new DataSimulator(
             "/Users/will/Desktop/irec_trimmed.csv",
             webServer);
+
+#ifdef SIMULATE_DATA
+    dataSimulator->start();
+#endif
 
     QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);
     if(!modem.isNull())
