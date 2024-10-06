@@ -199,13 +199,10 @@ void Backend::start()
 
     webServer = new WebServer(8001);
 
-#ifdef SIMULATE_DATA
-    webServer = new WebServer(8001);
-
     dataSimulator = new DataSimulator(
-            "/Users/will/Desktop/irec_trimmed.csv", 50,
+            "/Users/will/Desktop/irec_trimmed.csv",
             webServer);
-#else
+
     QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);
     if(!modem.isNull())
     {
@@ -226,7 +223,6 @@ void Backend::start()
             }
     );
     timer->start();
-#endif
 }
 
 Backend::Backend(QObject *parent) : QObject(parent)
