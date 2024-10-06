@@ -18,7 +18,12 @@ public:
 
     struct Telmetry
     {
-
+        GroundStation::PacketType packetType;
+        union data
+        {
+            GroundStation::RocketTelemPacket *rocketData;
+            GroundStation::PayloadTelemPacket *payloadData;
+        } data;
     };
 
     enum RadioModuleType
@@ -38,6 +43,8 @@ public:
     bool connectToModule(const QString& name, RadioModuleType moduleType);
     void disconnectFromModule(const QString& name);
     bool moduleExistsWithName(const QString &name);
+
+    void receiveTelemetry(Backend::Telmetry telemetry);
 
     void runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations, uint8_t repeat, bool loop=false);
     void cancelLinkTest();
@@ -63,6 +70,8 @@ signals:
     void serialPortClosed(QSerialPortInfo);
     void linkTestDataAvailable(LinkTestResults, int);
     void linkTestFailedSignal();
+
+    void telemetryAvailable(Backend::Telmetry);
 
 private:
     explicit Backend(QObject *parent = nullptr);

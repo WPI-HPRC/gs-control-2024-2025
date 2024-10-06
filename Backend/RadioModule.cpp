@@ -50,28 +50,32 @@ DataLogger::Packet parsePacket(const uint8_t *frame)
     std::string str;
 
     // This way of assigning the packet type seems redundant, but the packetType byte can take on any value from 0-255; we want to set it to an enum value that we understand
-    GroundStation::PacketType packetType;
+    Backend::Telmetry telemetry{};
 
     switch (frame[0])
     {
         case GroundStation::Rocket:
-            str = JS::serializeStruct(*(GroundStation::RocketTelemPacket *) (&frame[1]));
-            packetType = GroundStation::Rocket;
+            telemetry.packetType = GroundStation::Rocket;
+            telemetry.data.rocketData = (GroundStation::RocketTelemPacket *) (&frame[1]);
+            str = JS::serializeStruct(*telemetry.data.rocketData);
             break;
         case GroundStation::Payload:
-            str = JS::serializeStruct(*(GroundStation::PayloadTelemPacket *) (&frame[1]));
-            packetType = GroundStation::Payload;
+            telemetry.data.payloadData = (GroundStation::PayloadTelemPacket *) (&frame[1]);
+            str = JS::serializeStruct(*telemetry.data.payloadData);
+            telemetry.packetType = GroundStation::Payload;
             break;
         default:
             str = "";
-            packetType = GroundStation::Unknown;
+            telemetry.packetType = GroundStation::Unknown;
             break;
     }
+
+    Backend::getInstance().receiveTelemetry(telemetry);
 
     str = std::regex_replace(str, std::regex("nan"), "0");
     str = std::regex_replace(str, std::regex("inf"), "0");
 
-    return {str, packetType};
+    return {str, telemetry.packetType};
 }
 
 void RadioModule::disconnectPort()
