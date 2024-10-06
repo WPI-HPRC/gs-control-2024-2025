@@ -178,12 +178,8 @@ void RadioModule::incorrectChecksum(uint8_t calculated, uint8_t received)
     std::string str = QString::asprintf("\nWRONG CHECKSUM. calculated: %02x, received: %02x\n\n", calculated & 0xFF,
                                         received & 0xFF).toStdString();
 
-//    log(str.c_str());
-
-//    dataLogger->writeToByteFile(str.c_str(), str.length());
     dataLogger->writeToTextFile(str.c_str(), str.length());
 
-//    dataLogger->flushByteFile();
     dataLogger->flushTextFile();
 }
 
@@ -217,8 +213,6 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
 {
     using namespace XBee::ExtendedTransmitStatus;
 
-    auto *data = (Struct *)(&frame[4]);
-
     auto *status = (Struct *)(&frame[BytesBeforeFrameID]);
 
     QJsonObject json;
@@ -231,8 +225,6 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
 //    log("Transmit status for frame ID %03x: %02x. RetryCount: %03x, Discovery: %02x\n", status->frameID, status->deliveryStatus, status->retryCount, status->discovery);
 
     dataLogger->logTransmitStatus(json);
-
-    std::cout << "Got transmit status: " << std::hex << (int)status->deliveryStatus << std::endl;
 
     if(status->deliveryStatus != 0x00)
     {
@@ -258,12 +250,6 @@ void RadioModule::handleLinkTest(XBee::ExplicitRxIndicator::LinkTest data)
 
     Backend::getInstance().linkTestComplete(results, linkTestsLeft);
 
-    /*
-    log("Finished link test.\n\tPayload Size: %d\n\tIterations: %d\n\tSuccess: %d\n\tRetries: %d\n\tResult: %02x\n\tRR: %d\n\tMax RSSI: %d\n\tMin RSSI: %d\n\tAvg RSSI: %d\n",
-        data.payloadSize, data.iterations, data.success, data.retries, data.result, data.RR, data.maxRssi, data.minRssi, data.avgRssi
-        );
-
-     */
     std::cout << "Got link test result" << std::endl;
 
     if(linkTestsLeft != 0)
