@@ -10,6 +10,7 @@
 #include "../Utility/WebServer.h"
 #include "../Utility/DataLogger.h"
 #include "Utility/json_struct.h"
+#include "Utility/DataSimulator.h"
 
 class Backend : public QObject
 {
