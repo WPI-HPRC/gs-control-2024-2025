@@ -3,11 +3,14 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <string>
+#include "Utility/json_struct.h"
+#include "Utility.h"
+#include "Backend/Backend.h"
 
 DataSimulator::DataSimulator(const QString &filePath, WebServer *webServer, QObject *parent)
         : QObject(parent), _webServer(webServer)
 {
-    failed = false;
     file = new QFile();
     file->setFileName(filePath);
 }
@@ -110,17 +113,32 @@ void DataSimulator::sendNextLine()
     }
      */
 
-    if (dt < 20000 && dt > 0)
-    {
-        std::cout << "dt: " << dt << std::endl;
-    }
-    else
+    // If the timestamps don't make sense, just skip this line
+    if (dt > 20000 || dt < 0)
     {
         sendNextLine();
         return;
     }
 
+    std::string str = currentDocument.toJson(QJsonDocument::Compact).toStdString();
 
-    _webServer->broadcast(QString::fromStdString(currentDocument.toJson(QJsonDocument::Compact).toStdString()));
+    _webServer->broadcast(QString::fromStdString(str));
+
+    JS::ParseContext context(str);
+    GroundStation::RocketTelemPacket rocketPacket;
+    JS::Error err = context.parseTo(rocketPacket);
+
+    if(err != JS::Error::NoError)
+    {
+        std::cout << "Error parsing json: " << context.makeErrorString().c_str() << std::endl;
+    }
+    else
+    {
+        Backend::getInstance().receiveTelemetry({
+            .packetType = GroundStation::Rocket,
+            .data.rocketData = &rocketPacket
+        });
+    }
+
     timer->start(dt);
 }
