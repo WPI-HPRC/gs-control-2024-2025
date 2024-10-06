@@ -8,6 +8,8 @@
 #include <QFile>
 #include <QDebug>
 #include <QObject>
+#include <QJsonDocument>
+#include <QTimer>
 #include "WebServer.h"
 
 class DataSimulator : public QObject
@@ -15,11 +17,12 @@ class DataSimulator : public QObject
 Q_OBJECT
 
 public:
-    DataSimulator(const QString &filePath, int dataIntervalMs, WebServer *webServer, QObject *parent = nullptr);
+    DataSimulator(const QString &filePath, WebServer *webServer, QObject *parent = nullptr);
+    void start();
+    void stop();
 
 private:
     WebServer *_webServer;
-    int dataIntervalMs;
     QFile *file;
 
     QList<QByteArray> nextLine();
@@ -29,6 +32,8 @@ private:
     QList<QByteArray> headers;
     QTimer *timer;
     QJsonDocument nextDocument;
+
+    bool shouldStop = false;
 
 
 public slots:

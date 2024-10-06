@@ -1,11 +1,11 @@
 #include "DataSimulator.h"
 #include <iostream>
 #include <QFile>
-#include <QTimer>
 #include <QJsonDocument>
+#include <QJsonObject>
 
-DataSimulator::DataSimulator(const QString &filePath, int dataIntervalMs, WebServer *webServer, QObject *parent)
-        : QObject(parent), dataIntervalMs(dataIntervalMs), _webServer(webServer)
+DataSimulator::DataSimulator(const QString &filePath, WebServer *webServer, QObject *parent)
+        : QObject(parent), _webServer(webServer)
 {
     file = new QFile();
     file->setFileName(filePath);
@@ -24,6 +24,11 @@ DataSimulator::DataSimulator(const QString &filePath, int dataIntervalMs, WebSer
         qDebug() << "Failed to read headers from file:" << filePath;
         return;
     }
+}
+
+void DataSimulator::start()
+{
+    shouldStop = false;
 
     timer = new QTimer(this);
     timer->setSingleShot(true);
@@ -32,6 +37,11 @@ DataSimulator::DataSimulator(const QString &filePath, int dataIntervalMs, WebSer
     nextDocument = parseLine(nextLine());
 
     sendNextLine();
+}
+
+void DataSimulator::stop()
+{
+    shouldStop = true;
 }
 
 QJsonDocument DataSimulator::parseLine(QList<QByteArray> line)
@@ -72,6 +82,8 @@ QList<QByteArray> DataSimulator::nextLine()
 
 void DataSimulator::sendNextLine()
 {
+    if(shouldStop)
+        return;
 
     QJsonDocument currentDocument = nextDocument;
     nextDocument = parseLine(nextLine());
