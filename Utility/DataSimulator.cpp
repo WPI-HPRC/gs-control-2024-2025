@@ -7,27 +7,26 @@
 DataSimulator::DataSimulator(const QString &filePath, WebServer *webServer, QObject *parent)
         : QObject(parent), _webServer(webServer)
 {
+    failed = false;
     file = new QFile();
     file->setFileName(filePath);
-
-    if (!file->open(QIODeviceBase::ReadOnly))
-    {
-        qDebug() << "Failed to open file:" << filePath << "Error:" << file->errorString();
-        return;
-    }
-
-    _webServer = webServer;
-
-    headers = nextLine();
-    if (headers.isEmpty())
-    {
-        qDebug() << "Failed to read headers from file:" << filePath;
-        return;
-    }
 }
 
 void DataSimulator::start()
 {
+    if (!file->open(QIODeviceBase::ReadOnly))
+    {
+        qDebug() << "Failed to open file:" << file->fileName() << "Error:" << file->errorString();
+        return;
+    }
+
+    headers = nextLine();
+    if (headers.isEmpty())
+    {
+        qDebug() << "Failed to read headers from file:" << file->fileName();
+        return;
+    }
+
     shouldStop = false;
 
     timer = new QTimer(this);

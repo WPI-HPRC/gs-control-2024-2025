@@ -35,7 +35,6 @@ private:
 
     bool shouldStop = false;
 
-
 public slots:
 
     void sendNextLine();
