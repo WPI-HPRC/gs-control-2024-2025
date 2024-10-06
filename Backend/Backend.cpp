@@ -256,6 +256,11 @@ void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
     emit linkTestDataAvailable(results, iterationsLeft);
 }
 
+void Backend::receiveTelemetry(Backend::Telmetry telemetry)
+{
+    emit telemetryAvailable(telemetry);
+}
+
 void Backend::disconnectFromModule(const QString &name)
 {
     RadioModule *module = getModuleWithName(name);
@@ -332,16 +337,11 @@ void Backend::start()
             "/Users/will/Desktop/irec_trimmed.csv", 50,
             webServer);
 #else
-
-//    ByteParser parser("/Users/will/Desktop/test.txt");
-
     QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);
     if(!modem.isNull())
     {
         connectToModule(GROUND_STATION_MODULE, Default);
     }
-
-//    getModuleWithName("A28DMVHS")->sendLinkTestRequest(0x0013A200422CDAC2, 300, 4000);
 
     timer = new QTimer();
     timer->setInterval(1);
