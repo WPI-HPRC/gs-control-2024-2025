@@ -44,6 +44,8 @@ private:
     bool loopLinkTest = false;
     bool lastLinkTestFailed = false;
 
+    bool throughputTestIsRunning = false;
+
 public slots:
     void linkTestDataAvailable(LinkTestResults results, int iterationsLeft);
     void linkTestButtonPressed();

@@ -253,7 +253,6 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
         if(status->deliveryStatus == 0x00)
         {
             throughputTestPacketsReceived++;
-            std::cout << "Received packet, number of packets received = " << throughputTestPacketsReceived << std::endl;
         }
     }
 }

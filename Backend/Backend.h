@@ -72,6 +72,7 @@ public:
     void cancelLinkTest();
     void linkTestFailed();
 
+    void cancelThroughputTest();
     void _runThroughputTest(ThroughputTestParams params);
     void throughputTestComplete();
     void runThroughputTest(const QString& originatingPort, uint64_t destinationAddress, uint8_t payloadSize, uint packetRate, uint duration, uint8_t transmitOptions);
@@ -122,6 +123,8 @@ private:
     QTimer *timer{};
 
     QMutex mutex;
+
+    bool throughputTestShouldStop = false;
 };
 
 
