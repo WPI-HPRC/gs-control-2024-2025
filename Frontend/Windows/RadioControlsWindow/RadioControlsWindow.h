@@ -39,11 +39,13 @@ public:
 
 private:
 
+    void runLinkTest();
     Ui::RadioControlsWindow *ui;
 
     bool loopLinkTest = false;
     bool lastLinkTestFailed = false;
 
+    bool linkTestIsRunning = false;
     bool throughputTestIsRunning = false;
 
 public slots:
