@@ -2,8 +2,8 @@
 // Created by Nicolas DeBruin on 10/3/2024.
 //
 
-#ifndef GROUNDTIMEWIDGET_H
-#define GROUNDTIMEWIDGET_H
+#ifndef GS_FRONTEND_2024_2025_GROUNDTIMEWIDGET_H
+#define GS_FRONTEND_2024_2025_GROUNDTIMEWIDGET_H
 
 #include <QWidget>
 #include <QLabel>
@@ -31,4 +31,4 @@ public slots:
 };
 
 
-#endif //GROUNDTIMEWIDGET_H
+#endif //GS_FRONTEND_2024_2025_GROUNDTIMEWIDGET_H
