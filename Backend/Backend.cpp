@@ -309,7 +309,7 @@ bool Backend::connectToModule(const QString& name, RadioModuleType moduleType)
             module = new PayloadTestModule(921600, new DataLogger(), targetPort);
             break;
         default:
-            module = new ServingRadioModule(115200, new DataLogger(), targetPort, webServer);
+            module = new ServingRadioModule(921600, new DataLogger(), targetPort, webServer);
     }
     radioModules.append(module);
     return true;
