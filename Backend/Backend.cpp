@@ -303,7 +303,7 @@ bool Backend::connectToModule(const QString& name, RadioModuleType moduleType)
             module = new PayloadTestModule(921600, new DataLogger(), targetPort);
             break;
         default:
-            module = new ServingRadioModule(115200, new DataLogger(), targetPort, webServer);
+            module = new ServingRadioModule(921600, new DataLogger(), targetPort, webServer);
     }
     radioModules.append(module);
     return true;
@@ -341,7 +341,14 @@ void Backend::start()
         connectToModule(GROUND_STATION_MODULE, Default);
     }
 
-//    getModuleWithName("A28DMVHS")->sendLinkTestRequest(0x0013A200422CDAC2, 300, 4000);
+
+//    connectToModule("D30GPYZB", Default);
+//    getModuleWithName("D30GPYZB")->setParameter(XBee::AtCommand::InterfaceDataRate, 0x07);
+//    getModuleWithName("D30GPYZB")->writeChanges();
+
+//    getModuleWithName("A28DMVHS")->setParameter(AsciiToUint16('R', 'R'), 0);
+
+    getModuleWithName("A28DMVHS")->setParameter(AsciiToUint16('B', 'R'), 2);
 
     timer = new QTimer();
     timer->setInterval(1);
