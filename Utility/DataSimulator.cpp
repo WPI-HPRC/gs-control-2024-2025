@@ -134,10 +134,10 @@ void DataSimulator::sendNextLine()
     }
     else
     {
-        Backend::getInstance().receiveTelemetry({
-            .packetType = GroundStation::Rocket,
-            .data.rocketData = &rocketPacket
-        });
+        Backend::Telemetry telemetry{};
+        telemetry.packetType = GroundStation::Rocket;
+        telemetry.data.rocketData = &rocketPacket;
+        Backend::getInstance().receiveTelemetry(telemetry);
     }
 
     timer->start(dt);
