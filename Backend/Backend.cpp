@@ -257,7 +257,7 @@ void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
     emit linkTestDataAvailable(results, iterationsLeft);
 }
 
-void Backend::receiveTelemetry(Backend::Telmetry telemetry)
+void Backend::receiveTelemetry(Backend::Telemetry telemetry)
 {
     emit telemetryAvailable(telemetry);
 }
