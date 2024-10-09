@@ -364,8 +364,6 @@ void Backend::start()
                 std::tm* currentLocalDateTime = std::localtime(&currentGroundEpoch);
 
                 emit newGroundDateTime(currentLocalDateTime);
-
-                delete currentLocalDateTime;
             }
     );
     rtcTimer->start();

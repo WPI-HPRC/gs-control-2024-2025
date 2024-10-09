@@ -25,6 +25,8 @@ public:
 private:
     Ui::FlightTimeWidget *ui;
 
+
+
 signals:
     void newTime(uint32_t);
 
