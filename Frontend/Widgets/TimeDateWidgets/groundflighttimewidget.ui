@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FlightTimeWidget</class>
- <widget class="QWidget" name="FlightTimeWidget">
+ <class>GroundFlightTimeWidget</class>
+ <widget class="QWidget" name="GroundFlightTimeWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -28,7 +28,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Flight Time</string>
+      <string>Ground Flight Time:</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>

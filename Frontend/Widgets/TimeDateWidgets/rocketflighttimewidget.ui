@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PayloadUptimeWidget</class>
- <widget class="QWidget" name="PayloadUptimeWidget">
+ <class>RocketFlightTimeWidget</class>
+ <widget class="QWidget" name="RocketFlightTimeWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -28,7 +28,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Payload Uptime:</string>
+      <string>Rocket Flight Time:</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -39,7 +39,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="PayloadUptime">
+    <widget class="QLabel" name="FlightTime">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
