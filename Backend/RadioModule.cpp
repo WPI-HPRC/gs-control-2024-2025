@@ -50,7 +50,7 @@ DataLogger::Packet parsePacket(const uint8_t *frame)
     std::string str;
 
     // This way of assigning the packet type seems redundant, but the packetType byte can take on any value from 0-255; we want to set it to an enum value that we understand
-    Backend::Telmetry telemetry{};
+    Backend::Telemetry telemetry{};
 
     switch (frame[0])
     {
