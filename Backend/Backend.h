@@ -63,7 +63,7 @@ public:
     }
     Backend(const Backend&) = delete;
     Backend &operator=(const Backend&) = delete;
-    bool connectToModule(const QString& name, RadioModuleType moduleType);
+    bool connectToModule(const QString& name, RadioModuleType moduleType, int baudRate);
     void disconnectFromModule(const QString& name);
     bool moduleExistsWithName(const QString &name);
 
@@ -83,6 +83,8 @@ public:
     void start();
     void flushFiles();
     void getPorts();
+
+    void setBaudRate(const QString &name, int baudRate);
 
     QList<RadioModule *> radioModules;
     int loopCount;

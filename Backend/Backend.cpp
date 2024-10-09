@@ -256,6 +256,18 @@ void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
     emit linkTestDataAvailable(results, iterationsLeft);
 }
 
+void Backend::setBaudRate(const QString &name, int baudRate)
+{
+    RadioModule *module = getModuleWithName(name);
+
+    if(!module)
+    {
+        return;
+    }
+
+    module->setBaudRate(baudRate);
+}
+
 void Backend::disconnectFromModule(const QString &name)
 {
     RadioModule *module = getModuleWithName(name);
@@ -266,7 +278,7 @@ void Backend::disconnectFromModule(const QString &name)
     module->disconnectPort();
 }
 
-bool Backend::connectToModule(const QString& name, RadioModuleType moduleType)
+bool Backend::connectToModule(const QString& name, RadioModuleType moduleType, int baudRate)
 {
 
     RadioModule *existingModule = getModuleWithName(name);
@@ -297,13 +309,13 @@ bool Backend::connectToModule(const QString& name, RadioModuleType moduleType)
     switch(moduleType)
     {
         case Rocket:
-            module = new RocketTestModule(921600, new DataLogger(), targetPort);
+            module = new RocketTestModule(baudRate, new DataLogger(), targetPort);
             break;
         case Payload:
-            module = new PayloadTestModule(921600, new DataLogger(), targetPort);
+            module = new PayloadTestModule(baudRate, new DataLogger(), targetPort);
             break;
         default:
-            module = new ServingRadioModule(921600, new DataLogger(), targetPort, webServer);
+            module = new ServingRadioModule(baudRate, new DataLogger(), targetPort, webServer);
     }
     radioModules.append(module);
     return true;
@@ -338,7 +350,7 @@ void Backend::start()
     QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);
     if(!modem.isNull())
     {
-        connectToModule(GROUND_STATION_MODULE, Default);
+        connectToModule(GROUND_STATION_MODULE, Default, 921600);
     }
 
 
@@ -348,7 +360,7 @@ void Backend::start()
 
 //    getModuleWithName("A28DMVHS")->setParameter(AsciiToUint16('R', 'R'), 0);
 
-    getModuleWithName("A28DMVHS")->setParameter(AsciiToUint16('B', 'R'), 2);
+//    getModuleWithName("A28DMVHS")->setParameter(AsciiToUint16('B', 'R'), 2);
 
     timer = new QTimer();
     timer->setInterval(1);

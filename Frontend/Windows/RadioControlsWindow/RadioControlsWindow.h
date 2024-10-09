@@ -54,6 +54,8 @@ public slots:
 
     void throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput);
     void throughputTestButtonPressed();
+
+    void baudRateSelected(const QString &);
 };
 
 

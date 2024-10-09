@@ -4,6 +4,7 @@
 
 #include "RadioControlsWindow.h"
 #include <QLabel>
+#include <QComboBox>
 #include "ui_RadioControlsWindow.h"
 
 #define FindChild(name) name = findChild<decltype(name)>(QStringLiteral(#name).replace(0, 1, QString(#name)[0].toUpper()))
@@ -225,6 +226,20 @@ void RadioControlsWindow::rangeScanningBoxClicked(bool checked)
     }
 }
 
+void RadioControlsWindow::baudRateSelected(const QString &baudRateString)
+{
+    int baudRate = baudRateString.toInt();
+
+    QString currentPort = ui->SerialPortListObj->getCurrentlySelectedPortName();
+    
+    if(currentPort == "")
+    {
+        return;
+    }
+
+    Backend::getInstance().setBaudRate(currentPort, baudRate);
+}
+
 RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::RadioControlsWindow)
 {
@@ -261,6 +276,8 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
     connect(ui->RefreshSerialPortsButton, &QPushButton::pressed, []() {
         Backend::getInstance().getPorts();
     });
+
+    connect(ui->BaudRateDropdown, &QComboBox::textActivated, this, &RadioControlsWindow::baudRateSelected);
 
 
 //    connect(serialPortListObj, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(serialPortChosen(QListWidgetItem*, QListWidgetItem*)));
