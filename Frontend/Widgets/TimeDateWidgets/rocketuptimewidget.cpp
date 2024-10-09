@@ -17,7 +17,6 @@ RocketUptimeWidget::RocketUptimeWidget(QWidget *parent) :
 
 void RocketUptimeWidget::newPacket(Backend::Telemetry telemPacket)
 {
-    telemPacket.packetType = GroundStation::Rocket;
     uint_fast32_t currentUpTime = telemPacket.data.rocketData->timestamp;
 
     emit newUptime(currentUpTime);
