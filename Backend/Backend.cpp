@@ -252,6 +252,11 @@ void Backend::sendEnergyDetectCommand(uint16_t msPerChannel)
     getModuleWithName(GROUND_STATION_MODULE)->sendEnergyDetectCommand(msPerChannel);
 }
 
+void Backend::receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes)
+{
+    emit receivedAtCommandResponse(command, response, response_length_bytes);
+}
+
 void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
 {
     emit linkTestDataAvailable(results, iterationsLeft);
@@ -282,6 +287,48 @@ void Backend::disconnectFromModule(const QString &name)
         return;
 
     module->disconnectPort();
+}
+
+void Backend::queryParameter(const QString &moduleName, uint16_t parameter)
+{
+    RadioModule *module = getModuleWithName(moduleName);
+
+    if(!module)
+        return;
+
+    module->queryParameter(parameter);
+}
+
+void Backend::queryParameters(const QString &moduleName, const QList<uint16_t>& parameters)
+{
+    for(int i = 0; i < parameters.count(); i++)
+    {
+        queryParameter(moduleName, parameters.at(i));
+    }
+}
+
+void Backend::setParameter(const QString &moduleName, uint16_t parameter, uint8_t *value, size_t valueSize_bytes)
+{
+    RadioModule *module = getModuleWithName(moduleName);
+
+    if(!module)
+        return;
+
+    module->setParameter(parameter, value, valueSize_bytes);
+}
+
+void Backend::setParameter(const QString &moduleName, uint16_t parameter, uint8_t value)
+{
+    setParameter(moduleName, parameter, &value, 1);
+}
+
+void Backend::writeParameters(const QString &moduleName)
+{
+    RadioModule *module = getModuleWithName(moduleName);
+
+    if(!module)
+        return;
+    module->writeChanges();
 }
 
 bool Backend::connectToModule(const QString& name, RadioModuleType moduleType, int baudRate)
@@ -358,7 +405,7 @@ void Backend::start()
     }
 
     timer = new QTimer();
-    timer->setInterval(1);
+    timer->setInterval(5);
 
     loopCount = 0;
 

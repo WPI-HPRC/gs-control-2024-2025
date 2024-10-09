@@ -56,6 +56,10 @@ public slots:
     void throughputTestButtonPressed();
 
     void baudRateSelected(const QString &);
+
+    void readSerialParameters();
+    void writeSerialParameters();
+    void receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes);
 };
 
 
