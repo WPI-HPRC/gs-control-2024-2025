@@ -121,8 +121,6 @@ signals:
     void linkTestDataAvailable(LinkTestResults, int);
     void linkTestFailedSignal();
     void newGroundDateTime(std::tm* currentDate);
-    void newRocketUptime(uint_fast64_t currentRocketTime);
-    void newPayloadUptime(uint_fast64_t currentPayloadTime);
 
     void throughputTestDataAvailable(float, uint, uint);
     void telemetryAvailable(Backend::Telemetry);
@@ -141,10 +139,6 @@ private:
     QMutex mutex;
 
     bool throughputTestShouldStop = false;
-
-    // ground date/time
-    QTimer *rtcTimer{};
-    std::time_t currentGroundEpoch;
 
     // ground date/time
     QTimer *rtcTimer{};
