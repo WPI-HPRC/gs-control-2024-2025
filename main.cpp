@@ -34,8 +34,6 @@ int main(int argc, char *argv[])
 
     backend.start();
 
-
-
     int code = QApplication::exec();
 
     backend.flushFiles();
