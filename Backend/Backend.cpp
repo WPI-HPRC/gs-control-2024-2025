@@ -363,14 +363,13 @@ void Backend::start()
 
                 std::tm* currentLocalDateTime = std::localtime(&currentGroundEpoch);
 
-                emit newGroundDate(currentLocalDateTime->tm_year+1900, currentLocalDateTime->tm_mon+1, currentLocalDateTime->tm_mday);
-                emit newGroundTime(currentLocalDateTime->tm_hour, currentLocalDateTime->tm_min, currentLocalDateTime->tm_sec);
+                emit newGroundDateTime(currentLocalDateTime);
+
 
                 delete currentLocalDateTime;
             }
     );
     rtcTimer->start();
-#endif
 }
 
 Backend::Backend(QObject *parent) : QObject(parent)
