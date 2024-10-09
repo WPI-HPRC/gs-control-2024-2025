@@ -25,8 +25,11 @@ public:
 private:
     Ui::FlightTimeWidget *ui;
 
+signals:
+    void newTime(uint32_t);
+
 public slots:
-    void newTime(uint_fast64_t currentFlightTime);
+    void newPacket(Backend::Telemetry telemPacket);
 };
 
 

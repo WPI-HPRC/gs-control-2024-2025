@@ -12,11 +12,15 @@ PayloadUptimeWidget::PayloadUptimeWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::PayloadUptimeWidget) {
     ui->setupUi(this);
 
-    connect(&Backend::getInstance(), &Backend::newPayloadUptime, this, &PayloadUptimeWidget::newTime);
+    connect(&Backend::getInstance(), &Backend::telemetryAvailable, this, &PayloadUptimeWidget::newPacket);
 }
 
-void PayloadUptimeWidget::newTime(uint_fast64_t currentUpTime)
+void PayloadUptimeWidget::newPacket(Backend::Telemetry telemPacket)
 {
+    uint32_t currentUpTime = telemPacket.data.payloadData->p_timestamp;
+
+    emit newUptime(currentUpTime);
+
     uint_fast16_t hours = currentUpTime / (60 * 60 * 1000);
     uint_fast8_t minutes = currentUpTime / (60*1000) % 60;
     uint_fast8_t seconds = currentUpTime / 1000 % 60;

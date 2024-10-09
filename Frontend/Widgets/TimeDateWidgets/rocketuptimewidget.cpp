@@ -12,11 +12,15 @@ RocketUptimeWidget::RocketUptimeWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::RocketUptimeWidget) {
     ui->setupUi(this);
 
-    connect(&Backend::getInstance(), &Backend::newRocketUptime, this, &RocketUptimeWidget::newTime);
+    connect(&Backend::getInstance(), &Backend::telemetryAvailable, this, &RocketUptimeWidget::newPacket);
 }
 
-void RocketUptimeWidget::newTime(uint_fast64_t currentUpTime)
+void RocketUptimeWidget::newPacket(Backend::Telemetry telemPacket)
 {
+    uint_fast32_t currentUpTime = telemPacket.data.rocketData->timestamp;
+
+    emit newUptime(currentUpTime);
+
     uint_fast16_t hours = currentUpTime / (60 * 60 * 1000);
     uint_fast8_t minutes = currentUpTime / (60*1000) % 60;
     uint_fast8_t seconds = currentUpTime / 1000 % 60;

@@ -25,8 +25,11 @@ public:
 private:
     Ui::PayloadUptimeWidget *ui;
 
+signals:
+    void newUptime(uint32_t);
+
 public slots:
-    void newTime(uint_fast64_t currentUpTime);
+    void newPacket(Backend::Telemetry telemPacket);
 };
 
 
