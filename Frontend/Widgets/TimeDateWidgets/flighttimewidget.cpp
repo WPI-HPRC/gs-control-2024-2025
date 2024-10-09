@@ -18,6 +18,7 @@ FlightTimeWidget::FlightTimeWidget(QWidget *parent) :
 void FlightTimeWidget::newPacket(Backend::Telemetry telemPacket)
 {
 
+
     // uint_fast16_t hours = currentFlightTime / (60 * 60 * 1000);
     // uint_fast8_t minutes = currentFlightTime / (60*1000) % 60;
     // uint_fast8_t seconds = currentFlightTime / 1000 % 60;
