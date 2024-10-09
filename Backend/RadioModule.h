@@ -63,6 +63,8 @@ public:
 
     void _handleTransmitStatus(uint8_t frameID, uint8_t statusCode) override;
 
+    void _handleAtCommandResponse(const uint8_t *frame, uint8_t length_bytes) override;
+
     void incorrectChecksum(uint8_t calculated, uint8_t received) override;
 
     void sentFrame(uint8_t frameID) override;

@@ -900,6 +900,11 @@
             </item>
             <item>
              <property name="text">
+              <string>115200</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
               <string>230400</string>
              </property>
             </item>
@@ -1016,6 +1021,9 @@
         </item>
         <item row="5" column="3" colspan="2">
          <widget class="QComboBox" name="RadioParameters_ApiMode">
+          <property name="ParameterID" stdset="0">
+           <string>AP</string>
+          </property>
           <item>
            <property name="text">
             <string>Transparent [0]</string>
@@ -1035,6 +1043,9 @@
         </item>
         <item row="2" column="3" colspan="2">
          <widget class="QComboBox" name="RadioParameters_BaudRate">
+          <property name="ParameterID" stdset="0">
+           <string>BD</string>
+          </property>
           <item>
            <property name="text">
             <string>1200 [0]</string>
@@ -1128,6 +1139,9 @@
         </item>
         <item row="3" column="3" colspan="2">
          <widget class="QComboBox" name="RadioParameters_Parity">
+          <property name="ParameterID" stdset="0">
+           <string>NB</string>
+          </property>
           <item>
            <property name="text">
             <string>No Parity [0]</string>
@@ -1153,7 +1167,10 @@
          </widget>
         </item>
         <item row="4" column="3" colspan="2">
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="RadioParameters_StopBits">
+          <property name="ParameterID" stdset="0">
+           <string>SB</string>
+          </property>
           <item>
            <property name="text">
             <string>One Stop Bit [0]</string>
@@ -1182,6 +1199,9 @@
         </item>
         <item row="6" column="3" colspan="2">
          <widget class="QComboBox" name="RadioParameters_ApiOptions">
+          <property name="ParameterID" stdset="0">
+           <string>AO</string>
+          </property>
           <item>
            <property name="text">
             <string>RX Indicator [0]</string>

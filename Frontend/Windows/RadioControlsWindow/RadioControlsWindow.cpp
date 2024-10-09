@@ -214,6 +214,48 @@ void RadioControlsWindow::throughputTestDataAvailable(float percentSuccess, uint
     ui->ThroughputTestResults_Throughput->setText(QString::asprintf("%f kbps", throughput));
 }
 
+void RadioControlsWindow::receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes)
+{
+    // If we were setting a parameter, there is only one byte in the response (status). Otherwise, there will always be more than one byte
+    if(response_length_bytes == 0)
+        return;
+
+    if(command == XBee::AtCommand::InterfaceDataRate)
+    {
+        uint8_t value = *(uint8_t*)&response[3];
+        if (value > 0x0A)
+        {
+            return;
+        }
+    }
+
+    switch (command)
+    {
+        case XBee::AtCommand::InterfaceDataRate:
+            ui->RadioParameters_BaudRate->setCurrentIndex(response[3]);
+            break;
+
+        case XBee::AtCommand::InterfaceParity:
+            ui->RadioParameters_Parity->setCurrentIndex(response[0]);
+            break;
+
+        case XBee::AtCommand::InterfaceStopBits:
+            ui->RadioParameters_StopBits->setCurrentIndex(response[0]);
+            break;
+
+        case XBee::AtCommand::ApiMode:
+            ui->RadioParameters_ApiMode->setCurrentIndex(response[0]);
+            break;
+
+        case XBee::AtCommand::ApiOptions:
+            ui->RadioParameters_ApiOptions->setCurrentIndex(response[0]);
+            break;
+
+        default:
+            return;
+    }
+}
+
 void RadioControlsWindow::rangeScanningBoxClicked(bool checked)
 {
     if(checked)
@@ -238,6 +280,42 @@ void RadioControlsWindow::baudRateSelected(const QString &baudRateString)
     }
 
     Backend::getInstance().setBaudRate(currentPort, baudRate);
+}
+
+void RadioControlsWindow::readSerialParameters()
+{
+    QString currentPort = ui->SerialPortListObj->getCurrentlySelectedPortName();
+
+    if(currentPort == "")
+    {
+        return;
+    }
+
+    Backend::getInstance().queryParameters(currentPort, {
+        AsciiToUint16('B', 'D'),
+        AsciiToUint16('N', 'B'),
+        AsciiToUint16('S', 'B'),
+        AsciiToUint16('A', 'P'),
+        AsciiToUint16('A', 'O')
+    });
+}
+
+void RadioControlsWindow::writeSerialParameters()
+{
+    QString currentPort = ui->SerialPortListObj->getCurrentlySelectedPortName();
+
+    if(currentPort == "")
+    {
+        return;
+    }
+
+
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::InterfaceDataRate, ui->RadioParameters_BaudRate->currentIndex());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::InterfaceParity, ui->RadioParameters_Parity->currentIndex());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::InterfaceStopBits, ui->RadioParameters_StopBits->currentIndex());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::ApiMode, ui->RadioParameters_ApiMode->currentIndex());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::ApiOptions, ui->RadioParameters_ApiOptions->currentIndex());
+    Backend::getInstance().writeParameters(currentPort);
 }
 
 RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
@@ -279,6 +357,10 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
 
     connect(ui->BaudRateDropdown, &QComboBox::textActivated, this, &RadioControlsWindow::baudRateSelected);
 
+    connect(ui->RadioParameters_Serial_ReadButton, &QPushButton::pressed, this, &RadioControlsWindow::readSerialParameters);
+    connect(ui->RadioParameters_Serial_WriteButton, &QPushButton::pressed, this, &RadioControlsWindow::writeSerialParameters);
+
+    connect(&Backend::getInstance(), &Backend::receivedAtCommandResponse, this, &RadioControlsWindow::receiveAtCommandResponse);
 
 //    connect(serialPortListObj, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(serialPortChosen(QListWidgetItem*, QListWidgetItem*)));
 }

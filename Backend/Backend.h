@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QMutex>
+#include <QMap>
 #include "RadioModule.h"
 #include "../Utility/WebServer.h"
 #include "../Utility/DataLogger.h"
@@ -67,6 +68,13 @@ public:
     void disconnectFromModule(const QString& name);
     bool moduleExistsWithName(const QString &name);
 
+    void queryParameter(const QString &moduleName, uint16_t parameter);
+    void queryParameters(const QString &moduleName, const QList<uint16_t>& parameters);
+
+    void setParameter(const QString &moduleName, uint16_t parameter, uint8_t *value, size_t valueSize_bytes);
+    void setParameter(const QString &moduleName, uint16_t parameter, uint8_t value);
+    void writeParameters(const QString &moduleName);
+
     void linkTestComplete(LinkTestResults results, int iterationsLeft);
     void runLinkTest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations, uint8_t repeat, bool loop=false);
     void cancelLinkTest();
@@ -79,6 +87,8 @@ public:
     void sendEnergyDetectCommand(uint16_t msPerChannel);
 
     void runThroughputTestsWithRange(const QString& originatingPort, uint64_t destinationAddress, QList<QList<int>> params, uint duration, uint8_t transmitOptions);
+
+    void receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes);
 
     void start();
     void flushFiles();
@@ -112,6 +122,8 @@ signals:
     void linkTestFailedSignal();
 
     void throughputTestDataAvailable(float, uint, uint);
+
+    void receivedAtCommandResponse(uint16_t, const uint8_t *, size_t);
 
 private:
     explicit Backend(QObject *parent = nullptr);

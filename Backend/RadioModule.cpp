@@ -319,6 +319,15 @@ void RadioModule::sentFrame(uint8_t frameID)
     cycleCountsFromFrameID[frameID] = cycleCount;
 }
 
+void RadioModule::_handleAtCommandResponse(const uint8_t *frame, uint8_t length_bytes)
+{
+    uint16_t command = getAtCommand(frame);
+    size_t response_length_bytes = length_bytes - XBee::AtCommandResponse::PacketBytes;
+    const uint8_t *response = &frame[XBee::AtCommandResponse::BytesBeforeCommandData];
+
+    Backend::getInstance().receiveAtCommandResponse(command, response, response_length_bytes);
+}
+
 void RadioModule::_handleRemoteAtCommandResponse(const uint8_t *frame, uint8_t length_bytes)
 {
     uint16_t command = getRemoteAtCommand(frame);
