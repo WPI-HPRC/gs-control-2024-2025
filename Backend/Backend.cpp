@@ -365,7 +365,6 @@ void Backend::start()
 
                 emit newGroundDateTime(currentLocalDateTime);
 
-
                 delete currentLocalDateTime;
             }
     );
