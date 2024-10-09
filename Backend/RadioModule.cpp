@@ -150,7 +150,11 @@ void RadioModule::writeBytes(const char *data, size_t length_bytes)
     {
         log("FAILED TO WRITE ALL BYTES. EXPECTED %d, RECEIVED %d\n", length_bytes, bytes_written);
     }
+}
 
+void RadioModule::setBaudRate(int baudRate)
+{
+   serialPort->setBaudRate(baudRate);
 }
 
 size_t RadioModule::readBytes_uart(char *buffer, size_t max_bytes)

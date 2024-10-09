@@ -54,6 +54,11 @@ SerialPort::SerialPort(const QSerialPortInfo& port, int baudRate, DataLogger *da
     std::cout.flush();
 }
 
+void SerialPort::setBaudRate(int baudRate)
+{
+    serialPort.setBaudRate(baudRate);
+}
+
 void SerialPort::close()
 {
     shouldBeOpen = false;

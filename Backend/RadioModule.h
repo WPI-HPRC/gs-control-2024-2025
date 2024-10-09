@@ -44,6 +44,7 @@ class RadioModule : public XBeeDevice
 public:
     RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo &portInfo);
     RadioModule(int baudRate, DataLogger *logger);
+    void setBaudRate(int baudRate);
 
     void configureRadio();
 
