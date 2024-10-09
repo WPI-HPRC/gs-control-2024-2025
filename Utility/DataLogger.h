@@ -10,6 +10,7 @@
 #include "QDir"
 #include <iostream>
 #include "../Constants.h"
+#include "Utility.h"
 
 #define DEBUG_CSV false
 
@@ -112,26 +113,19 @@ private:
 class DataLogger
 {
 public:
-    enum PacketType
-    {
-        Unknown = -1,
-        Rocket = 0x01,
-        Payload = 0x02
-    };
-
     struct Packet
     {
         std::string data;
-        PacketType packetType;
+        GroundStation::PacketType packetType;
     };
 
     explicit DataLogger(QString dirPrefix = "", bool needFiles = true);
 
-    void writeData(const QJsonObject &jsonData, PacketType packetType);
+    void writeData(const QJsonObject &jsonData, GroundStation::PacketType packetType);
 
-    void dataReady(const char *data, DataLogger::PacketType packetType);
+    void dataReady(const char *data, GroundStation::PacketType packetType);
 
-    void dataReady(const char *data, DataLogger::PacketType packetType, uint8_t rssi);
+    void dataReady(const char *data, GroundStation::PacketType packetType, uint8_t rssi);
 
     void writeToByteFile(const char *text, size_t size);
 

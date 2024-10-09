@@ -26,7 +26,7 @@ public slots:
     void serialPortClosed(const QSerialPortInfo&);
 
 signals:
-    void openSerialPort(const QString&, RadioModuleType);
+    void openSerialPort(const QString&, Backend::RadioModuleType);
     void closeSerialPort(const QString&);
 
 private:

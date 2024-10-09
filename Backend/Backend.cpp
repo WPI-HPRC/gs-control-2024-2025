@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 #include "Constants.h"
+
 //#define SIMULATE_DATA
 
 QSerialPortInfo getTargetPort(const QString& portName)
@@ -256,6 +257,11 @@ void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
     emit linkTestDataAvailable(results, iterationsLeft);
 }
 
+void Backend::receiveTelemetry(Backend::Telmetry telemetry)
+{
+    emit telemetryAvailable(telemetry);
+}
+
 void Backend::disconnectFromModule(const QString &name)
 {
     RadioModule *module = getModuleWithName(name);
@@ -325,23 +331,19 @@ void Backend::start()
 
     webServer = new WebServer(8001);
 
-#ifdef SIMULATE_DATA
-    webServer = new WebServer(8001);
-
     dataSimulator = new DataSimulator(
-            "/Users/will/Desktop/irec_trimmed.csv", 50,
+            "../Utility/SamplePayloadData.csv",
             webServer);
-#else
 
-//    ByteParser parser("/Users/will/Desktop/test.txt");
+#ifdef SIMULATE_DATA
+    dataSimulator->start();
+#endif
 
     QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);
     if(!modem.isNull())
     {
         connectToModule(GROUND_STATION_MODULE, Default);
     }
-
-//    getModuleWithName("A28DMVHS")->sendLinkTestRequest(0x0013A200422CDAC2, 300, 4000);
 
     timer = new QTimer();
     timer->setInterval(1);
@@ -350,7 +352,6 @@ void Backend::start()
 
     connect(timer, &QTimer::timeout, this, &Backend::runRadioModuleCycles);
     timer->start();
-#endif
 }
 
 Backend::Backend(QObject *parent) : QObject(parent)

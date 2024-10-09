@@ -50,28 +50,32 @@ DataLogger::Packet parsePacket(const uint8_t *frame)
     std::string str;
 
     // This way of assigning the packet type seems redundant, but the packetType byte can take on any value from 0-255; we want to set it to an enum value that we understand
-    DataLogger::PacketType packetType;
+    Backend::Telmetry telemetry{};
 
     switch (frame[0])
     {
-        case DataLogger::Rocket:
-            str = JS::serializeStruct(*(RocketTelemPacket *) (&frame[1]));
-            packetType = DataLogger::Rocket;
+        case GroundStation::Rocket:
+            telemetry.packetType = GroundStation::Rocket;
+            telemetry.data.rocketData = (GroundStation::RocketTelemPacket *) (&frame[1]);
+            str = JS::serializeStruct(*telemetry.data.rocketData);
             break;
-        case DataLogger::Payload:
-            str = JS::serializeStruct(*(PayloadTelemPacket *) (&frame[1]));
-            packetType = DataLogger::Payload;
+        case GroundStation::Payload:
+            telemetry.data.payloadData = (GroundStation::PayloadTelemPacket *) (&frame[1]);
+            str = JS::serializeStruct(*telemetry.data.payloadData);
+            telemetry.packetType = GroundStation::Payload;
             break;
         default:
             str = "";
-            packetType = DataLogger::Unknown;
+            telemetry.packetType = GroundStation::Unknown;
             break;
     }
+
+    Backend::getInstance().receiveTelemetry(telemetry);
 
     str = std::regex_replace(str, std::regex("nan"), "0");
     str = std::regex_replace(str, std::regex("inf"), "0");
 
-    return {str, packetType};
+    return {str, telemetry.packetType};
 }
 
 void RadioModule::disconnectPort()
@@ -183,12 +187,8 @@ void RadioModule::incorrectChecksum(uint8_t calculated, uint8_t received)
     std::string str = QString::asprintf("\nWRONG CHECKSUM. calculated: %02x, received: %02x\n\n", calculated & 0xFF,
                                         received & 0xFF).toStdString();
 
-//    log(str.c_str());
-
-//    dataLogger->writeToByteFile(str.c_str(), str.length());
     dataLogger->writeToTextFile(str.c_str(), str.length());
 
-//    dataLogger->flushByteFile();
     dataLogger->flushTextFile();
 }
 
@@ -221,8 +221,6 @@ void RadioModule::sendLinkTestRequest(uint64_t destinationAddress, uint16_t payl
 void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t length_bytes)
 {
     using namespace XBee::ExtendedTransmitStatus;
-
-    auto *data = (Struct *)(&frame[4]);
 
     auto *status = (Struct *)(&frame[BytesBeforeFrameID]);
 
@@ -283,12 +281,6 @@ void RadioModule::handleLinkTest(XBee::ExplicitRxIndicator::LinkTest data)
 
     Backend::getInstance().linkTestComplete(results, linkTestsLeft);
 
-    /*
-    log("Finished link test.\n\tPayload Size: %d\n\tIterations: %d\n\tSuccess: %d\n\tRetries: %d\n\tResult: %02x\n\tRR: %d\n\tMax RSSI: %d\n\tMin RSSI: %d\n\tAvg RSSI: %d\n",
-        data.payloadSize, data.iterations, data.success, data.retries, data.result, data.RR, data.maxRssi, data.minRssi, data.avgRssi
-        );
-
-     */
     std::cout << "Got link test result" << std::endl;
 
     if(linkTestsLeft != 0)
