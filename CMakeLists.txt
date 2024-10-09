@@ -56,8 +56,8 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h
         Frontend/Widgets/TimeDateWidgets/payloaduptimewidget.h
         Frontend/Widgets/TimeDateWidgets/payloaduptimewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/flighttimewidget.h
-        Frontend/Widgets/TimeDateWidgets/flighttimewidget.cpp
+        Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.h
+        Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.cpp
         Frontend/Widgets/TimeDateWidgets/datewidget.cpp
         Frontend/Widgets/TimeDateWidgets/datewidget.h
         Frontend/Widgets/TimeDateWidgets/datewidget.ui
@@ -79,8 +79,10 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h
         Frontend/Widgets/TimeDateWidgets/payloaduptimewidget.h
         Frontend/Widgets/TimeDateWidgets/payloaduptimewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/flighttimewidget.h
-        Frontend/Widgets/TimeDateWidgets/flighttimewidget.cpp
+        Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.h
+        Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.cpp
+        Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.h
+        Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.cpp
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core

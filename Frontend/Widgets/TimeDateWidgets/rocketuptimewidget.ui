@@ -28,7 +28,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Rocket Uptime</string>
+      <string>Rocket Uptime:</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
