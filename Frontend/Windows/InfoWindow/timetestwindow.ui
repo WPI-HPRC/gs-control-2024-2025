@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>731</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>TimeTestWindow</string>
@@ -20,6 +26,46 @@
     </item>
     <item>
      <widget class="GroundTimeWidget" name="widget_2" native="true"/>
+    </item>
+    <item>
+     <widget class="RocketUptimeWidget" name="widget_3" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>350</width>
+        <height>50</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="PayloadUptimeWidget" name="widget_4" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>350</width>
+        <height>50</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="GroundFlightTimeWidget" name="widget_5" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>350</width>
+        <height>50</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="RocketFlightTimeWidget" name="widget_6" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>350</width>
+        <height>50</height>
+       </size>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -35,6 +81,30 @@
    <class>GroundTimeWidget</class>
    <extends>QWidget</extends>
    <header>Frontend/Widgets/TimeDateWidgets/groundtimewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>GroundFlightTimeWidget</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PayloadUptimeWidget</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Widgets/TimeDateWidgets/payloaduptimewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RocketFlightTimeWidget</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RocketUptimeWidget</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
