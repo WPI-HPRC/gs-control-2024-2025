@@ -2,7 +2,6 @@
 #include <QApplication>
 #include "Backend/Backend.h"
 #include "Frontend/Windows/RadioControlsWindow/RadioControlsWindow.h"
-#include "Frontend/Windows/InfoWindow/timetestwindow.h"
 
 struct TestStruct
 {
@@ -17,15 +16,11 @@ int main(int argc, char *argv[])
 
     Backend &backend = Backend::getInstance();
 
-    // RadioControlsWindow radioControlsWindow;
-    // radioControlsWindow.showNormal();
-    // radioControlsWindow.update();
-    // radioControlsWindow.setWindowTitle("Radio Controls");
+    RadioControlsWindow radioControlsWindow;
+    radioControlsWindow.showNormal();
+    radioControlsWindow.update();
+    radioControlsWindow.setWindowTitle("Radio Controls");
 
-    TimeTestWindow time_test_window;
-    time_test_window.showNormal();
-    time_test_window.update();
-    time_test_window.setWindowTitle("Test Window");
 
 
 

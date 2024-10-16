@@ -48,9 +48,6 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Widgets/TimeDateWidgets/datewidget.h
         Frontend/Widgets/TimeDateWidgets/datewidget.h
         Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
-        Frontend/Windows/InfoWindow/timetestwindow.cpp
-        Frontend/Windows/InfoWindow/timetestwindow.h
-        Frontend/Windows/InfoWindow/timetestwindow.ui
         Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.cpp
         Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h
         Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h
@@ -71,9 +68,6 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Widgets/TimeDateWidgets/datewidget.h
         Frontend/Widgets/TimeDateWidgets/datewidget.h
         Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
-        Frontend/Windows/InfoWindow/timetestwindow.cpp
-        Frontend/Windows/InfoWindow/timetestwindow.h
-        Frontend/Windows/InfoWindow/timetestwindow.ui
         Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.cpp
         Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h
         Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h
