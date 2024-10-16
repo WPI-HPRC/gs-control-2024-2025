@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>40</height>
+    <width>350</width>
+    <height>50</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
-    <width>300</width>
-    <height>40</height>
+    <width>350</width>
+    <height>50</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
       <bool>false</bool>
      </property>
      <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
     </widget>
    </item>
@@ -55,7 +55,7 @@
       <string>hh:mm:ss.mss</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
      </property>
     </widget>
    </item>
