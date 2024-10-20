@@ -8,7 +8,6 @@
 #include "ui_DateWidget.h"
 
 
-
 DateWidget::DateWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::DateWidget) {
     ui->setupUi(this);
