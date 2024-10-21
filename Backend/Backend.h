@@ -142,7 +142,7 @@ signals:
     void receivedAtCommandResponse(uint16_t, const uint8_t *, size_t);
     void newBytesReadAvailable(QString);
     void newBytesWrittenAvailable(QString);
-    
+
 private:
     explicit Backend(QObject *parent = nullptr);
 

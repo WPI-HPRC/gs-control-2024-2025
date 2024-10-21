@@ -220,12 +220,28 @@ void RadioControlsWindow::receiveAtCommandResponse(uint16_t command, const uint8
     if(response_length_bytes == 0)
         return;
 
+    QString nodeID{};
+
     if(command == XBee::AtCommand::InterfaceDataRate)
     {
         uint8_t value = *(uint8_t*)&response[3];
         if (value > 0x0A)
         {
             return;
+        }
+    }
+    else if(command == XBee::AtCommand::NodeIdentifier)
+    {
+        for (int i = 0; i < response_length_bytes; i++)
+        {
+            uint8_t byte = response[i];
+
+            if (byte == 0x00)
+            {
+                break;
+            }
+
+            nodeID.append((char)byte);
         }
     }
 
@@ -251,6 +267,52 @@ void RadioControlsWindow::receiveAtCommandResponse(uint16_t command, const uint8
             ui->RadioParameters_ApiOptions->setCurrentIndex(response[0]);
             break;
 
+        case XBee::AtCommand::MessagingMode:
+            ui->RadioParamaters_MessagingMode->setCurrentIndex(response[0]);
+            break;
+
+        case XBee::AtCommand::NodeIdentifier:
+            ui->RadioParameters_NodeIdentifier->setText(nodeID);
+            break;
+        case XBee::AtCommand::NetworkID:
+            ui->RadioParameters_NetworkID->setValue(response[0] << 8 | response[1]);
+            break;
+        case XBee::AtCommand::PreambleID:
+            ui->RadioParameters_PreambleID->setValue(response[0]);
+            break;
+        case XBee::AtCommand::ClusterID:
+            ui->RadioParameters_ClusterID->setValue(response[0] << 8 | response[1]);
+            break;
+        case XBee::AtCommand::NodeDiscoveryBackoff:
+            ui->RadioParameters_NetworkDiscoveryBackOff->setValue(response[0] << 8 | response[1]);
+            break;
+        case XBee::AtCommand::NodeDiscoveryOptions:
+            ui->RadioParameters_NetworkDiscoveryOptions->setValue(response[0]);
+            break;
+        case XBee::AtCommand::RFDataRate:
+            ui->RadioParameters_RfDataRate->setCurrentIndex(response[0]);
+            break;
+        case XBee::AtCommand::PowerLevel:
+            ui->RadioParameters_TxPowerLevel->setCurrentIndex(response[0]);
+            break;
+        case XBee::AtCommand::TransmitOptions:
+            ui->RadioParameters_TransmitOptions->setValue(response[0]);
+            break;
+        case XBee::AtCommand::UnicastRetries:
+            ui->RadioParameters_UnicastRetries->setValue(response[0]);
+            break;
+        case XBee::AtCommand::MeshUnicastRetries:
+            ui->RadioParameters_MeshUnicastRetries->setValue(response[0]);
+            break;
+        case XBee::AtCommand::NetworkHops:
+            ui->RadioParameters_NetworkHops->setValue(response[0]);
+            break;
+        case XBee::AtCommand::BroadcastHops:
+            ui->RadioParameters_BroadcastHops->setValue(response[0]);
+            break;
+        case XBee::AtCommand::BroadcastMultiTransmits:
+            ui->RadioParameters_BroadcastMultiTransmits->setValue(response[0]);
+            break;
         default:
             return;
     }
@@ -329,6 +391,40 @@ void RadioControlsWindow::writeSerialParameters()
     Backend::getInstance().writeParameters(currentPort);
 }
 
+void RadioControlsWindow::readMessagingParameters()
+{
+    QString currentPort = ui->SerialPortListObj->getCurrentlySelectedPortName();
+
+    if(currentPort == "")
+    {
+        return;
+    }
+
+    Backend::getInstance().queryParameters(currentPort, {
+            AsciiToUint16('C', 'E'),
+            AsciiToUint16('N', 'I'),
+            AsciiToUint16('I', 'D'),
+            AsciiToUint16('H', 'P'),
+            AsciiToUint16('C', 'I'),
+            AsciiToUint16('N', 'T'),
+            AsciiToUint16('N', 'O'),
+            AsciiToUint16('B', 'R'),
+            AsciiToUint16('P', 'L'),
+            AsciiToUint16('T', 'O'),
+            AsciiToUint16('R', 'R'),
+            AsciiToUint16('M', 'R'),
+            AsciiToUint16('N', 'H'),
+            AsciiToUint16('B', 'H'),
+            AsciiToUint16('M', 'T'),
+
+    });
+}
+
+void RadioControlsWindow::writeMessagingParameters()
+{
+
+}
+
 RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::RadioControlsWindow)
 {
@@ -375,6 +471,8 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
 
     connect(&Backend::getInstance(), &Backend::newBytesReadAvailable, this, &RadioControlsWindow::newBytesRead);
     connect(&Backend::getInstance(), &Backend::newBytesWrittenAvailable, this, &RadioControlsWindow::newBytesWritten);
+
+    connect(ui->RadioParameters_Messaging_ReadButton, &QPushButton::pressed, this, &RadioControlsWindow::readMessagingParameters);
 
 //    connect(serialPortListObj, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(serialPortChosen(QListWidgetItem*, QListWidgetItem*)));
 }

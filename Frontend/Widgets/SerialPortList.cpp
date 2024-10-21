@@ -29,7 +29,7 @@ SerialPortList::SerialPortList(QWidget *parent) : QTableWidget(parent)
 
 //    connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(portChosen(QListWidgetItem*)));
 
-    connect(this, SIGNAL(openSerialPort(QString,RadioModuleType,int)), &SerialPortManager::getInstance(), SLOT(openPort(QString,RadioModuleType,int)));
+    connect(this, &SerialPortList::openSerialPort, &SerialPortManager::getInstance(), &SerialPortManager::openPort);
     connect(this, SIGNAL(closeSerialPort(QString)), &SerialPortManager::getInstance(), SLOT(closePort(QString)));
 
     /*
@@ -89,6 +89,7 @@ void SerialPortList::buttonClicked()
 
     if(row >= serialPorts.length())
         return;
+
     QString portName = serialPorts.at(row).portName();
 
     if(button->text() == "Connect")
