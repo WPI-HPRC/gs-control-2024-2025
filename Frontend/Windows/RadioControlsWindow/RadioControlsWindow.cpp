@@ -427,7 +427,11 @@ void RadioControlsWindow::writeMessagingParameters()
     {
         return;
     }
+
+    QByteArray nodeID = ui->RadioParameters_NodeIdentifier->text().toUtf8();
+
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::MessagingMode, ui->RadioParameters_MessagingMode->currentIndex());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NodeIdentifier, (uint8_t *)nodeID.data(), nodeID.length());
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NetworkID, ui->RadioParameters_NetworkID->value());
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::PreambleID, ui->RadioParameters_PreambleID->value());
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::ClusterID, ui->RadioParameters_ClusterID->value());
