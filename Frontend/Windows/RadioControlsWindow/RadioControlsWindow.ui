@@ -1685,7 +1685,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QComboBox" name="RadioParamaters_MessagingMode">
+         <widget class="QComboBox" name="RadioParameters_MessagingMode">
           <item>
            <property name="text">
             <string>Standard Router [0]</string>

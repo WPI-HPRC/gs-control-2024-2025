@@ -268,7 +268,7 @@ void RadioControlsWindow::receiveAtCommandResponse(uint16_t command, const uint8
             break;
 
         case XBee::AtCommand::MessagingMode:
-            ui->RadioParamaters_MessagingMode->setCurrentIndex(response[0]);
+            ui->RadioParameters_MessagingMode->setCurrentIndex(response[0]);
             break;
 
         case XBee::AtCommand::NodeIdentifier:
@@ -382,7 +382,6 @@ void RadioControlsWindow::writeSerialParameters()
         return;
     }
 
-
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::InterfaceDataRate, ui->RadioParameters_BaudRate->currentIndex());
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::InterfaceParity, ui->RadioParameters_Parity->currentIndex());
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::InterfaceStopBits, ui->RadioParameters_StopBits->currentIndex());
@@ -422,7 +421,27 @@ void RadioControlsWindow::readMessagingParameters()
 
 void RadioControlsWindow::writeMessagingParameters()
 {
+    QString currentPort = ui->SerialPortListObj->getCurrentlySelectedPortName();
 
+    if(currentPort == "")
+    {
+        return;
+    }
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::MessagingMode, ui->RadioParameters_MessagingMode->currentIndex());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NetworkID, ui->RadioParameters_NetworkID->value());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::PreambleID, ui->RadioParameters_PreambleID->value());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::ClusterID, ui->RadioParameters_ClusterID->value());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NodeDiscoveryBackoff, ui->RadioParameters_NetworkDiscoveryBackOff->value());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NodeDiscoveryOptions, ui->RadioParameters_NetworkDiscoveryOptions->value());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::RFDataRate, ui->RadioParameters_RfDataRate->currentIndex());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::PowerLevel, ui->RadioParameters_TxPowerLevel->currentIndex());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::TransmitOptions, ui->RadioParameters_TransmitOptions->value());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::UnicastRetries, ui->RadioParameters_UnicastRetries->value());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::MeshUnicastRetries, ui->RadioParameters_MeshUnicastRetries->value());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NetworkHops, ui->RadioParameters_NetworkHops->value());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::BroadcastHops, ui->RadioParameters_BroadcastHops->value());
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::BroadcastMultiTransmits, ui->RadioParameters_BroadcastMultiTransmits->value());
+    Backend::getInstance().writeParameters(currentPort);
 }
 
 RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
@@ -473,6 +492,7 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
     connect(&Backend::getInstance(), &Backend::newBytesWrittenAvailable, this, &RadioControlsWindow::newBytesWritten);
 
     connect(ui->RadioParameters_Messaging_ReadButton, &QPushButton::pressed, this, &RadioControlsWindow::readMessagingParameters);
+    connect(ui->RadioParameters_Messaging_WriteButton, &QPushButton::pressed, this, &RadioControlsWindow::writeMessagingParameters);
 
     connect(ui->ClearBytesReadButton, &QPushButton::pressed, [this]()
     {
