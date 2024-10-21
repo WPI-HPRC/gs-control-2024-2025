@@ -147,7 +147,7 @@ private:
     QTimer *rtcTimer{};
     std::time_t currentGroundEpoch;
 
-    QElapsedTimer *groundFlightTime{};
+    QElapsedTimer groundFlightTime{};
     uint32_t rocketTimestampStart;
 };
 
