@@ -90,6 +90,9 @@ public:
 
     bool receivingThroughputTest = false;
     uint throughputTestPacketsReceived = 0;
+
+private:
+    void handlingFrame(const uint8_t *frame) override;
 };
 
 class ServingRadioModule

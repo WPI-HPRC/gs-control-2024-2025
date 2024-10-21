@@ -138,13 +138,17 @@ void RadioModule::writeBytes(const char *data, size_t length_bytes)
     int bytes_written = serialPort->write(data, (int) length_bytes);
 
     dataLogger->writeToTextFile("Writing: ");
+    QString logString{};
     for (int i = 0; i < length_bytes; i++)
     {
-        dataLogger->writeToTextFile(QString::asprintf("%02x ", data[i] & 0xFF));
+        logString.append(QString::asprintf("%02X ", (int)(data[i] & 0xFF)));
+//        dataLogger->writeToTextFile(QString::asprintf("%02x ", data[i] & 0xFF));
     }
+    dataLogger->writeToTextFile(logString);
     dataLogger->writeToTextFile("\n");
     dataLogger->flushTextFile();
 
+    Backend::getInstance().newBytesWritten(logString);
 
     if (bytes_written != length_bytes)
     {
@@ -213,6 +217,19 @@ void RadioModule::log(const char *format, ...)
     dataLogger->flushTextFile();
 
     va_end(args);
+}
+
+void RadioModule::handlingFrame(const uint8_t *frame)
+{
+    QString logString{};
+    uint16_t length = frame[1] << 8 | frame[2];
+
+    for(int i = 0; i < length + 4; i++)
+    {
+        logString.append(QString::asprintf("%02X ", ((int)frame[i] & 0xFF)));
+    }
+
+    Backend::getInstance().newBytesRead(logString);
 }
 
 void RadioModule::sendLinkTestRequest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations)

@@ -282,6 +282,17 @@ void RadioControlsWindow::baudRateSelected(const QString &baudRateString)
     Backend::getInstance().setBaudRate(currentPort, baudRate);
 }
 
+void RadioControlsWindow::newBytesRead(const QString& text)
+{
+    ui->BytesReadBrowser->append(text);
+}
+
+void RadioControlsWindow::newBytesWritten(const QString& text)
+{
+    ui->BytesWrittenBrowser->append(text);
+}
+
+
 void RadioControlsWindow::readSerialParameters()
 {
     QString currentPort = ui->SerialPortListObj->getCurrentlySelectedPortName();
@@ -361,6 +372,9 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
     connect(ui->RadioParameters_Serial_WriteButton, &QPushButton::pressed, this, &RadioControlsWindow::writeSerialParameters);
 
     connect(&Backend::getInstance(), &Backend::receivedAtCommandResponse, this, &RadioControlsWindow::receiveAtCommandResponse);
+
+    connect(&Backend::getInstance(), &Backend::newBytesReadAvailable, this, &RadioControlsWindow::newBytesRead);
+    connect(&Backend::getInstance(), &Backend::newBytesWrittenAvailable, this, &RadioControlsWindow::newBytesWritten);
 
 //    connect(serialPortListObj, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(serialPortChosen(QListWidgetItem*, QListWidgetItem*)));
 }

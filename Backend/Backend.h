@@ -102,6 +102,9 @@ public:
 
     void receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes);
 
+    void newBytesRead(QString text);
+    void newBytesWritten(QString text);
+
     void start();
     void flushFiles();
     void getPorts();
@@ -137,6 +140,8 @@ signals:
     void telemetryAvailable(Backend::Telemetry);
 
     void receivedAtCommandResponse(uint16_t, const uint8_t *, size_t);
+    void newBytesReadAvailable(QString);
+    void newBytesWrittenAvailable(QString);
 
 private:
     explicit Backend(QObject *parent = nullptr);

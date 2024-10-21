@@ -384,6 +384,16 @@ void Backend::runRadioModuleCycles()
     mutex.unlock();
 }
 
+void Backend::newBytesRead(QString text)
+{
+    emit newBytesReadAvailable(text);
+}
+
+void Backend::newBytesWritten(QString text)
+{
+    emit newBytesWrittenAvailable(text);
+}
+
 void Backend::start()
 {
     getPorts();
