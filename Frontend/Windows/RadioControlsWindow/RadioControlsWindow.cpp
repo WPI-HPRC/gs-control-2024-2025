@@ -7,7 +7,11 @@
 #include <QComboBox>
 #include "ui_RadioControlsWindow.h"
 
-#define FindChild(name) name = findChild<decltype(name)>(QStringLiteral(#name).replace(0, 1, QString(#name)[0].toUpper()))
+void ReverseBytes( void *start, int size )
+{
+    char *istart = static_cast<char *>(start), *iend = istart + size;
+    std::reverse(istart, iend);
+}
 
 uint64_t getAddressBigEndian(const uint8_t *packet, size_t *index_io)
 {
@@ -270,7 +274,6 @@ void RadioControlsWindow::receiveAtCommandResponse(uint16_t command, const uint8
         case XBee::AtCommand::MessagingMode:
             ui->RadioParameters_MessagingMode->setCurrentIndex(response[0]);
             break;
-
         case XBee::AtCommand::NodeIdentifier:
             ui->RadioParameters_NodeIdentifier->setText(nodeID);
             break;
@@ -432,10 +435,21 @@ void RadioControlsWindow::writeMessagingParameters()
 
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::MessagingMode, ui->RadioParameters_MessagingMode->currentIndex());
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NodeIdentifier, (uint8_t *)nodeID.data(), nodeID.length());
-    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NetworkID, ui->RadioParameters_NetworkID->value());
+
+    uint16_t networkID = ui->RadioParameters_NetworkID->value();
+    XBeeDevice::reverseBytes(&networkID, 2); // Need to go from little -> big endian
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NetworkID, (uint8_t *)&networkID, 2);
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::PreambleID, ui->RadioParameters_PreambleID->value());
-    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::ClusterID, ui->RadioParameters_ClusterID->value());
-    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NodeDiscoveryBackoff, ui->RadioParameters_NetworkDiscoveryBackOff->value());
+
+    uint16_t clusterID = ui->RadioParameters_ClusterID->value();
+    XBeeDevice::reverseBytes(&clusterID, 2);
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::ClusterID, (uint8_t *)&clusterID, 2);
+
+    uint16_t discoveryBackoff = ui->RadioParameters_NetworkDiscoveryBackOff->value();
+    XBeeDevice::reverseBytes(&discoveryBackoff, 2);
+    Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NodeDiscoveryBackoff, (uint8_t *)&discoveryBackoff, 2);
+
+
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::NodeDiscoveryOptions, ui->RadioParameters_NetworkDiscoveryOptions->value());
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::RFDataRate, ui->RadioParameters_RfDataRate->currentIndex());
     Backend::getInstance().setParameter(currentPort, XBee::AtCommand::PowerLevel, ui->RadioParameters_TxPowerLevel->currentIndex());
