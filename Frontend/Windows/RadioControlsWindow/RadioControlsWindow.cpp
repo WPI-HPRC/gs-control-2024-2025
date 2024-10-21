@@ -474,6 +474,16 @@ RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
 
     connect(ui->RadioParameters_Messaging_ReadButton, &QPushButton::pressed, this, &RadioControlsWindow::readMessagingParameters);
 
+    connect(ui->ClearBytesReadButton, &QPushButton::pressed, [this]()
+    {
+       ui->BytesReadBrowser->clear();
+    });
+
+    connect(ui->ClearBytesWrittenButton, &QPushButton::pressed, [this]()
+    {
+        ui->BytesWrittenBrowser->clear();
+    });
+
 //    connect(serialPortListObj, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(serialPortChosen(QListWidgetItem*, QListWidgetItem*)));
 }
 
