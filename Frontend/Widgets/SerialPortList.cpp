@@ -98,7 +98,7 @@ void SerialPortList::buttonClicked()
 
         int baud = parent()->findChild<QComboBox *>("BaudRateDropdown")->currentText().toInt();
 
-        emit(openSerialPort(portName, Default, baud));
+        emit(openSerialPort(portName, Backend::Default, baud));
     }
     else
     {

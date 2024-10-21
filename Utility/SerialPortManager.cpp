@@ -9,7 +9,7 @@ SerialPortManager::SerialPortManager(QObject *parent): QObject(parent)
     thread = new QThread();
 }
 
-void SerialPortManager::openPort(const QString &port, RadioModuleType type, int baudRate)
+void SerialPortManager::openPort(const QString &port, Backend::RadioModuleType type, int baudRate)
 {
     Backend::getInstance().connectToModule(port, type, baudRate);
 }
