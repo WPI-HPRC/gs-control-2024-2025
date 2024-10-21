@@ -1488,12 +1488,21 @@
           <property name="buttonSymbols">
            <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
           </property>
+          <property name="maximum">
+           <number>12000</number>
+          </property>
+          <property name="displayIntegerBase">
+           <number>16</number>
+          </property>
          </widget>
         </item>
         <item row="7" column="1">
          <widget class="QSpinBox" name="RadioParamaters_NetworkDiscoveryOptions">
           <property name="buttonSymbols">
            <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+          </property>
+          <property name="maximum">
+           <number>7</number>
           </property>
          </widget>
         </item>
