@@ -2,6 +2,7 @@
 #include <QApplication>
 #include "Backend/Backend.h"
 #include "Frontend/Windows/RadioControlsWindow/RadioControlsWindow.h"
+#include "Frontend/Windows/TelemetryWindow/timetestwindow.h"
 
 struct TestStruct
 {
@@ -20,14 +21,19 @@ int main(int argc, char *argv[])
     radioControlsWindow.showNormal();
     radioControlsWindow.update();
     radioControlsWindow.setWindowTitle("Radio Controls");
-    
+
+    TimeTestWindow timeTestWindow;
+    timeTestWindow.showNormal();
+    timeTestWindow.update();
+    timeTestWindow.setWindowTitle("timeTestWindow");
+
+
+
 
     TestStruct test;
     test.address = 0x0013A200423F474C;
 
     backend.start();
-
-
 
     int code = QApplication::exec();
 
