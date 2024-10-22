@@ -262,9 +262,10 @@ void Backend::receiveTelemetry(Backend::Telemetry telemetry)
 {
     emit telemetryAvailable(telemetry);
 
-    if(groundFlightTime.isValid() // if we haven't started the launch-elapsed timer
+    if(!groundFlightTime.isValid() // if we haven't started the launch-elapsed timer
     && (telemetry.data.rocketData->state > 0)) // and we're in a non-prelaunch state
     {
+        std::cout << "Launched!" << std::endl;
         groundFlightTime.start(); // start a timer within the application
         rocketTimestampStart = telemetry.data.rocketData->timestamp; // get our start value for rocket time
     }
@@ -272,13 +273,15 @@ void Backend::receiveTelemetry(Backend::Telemetry telemetry)
     if(groundFlightTime.isValid())
     {
         emit newGroundFlightTime(groundFlightTime.elapsed());
+        emit newRocketFlightTime((telemetry.data.rocketData->timestamp)-rocketTimestampStart);
     }
     else
     {
         emit newGroundFlightTime(0);
+        emit newRocketFlightTime(0);
     }
 
-    emit newRocketFlightTime((telemetry.data.rocketData->timestamp)-rocketTimestampStart);
+
 }
 
 void Backend::disconnectFromModule(const QString &name)
