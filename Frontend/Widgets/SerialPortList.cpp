@@ -8,6 +8,7 @@
 #include <QHeaderView>
 #include <QMainWindow>
 #include <qapplication.h>
+#include <QComboBox>
 
 QMainWindow* getMainWindow()
 {
@@ -28,7 +29,7 @@ SerialPortList::SerialPortList(QWidget *parent) : QTableWidget(parent)
 
 //    connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(portChosen(QListWidgetItem*)));
 
-    connect(this, SIGNAL(openSerialPort(QString,RadioModuleType)), &SerialPortManager::getInstance(), SLOT(openPort(QString,RadioModuleType)));
+    connect(this, &SerialPortList::openSerialPort, &SerialPortManager::getInstance(), &SerialPortManager::openPort);
     connect(this, SIGNAL(closeSerialPort(QString)), &SerialPortManager::getInstance(), SLOT(closePort(QString)));
 
     /*
@@ -88,6 +89,7 @@ void SerialPortList::buttonClicked()
 
     if(row >= serialPorts.length())
         return;
+
     QString portName = serialPorts.at(row).portName();
 
     if(button->text() == "Connect")
@@ -95,7 +97,9 @@ void SerialPortList::buttonClicked()
         button->setText("Connecting...");
         button->setEnabled(false);
 
-        emit(openSerialPort(portName, Backend::Default));
+        int baud = parent()->findChild<QComboBox *>("BaudRateDropdown")->currentText().toInt();
+
+        emit(openSerialPort(portName, Backend::Default, baud));
     }
     else
     {

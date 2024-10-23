@@ -253,6 +253,11 @@ void Backend::sendEnergyDetectCommand(uint16_t msPerChannel)
     getModuleWithName(GROUND_STATION_MODULE)->sendEnergyDetectCommand(msPerChannel);
 }
 
+void Backend::receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes)
+{
+    emit receivedAtCommandResponse(command, response, response_length_bytes);
+}
+
 void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
 {
     emit linkTestDataAvailable(results, iterationsLeft);
@@ -284,6 +289,18 @@ void Backend::receiveTelemetry(Backend::Telemetry telemetry)
 
 }
 
+void Backend::setBaudRate(const QString &name, int baudRate)
+{
+    RadioModule *module = getModuleWithName(name);
+
+    if(!module)
+    {
+        return;
+    }
+
+    module->setBaudRate(baudRate);
+}
+
 void Backend::disconnectFromModule(const QString &name)
 {
     RadioModule *module = getModuleWithName(name);
@@ -294,7 +311,49 @@ void Backend::disconnectFromModule(const QString &name)
     module->disconnectPort();
 }
 
-bool Backend::connectToModule(const QString& name, RadioModuleType moduleType)
+void Backend::queryParameter(const QString &moduleName, uint16_t parameter)
+{
+    RadioModule *module = getModuleWithName(moduleName);
+
+    if(!module)
+        return;
+
+    module->queryParameter(parameter);
+}
+
+void Backend::queryParameters(const QString &moduleName, const QList<uint16_t>& parameters)
+{
+    for(int i = 0; i < parameters.count(); i++)
+    {
+        queryParameter(moduleName, parameters.at(i));
+    }
+}
+
+void Backend::setParameter(const QString &moduleName, uint16_t parameter, uint8_t *value, size_t valueSize_bytes)
+{
+    RadioModule *module = getModuleWithName(moduleName);
+
+    if(!module)
+        return;
+
+    module->setParameter(parameter, value, valueSize_bytes);
+}
+
+void Backend::setParameter(const QString &moduleName, uint16_t parameter, uint8_t value)
+{
+    setParameter(moduleName, parameter, &value, 1);
+}
+
+void Backend::writeParameters(const QString &moduleName)
+{
+    RadioModule *module = getModuleWithName(moduleName);
+
+    if(!module)
+        return;
+    module->writeChanges();
+}
+
+bool Backend::connectToModule(const QString& name, RadioModuleType moduleType, int baudRate)
 {
     RadioModule *existingModule = getModuleWithName(name);
     if(existingModule)
@@ -324,13 +383,13 @@ bool Backend::connectToModule(const QString& name, RadioModuleType moduleType)
     switch(moduleType)
     {
         case Rocket:
-            module = new RocketTestModule(921600, new DataLogger(), targetPort);
+            module = new RocketTestModule(baudRate, new DataLogger(), targetPort);
             break;
         case Payload:
-            module = new PayloadTestModule(921600, new DataLogger(), targetPort);
+            module = new PayloadTestModule(baudRate, new DataLogger(), targetPort);
             break;
         default:
-            module = new ServingRadioModule(115200, new DataLogger(), targetPort, webServer);
+            module = new ServingRadioModule(baudRate, new DataLogger(), targetPort, webServer);
     }
     radioModules.append(module);
     return true;
@@ -344,6 +403,16 @@ void Backend::runRadioModuleCycles()
         radioModule->doCycle();
     }
     mutex.unlock();
+}
+
+void Backend::newBytesRead(QString text)
+{
+    emit newBytesReadAvailable(text);
+}
+
+void Backend::newBytesWritten(QString text)
+{
+    emit newBytesWrittenAvailable(text);
 }
 
 void Backend::start()
@@ -363,11 +432,11 @@ void Backend::start()
     QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);
     if(!modem.isNull())
     {
-        connectToModule(GROUND_STATION_MODULE, Default);
+        connectToModule(GROUND_STATION_MODULE, Default, 921600);
     }
 
     timer = new QTimer();
-    timer->setInterval(1);
+    timer->setInterval(5);
 
     loopCount = 0;
 

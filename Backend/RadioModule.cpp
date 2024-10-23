@@ -138,19 +138,27 @@ void RadioModule::writeBytes(const char *data, size_t length_bytes)
     int bytes_written = serialPort->write(data, (int) length_bytes);
 
     dataLogger->writeToTextFile("Writing: ");
+    QString logString{};
     for (int i = 0; i < length_bytes; i++)
     {
-        dataLogger->writeToTextFile(QString::asprintf("%02x ", data[i] & 0xFF));
+        logString.append(QString::asprintf("%02X ", (int)(data[i] & 0xFF)));
+//        dataLogger->writeToTextFile(QString::asprintf("%02x ", data[i] & 0xFF));
     }
+    dataLogger->writeToTextFile(logString);
     dataLogger->writeToTextFile("\n");
     dataLogger->flushTextFile();
 
+    Backend::getInstance().newBytesWritten(logString);
 
     if (bytes_written != length_bytes)
     {
         log("FAILED TO WRITE ALL BYTES. EXPECTED %d, RECEIVED %d\n", length_bytes, bytes_written);
     }
+}
 
+void RadioModule::setBaudRate(int baudRate)
+{
+   serialPort->setBaudRate(baudRate);
 }
 
 size_t RadioModule::readBytes_uart(char *buffer, size_t max_bytes)
@@ -209,6 +217,19 @@ void RadioModule::log(const char *format, ...)
     dataLogger->flushTextFile();
 
     va_end(args);
+}
+
+void RadioModule::handlingFrame(const uint8_t *frame)
+{
+    QString logString{};
+    uint16_t length = frame[1] << 8 | frame[2];
+
+    for(int i = 0; i < length + 4; i++)
+    {
+        logString.append(QString::asprintf("%02X ", ((int)frame[i] & 0xFF)));
+    }
+
+    Backend::getInstance().newBytesRead(logString);
 }
 
 void RadioModule::sendLinkTestRequest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations)
@@ -305,6 +326,15 @@ void RadioModule::handleEnergyDetectResponse(uint8_t *energyValues, uint8_t numC
 void RadioModule::sentFrame(uint8_t frameID)
 {
     cycleCountsFromFrameID[frameID] = cycleCount;
+}
+
+void RadioModule::_handleAtCommandResponse(const uint8_t *frame, uint8_t length_bytes)
+{
+    uint16_t command = getAtCommand(frame);
+    size_t response_length_bytes = length_bytes - XBee::AtCommandResponse::PacketBytes;
+    const uint8_t *response = &frame[XBee::AtCommandResponse::BytesBeforeCommandData];
+
+    Backend::getInstance().receiveAtCommandResponse(command, response, response_length_bytes);
 }
 
 void RadioModule::_handleRemoteAtCommandResponse(const uint8_t *frame, uint8_t length_bytes)
