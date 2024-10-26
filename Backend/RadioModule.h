@@ -75,6 +75,10 @@ public:
 
     void connectPort();
 
+    uint32_t packetsReceivedCount;
+    uint64_t bytesReceivedCount;
+    uint32_t droppedPacketsCount;
+
     DataLogger *dataLogger{};
     SerialPort *serialPort{};
 

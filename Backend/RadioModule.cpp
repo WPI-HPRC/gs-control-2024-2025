@@ -198,6 +198,8 @@ void RadioModule::incorrectChecksum(uint8_t calculated, uint8_t received)
     dataLogger->writeToTextFile(str.c_str(), str.length());
 
     dataLogger->flushTextFile();
+
+    droppedPacketsCount++;
 }
 
 void RadioModule::log(const char *format, ...)
@@ -228,6 +230,9 @@ void RadioModule::handlingFrame(const uint8_t *frame)
     {
         logString.append(QString::asprintf("%02X ", ((int)frame[i] & 0xFF)));
     }
+
+    packetsReceivedCount++;
+    bytesReceivedCount += (sizeof(frame)/sizeof(uint8_t));
 
     Backend::getInstance().newBytesRead(logString);
 }

@@ -394,6 +394,8 @@ void Backend::newBytesWritten(QString text)
     emit newBytesWrittenAvailable(text);
 }
 
+
+
 void Backend::start()
 {
     getPorts();

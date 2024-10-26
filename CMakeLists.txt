@@ -40,6 +40,14 @@ add_executable(gs_backend_2024_2025 main.cpp
         Utility/SerialPortManager.cpp
         Utility/SerialPortManager.h
         Utility/DataSimulator.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/bytespersecwidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/bytespersecwidget.h
+        Frontend/Widgets/RadioPerformanceWidgets/packetspersecwidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/packetspersecwidget.h
+        Frontend/Widgets/RadioPerformanceWidgets/droppedpacketswidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/droppedpacketswidget.h
+        Frontend/Widgets/RadioPerformanceWidgets/rssiwidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/rssiwidget.h
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core

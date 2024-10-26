@@ -102,6 +102,8 @@ public:
 
     void receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes);
 
+    void requestPacketdBm(const QString &moduleName);
+
     void newBytesRead(QString text);
     void newBytesWritten(QString text);
 
