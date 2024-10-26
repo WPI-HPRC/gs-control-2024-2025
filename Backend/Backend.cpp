@@ -264,6 +264,7 @@ void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
 
 void Backend::receiveTelemetry(Backend::Telemetry telemetry)
 {
+    Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
     emit telemetryAvailable(telemetry);
 }
 
@@ -394,7 +395,17 @@ void Backend::newBytesWritten(QString text)
     emit newBytesWrittenAvailable(text);
 }
 
+void Backend::updateThroughputSpeeds()
+{
+    // multiply each Unit/s count by 10 since we're running this code every 100ms
+    emit bytesPerSecond((getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount-lastByteCount) * 10);
+    emit packetsPerSecond((getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount-lastPacketCount) * 10);
+    emit droppedPackets(getModuleWithName(GROUND_STATION_MODULE)->droppedPacketsCount);
 
+    // update our "last" counters to get the difference next loop cycle
+    lastByteCount = getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount;
+    lastPacketCount = getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount;
+}
 
 void Backend::start()
 {
@@ -423,6 +434,12 @@ void Backend::start()
 
     connect(timer, &QTimer::timeout, this, &Backend::runRadioModuleCycles);
     timer->start();
+
+    throughputTimer = new QTimer();
+    throughputTimer->setInterval(100);
+
+    connect(throughputTimer, &QTimer::timeout, this, &Backend::updateThroughputSpeeds);
+    throughputTimer->start();
 }
 
 Backend::Backend(QObject *parent) : QObject(parent)

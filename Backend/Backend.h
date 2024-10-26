@@ -102,8 +102,6 @@ public:
 
     void receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes);
 
-    void requestPacketdBm(const QString &moduleName);
-
     void newBytesRead(QString text);
     void newBytesWritten(QString text);
 
@@ -130,6 +128,7 @@ public slots:
     void portClosed(const QSerialPortInfo&);
     void throughputTestTimerTicked();
     void runRadioModuleCycles();
+    void updateThroughputSpeeds();
 
 signals:
     void foundSerialPorts(QList<QSerialPortInfo>);
@@ -145,6 +144,10 @@ signals:
     void newBytesReadAvailable(QString);
     void newBytesWrittenAvailable(QString);
 
+    void bytesPerSecond(uint64_t);
+    void packetsPerSecond(uint32_t);
+    void droppedPackets(uint32_t);
+
 private:
     explicit Backend(QObject *parent = nullptr);
 
@@ -155,6 +158,11 @@ private:
     DataLogger *dataLogger{};
 
     QTimer *timer{};
+
+    QTimer *throughputTimer{};
+
+    uint32_t lastPacketCount;
+    uint64_t lastByteCount;
 
     QMutex mutex;
 

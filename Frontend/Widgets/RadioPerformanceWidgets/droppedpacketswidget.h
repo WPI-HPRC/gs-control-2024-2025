@@ -19,6 +19,9 @@ public:
     explicit DroppedPacketsWidget(QWidget *parent = nullptr);
     ~DroppedPacketsWidget() override;
 
+public slots:
+    void droppedPacketsCount(uint32_t);
+
 private:
     Ui::DroppedPacketsWidget *ui;
 };

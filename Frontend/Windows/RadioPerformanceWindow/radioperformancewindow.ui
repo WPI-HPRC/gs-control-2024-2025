@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RadioPerformanceWindow</class>
+ <widget class="QWidget" name="RadioPerformanceWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>427</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>RadioPerformanceWindow</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="BytesPerSecWidget" name="widget_4" native="true"/>
+   </item>
+   <item>
+    <widget class="PacketsPerSecWidget" name="widget" native="true"/>
+   </item>
+   <item>
+    <widget class="DroppedPacketsWidget" name="widget_2" native="true"/>
+   </item>
+   <item>
+    <widget class="RSSIWidget" name="widget_3" native="true"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BytesPerSecWidget</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Widgets/RadioPerformanceWidgets/bytespersecwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PacketsPerSecWidget</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Widgets/RadioPerformanceWidgets/packetspersecwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DroppedPacketsWidget</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Widgets/RadioPerformanceWidgets/droppedpacketswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RSSIWidget</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Widgets/RadioPerformanceWidgets/rssiwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -19,6 +19,9 @@ public:
     explicit BytesPerSecWidget(QWidget *parent = nullptr);
     ~BytesPerSecWidget() override;
 
+public slots:
+    void bytesPerSecondUpdate(uint64_t);
+
 private:
     Ui::BytesPerSecWidget *ui;
 };

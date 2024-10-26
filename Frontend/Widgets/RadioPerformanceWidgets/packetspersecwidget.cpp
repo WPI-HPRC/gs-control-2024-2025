@@ -6,11 +6,20 @@
 
 #include "packetspersecwidget.h"
 #include "ui_PacketsPerSecWidget.h"
+#include "Backend/Backend.h"
 
 
 PacketsPerSecWidget::PacketsPerSecWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::PacketsPerSecWidget) {
     ui->setupUi(this);
+
+    connect(&Backend::getInstance(), &Backend::packetsPerSecond, this, PacketsPerSecWidget::packetsPerSecondUpdate);
+}
+
+void PacketsPerSecWidget::packetsPerSecondUpdate(uint32_t packetsPerSec)
+{
+    ui->Packets->setText(QString::number(packetsPerSec));
+    ui->Packets->setEnabled(true);
 }
 
 PacketsPerSecWidget::~PacketsPerSecWidget() {

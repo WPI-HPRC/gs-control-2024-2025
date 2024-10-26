@@ -19,6 +19,9 @@ public:
     explicit PacketsPerSecWidget(QWidget *parent = nullptr);
     ~PacketsPerSecWidget() override;
 
+public slots:
+    void packetsPerSecondUpdate(uint32_t);
+
 private:
     Ui::PacketsPerSecWidget *ui;
 };

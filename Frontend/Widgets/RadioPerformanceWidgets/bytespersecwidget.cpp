@@ -6,11 +6,20 @@
 
 #include "bytespersecwidget.h"
 #include "ui_BytesPerSecWidget.h"
+#include "Backend/Backend.h"
 
 
 BytesPerSecWidget::BytesPerSecWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::BytesPerSecWidget) {
     ui->setupUi(this);
+
+    connect(&Backend::getInstance(), &Backend::bytesPerSecond, this, BytesPerSecWidget::bytesPerSecondUpdate);
+}
+
+void BytesPerSecWidget::bytesPerSecondUpdate(uint64_t bytesPerSec)
+{
+    ui->Bytes->setText(QString::number(bytesPerSec));
+    ui->Bytes->setEnabled(true);
 }
 
 BytesPerSecWidget::~BytesPerSecWidget() {

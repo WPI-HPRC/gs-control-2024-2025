@@ -2,26 +2,29 @@
 // Created by Nicolas DeBruin on 10/26/2024.
 //
 
-#ifndef LASTPACKETDBM_H
-#define LASTPACKETDBM_H
+#ifndef RSSIWIDGET_H
+#define RSSIWIDGET_H
 
 #include <QWidget>
 
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class LastPacketdBm; }
+namespace Ui { class RSSIWidget; }
 QT_END_NAMESPACE
 
-class LastPacketdBm : public QWidget {
+class RSSIWidget : public QWidget {
 Q_OBJECT
 
 public:
-    explicit LastPacketdBm(QWidget *parent = nullptr);
-    ~LastPacketdBm() override;
+    explicit RSSIWidget(QWidget *parent = nullptr);
+    ~RSSIWidget() override;
 
 private:
-    Ui::LastPacketdBm *ui;
+    Ui::RSSIWidget *ui;
+
+public slots:
+    void receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes);
 };
 
 
-#endif //LASTPACKETDBM_H
+#endif //RSSIWIDGET_H

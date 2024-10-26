@@ -48,6 +48,9 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Widgets/RadioPerformanceWidgets/droppedpacketswidget.h
         Frontend/Widgets/RadioPerformanceWidgets/rssiwidget.cpp
         Frontend/Widgets/RadioPerformanceWidgets/rssiwidget.h
+        Frontend/Windows/RadioPerformanceWindow/radioperformancewindow.cpp
+        Frontend/Windows/RadioPerformanceWindow/radioperformancewindow.h
+        Frontend/Windows/RadioPerformanceWindow/radioperformancewindow.ui
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core
