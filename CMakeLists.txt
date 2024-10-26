@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.27)
 project(gs_backend_2024_2025)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -14,6 +14,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         SerialPort
         WebSockets
+        Charts
         REQUIRED)
 
 add_executable(gs_backend_2024_2025 main.cpp
@@ -39,44 +40,13 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Widgets/SerialPortList.h
         Utility/SerialPortManager.cpp
         Utility/SerialPortManager.h
-        Frontend/Widgets/TimeDateWidgets/datewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/datewidget.h
-        Frontend/Widgets/TimeDateWidgets/datewidget.ui
-        Frontend/Widgets/TimeDateWidgets/groundtimewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
-        Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
-        Frontend/Widgets/TimeDateWidgets/datewidget.h
-        Frontend/Widgets/TimeDateWidgets/datewidget.h
-        Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
-        Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h
-        Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h
-        Frontend/Widgets/TimeDateWidgets/payloaduptimewidget.h
-        Frontend/Widgets/TimeDateWidgets/payloaduptimewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.h
-        Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/datewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/datewidget.h
-        Frontend/Widgets/TimeDateWidgets/datewidget.ui
         Utility/DataSimulator.cpp
-        Frontend/Widgets/TimeDateWidgets/datewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/datewidget.h
-        Frontend/Widgets/TimeDateWidgets/datewidget.ui
-        Frontend/Widgets/TimeDateWidgets/groundtimewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
-        Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
-        Frontend/Widgets/TimeDateWidgets/datewidget.h
-        Frontend/Widgets/TimeDateWidgets/datewidget.h
-        Frontend/Widgets/TimeDateWidgets/groundtimewidget.h
-        Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h
-        Frontend/Widgets/TimeDateWidgets/rocketuptimewidget.h
-        Frontend/Widgets/TimeDateWidgets/payloaduptimewidget.h
-        Frontend/Widgets/TimeDateWidgets/payloaduptimewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.h
-        Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.cpp
-        Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.h
-        Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.cpp
+        Frontend/Windows/GraphWindow/GraphWindow.h
+        Frontend/Windows/GraphWindow/GraphWindow.cpp
+        Frontend/Windows/GraphWindow/GraphWindow.ui
+        Frontend/Widgets/GraphWidget.cpp
+        Frontend/Widgets/GraphWidget.h
+
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core
@@ -84,5 +54,6 @@ target_link_libraries(gs_backend_2024_2025
         Qt6::Widgets
         Qt6::SerialPort
         Qt6::WebSockets
+        Qt6::Charts
 )
 

@@ -7,9 +7,9 @@
 #include <QJsonDocument>
 #include <string>
 #include <utility>
-#include <chrono>
 #include "Constants.h"
 
+//TODO
 #define SIMULATE_DATA
 
 QSerialPortInfo getTargetPort(const QString& portName)
@@ -125,6 +125,9 @@ void Backend::cancelLinkTest()
     std::cout << "Cancelling link test" << std::endl;
     getModuleWithName(GROUND_STATION_MODULE)->linkTestsLeft = 0;
 }
+
+
+
 
 void Backend::_runThroughputTest(Backend::ThroughputTestParams params)
 {
@@ -261,27 +264,6 @@ void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
 void Backend::receiveTelemetry(Backend::Telemetry telemetry)
 {
     emit telemetryAvailable(telemetry);
-
-    if(!groundFlightTime.isValid() // if we haven't started the launch-elapsed timer
-    && (telemetry.data.rocketData->state > 0)) // and we're in a non-prelaunch state
-    {
-        std::cout << "Launched!" << std::endl;
-        groundFlightTime.start(); // start a timer within the application
-        rocketTimestampStart = telemetry.data.rocketData->timestamp; // get our start value for rocket time
-    }
-
-    if(groundFlightTime.isValid())
-    {
-        emit newGroundFlightTime(groundFlightTime.elapsed());
-        emit newRocketFlightTime((telemetry.data.rocketData->timestamp)-rocketTimestampStart);
-    }
-    else
-    {
-        emit newGroundFlightTime(0);
-        emit newRocketFlightTime(0);
-    }
-
-
 }
 
 void Backend::disconnectFromModule(const QString &name)
@@ -296,6 +278,7 @@ void Backend::disconnectFromModule(const QString &name)
 
 bool Backend::connectToModule(const QString& name, RadioModuleType moduleType)
 {
+
     RadioModule *existingModule = getModuleWithName(name);
     if(existingModule)
     {
@@ -373,20 +356,6 @@ void Backend::start()
 
     connect(timer, &QTimer::timeout, this, &Backend::runRadioModuleCycles);
     timer->start();
-
-    rtcTimer = new QTimer();
-    rtcTimer->setInterval(100);
-
-    connect(rtcTimer, &QTimer::timeout, [this]()
-            {
-                currentGroundEpoch = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-
-                std::tm* currentLocalDateTime = std::localtime(&currentGroundEpoch);
-
-                emit newGroundDateTime(currentLocalDateTime);
-            }
-    );
-    rtcTimer->start();
 }
 
 Backend::Backend(QObject *parent) : QObject(parent)
