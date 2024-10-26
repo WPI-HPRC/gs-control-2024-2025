@@ -32,13 +32,17 @@ public:
 
 private:
     Ui::GraphWindow *ui;
-    int seconds;
+    double seconds;
     int resolution;
+    bool telemflag;
+    bool etmflag;
+    bool disconnect;
+    qreal samplerate;
     QTimer *timer;
-    std::unique_ptr<Backend::Telemetry> buffer;
-    std::unique_ptr<Backend::Telemetry> lastRecieved;
     GraphWidget *acceleration;
-    QList<Backend::Telemetry> *dataWindow;
+    GraphWidget *position;
+    GraphWidget *gyro;
+    GraphWidget *velocity;
 
 public slots:
     void scroll();
