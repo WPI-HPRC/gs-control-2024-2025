@@ -397,14 +397,25 @@ void Backend::newBytesWritten(QString text)
 
 void Backend::updateThroughputSpeeds()
 {
+    RadioModule *module = getModuleWithName(GROUND_STATION_MODULE);
+
+    if(!module){return;} // safety measure to prevent crashing the program if the radio isn't actually connected
+
     // multiply each Unit/s count by 10 since we're running this code every 100ms
-    emit bytesPerSecond((getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount-lastByteCount) * 10);
-    emit packetsPerSecond((getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount-lastPacketCount) * 10);
+    uint64_t bytesPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount) -lastByteCount ) * 10;
+    uint32_t packetsPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount) -lastPacketCount ) * 10;
+    emit bytesPerSecond(bytesPerSec);
+    emit packetsPerSecond(packetsPerSec);
     emit droppedPackets(getModuleWithName(GROUND_STATION_MODULE)->droppedPacketsCount);
 
     // update our "last" counters to get the difference next loop cycle
     lastByteCount = getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount;
     lastPacketCount = getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount;
+
+    // get the latest error count from the radio module
+    Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount);
+
+
 }
 
 void Backend::start()

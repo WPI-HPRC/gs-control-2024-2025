@@ -340,6 +340,17 @@ void RadioModule::_handleAtCommandResponse(const uint8_t *frame, uint8_t length_
     const uint8_t *response = &frame[XBee::AtCommandResponse::BytesBeforeCommandData];
 
     Backend::getInstance().receiveAtCommandResponse(command, response, response_length_bytes);
+
+    if(command == XBee::AtCommand::ErrorCount)
+    {
+        uint16_t errorCount = frame[XBee::AtCommandResponse::BytesBeforeCommandData] << 8 |
+                           frame[XBee::AtCommandResponse::BytesBeforeCommandData + 1];
+
+        droppedPacketsCount += errorCount;
+
+        // we want to reset the counter internal to the radio module to simplify the logic on our end
+        setParameter(XBee::AtCommand::ErrorCount, nullptr, 1);
+    }
 }
 
 void RadioModule::_handleRemoteAtCommandResponse(const uint8_t *frame, uint8_t length_bytes)
