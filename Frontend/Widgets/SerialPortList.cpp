@@ -44,7 +44,7 @@ void SerialPortList::serialPortsFound(const QList<QSerialPortInfo>& ports)
     this->serialPorts.clear();
     for(const QSerialPortInfo& port : ports)
     {
-        if(port.portName().contains("Bluetooth") || port.portName().contains("debug-console") || !port.portName().contains("tty"))
+        if(port.portName().contains("Bluetooth") || port.portName().contains("debug-console"))
         {
             continue;
         }
