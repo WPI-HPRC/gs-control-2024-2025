@@ -334,7 +334,6 @@ void Backend::writeParameters(const QString &moduleName)
 
 bool Backend::connectToModule(const QString& name, RadioModuleType moduleType, int baudRate)
 {
-
     RadioModule *existingModule = getModuleWithName(name);
     if(existingModule)
     {
