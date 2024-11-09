@@ -1,6 +1,4 @@
 version: 2
 
 build:
-  os: "any"
-  tools:
-    cmake: "idk"
+  os: ubuntu-lts-latest
