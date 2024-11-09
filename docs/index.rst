@@ -17,7 +17,7 @@ Check out the :doc:`backend` for Backend documentation.
 Contents
 --------
 
-.. toctree:
+.. toctree::
     Backend
     Frontend
 
