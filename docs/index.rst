@@ -18,8 +18,9 @@ Contents
 --------
 
 .. toctree::
-    Backend
-    Frontend
+
+    backend
+    frontend
 
 
 
