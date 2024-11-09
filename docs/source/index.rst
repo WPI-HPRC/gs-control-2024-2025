@@ -8,8 +8,6 @@ We work on both Hardware and Software, but this documentation is just for Softwa
 
 This is the working repository for the 2024-2025 school year.
 
-Check out the :doc:`backend` for Backend documentation.
-
 .. note::
     The documentation for this project is currently being built.
     The project is also under active development
@@ -20,7 +18,6 @@ Contents
 .. toctree::
 
     backend
-    frontend
 
 
 
