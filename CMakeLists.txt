@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.27)
 project(gs_backend_2024_2025)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -16,6 +18,8 @@ find_package(Qt6 COMPONENTS
         WebSockets
         OpenGLWidgets
         REQUIRED)
+
+find_package(OpenGL)
 
 add_executable(gs_backend_2024_2025 main.cpp
         Backend/Backend.cpp
@@ -88,5 +92,7 @@ target_link_libraries(gs_backend_2024_2025
         Qt6::SerialPort
         Qt6::WebSockets
         Qt6::OpenGLWidgets
+
+        ${OPENGL_LIBRARIES}        
 )
 
