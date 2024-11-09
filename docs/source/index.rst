@@ -16,7 +16,7 @@ Contents
 --------
 
 .. toctree::
-
+    index
     backend
 
 
