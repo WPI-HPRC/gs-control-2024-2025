@@ -8,7 +8,8 @@ Overview
 ########
 
 The Backend is implemented as a singleton class, allowing it to be accessed from anywhere at any time, as long as ``Backend.h`` is included.
-The Backend instance can be accesed by calling:
+The Backend instance can be accesed by calling
+
 .. code-block:: cpp
     
     Backend::getInstance();
