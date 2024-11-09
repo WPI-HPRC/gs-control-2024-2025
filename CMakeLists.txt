@@ -14,6 +14,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         SerialPort
         WebSockets
+        OpenGLWidgets
         REQUIRED)
 
 add_executable(gs_backend_2024_2025 main.cpp
@@ -37,6 +38,8 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Windows/RadioControlsWindow/RadioControlsWindow.ui
         Frontend/Widgets/SerialPortList.cpp
         Frontend/Widgets/SerialPortList.h
+        Frontend/Widgets/NavBall.cpp
+        Frontend/Widgets/NavBall.h
         Utility/SerialPortManager.cpp
         Utility/SerialPortManager.h
         Frontend/Widgets/TimeDateWidgets/datewidget.cpp
@@ -84,5 +87,6 @@ target_link_libraries(gs_backend_2024_2025
         Qt6::Widgets
         Qt6::SerialPort
         Qt6::WebSockets
+        Qt6::OpenGLWidgets
 )
 
