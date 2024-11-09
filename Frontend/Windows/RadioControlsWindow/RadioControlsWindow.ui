@@ -41,6 +41,9 @@
         </widget>
        </item>
        <item>
+        <widget class="NavBall" name="NavBallObj"> </widget>
+       </item>
+       <item>
         <widget class="SerialPortList" name="SerialPortListObj">
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
@@ -891,6 +894,11 @@
    <class>SerialPortList</class>
    <extends>QTableWidget</extends>
    <header>Frontend/Widgets/SerialPortList.h</header>
+  </customwidget>
+  <customwidget>
+   <class>NavBall</class>
+   <extends>QOpenGLWidget</extends>
+   <header>Frontend/Widgets/NavBall.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
