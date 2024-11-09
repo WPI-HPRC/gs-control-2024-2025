@@ -8,6 +8,12 @@ Overview
 ########
 
 The Backend is implemented as a singleton class, allowing it to be accessed from anywhere at any time, as long as ``Backend.h`` is included.
+The Backend instance can be accesed by calling:
+::
+    
+    Backend::getInstance();
+
+Test...
 
 .. note::
     The documentation for the Backend is in active development.
