@@ -1,6 +1,6 @@
 version: 2
 
 build:
+  os: "any"
   tools:
-    os: macosx-15.2
     cmake: "idk"
