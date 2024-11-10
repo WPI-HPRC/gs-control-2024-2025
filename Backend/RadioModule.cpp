@@ -232,7 +232,7 @@ void RadioModule::handlingFrame(const uint8_t *frame)
     }
 
     packetsReceivedCount++;
-    bytesReceivedCount += (sizeof(frame)/sizeof(uint8_t));
+    bytesReceivedCount += length + 4;
 
     Backend::getInstance().newBytesRead(logString);
 }
