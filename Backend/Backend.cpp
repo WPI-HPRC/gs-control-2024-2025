@@ -399,9 +399,9 @@ void Backend::updateThroughputSpeeds()
 
     if(!module){return;} // safety measure to prevent crashing the program if the radio isn't actually connected
 
-    // multiply each Unit/s count by 10 since we're running this code every 100ms
-    uint64_t bytesPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount) -lastByteCount ) * 10;
-    uint32_t packetsPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount) -lastPacketCount ) * 10;
+    int multiple = (1000/throughputTimer->interval());
+    uint64_t bytesPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount) -lastByteCount ) * multiple;
+    uint32_t packetsPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount) -lastPacketCount ) * multiple;
     emit bytesPerSecond(bytesPerSec);
     emit packetsPerSecond(packetsPerSec);
     emit droppedPackets(getModuleWithName(GROUND_STATION_MODULE)->droppedPacketsCount);
