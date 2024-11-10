@@ -106,3 +106,5 @@ compile_commands.json
 *_qmlcache.qrc
 /cmake-build-debug
 Secrets.h
+
+/build/
