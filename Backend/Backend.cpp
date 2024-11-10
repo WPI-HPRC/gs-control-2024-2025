@@ -264,7 +264,6 @@ void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
 
 void Backend::receiveTelemetry(Backend::Telemetry telemetry)
 {
-    Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
     emit telemetryAvailable(telemetry);
 }
 
@@ -413,6 +412,7 @@ void Backend::updateThroughputSpeeds()
 
     // get the latest error count from the radio module
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount);
+    Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
 
 
 }
