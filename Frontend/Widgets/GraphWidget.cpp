@@ -32,8 +32,18 @@ GraphWidget::GraphWidget(const QString &title, const QBrush &brush, int range, Q
     this->setAxisY(axisY);
 }
 
-void GraphWidget::addSeriesCustom(QLineSeries *series, const QString &name, QColor color) {
+void GraphWidget::addSeriesCustom(const QString &name, QColor color) {
+    QLineSeries* series = new QLineSeries();
     series->setColor(color);
+    series->setName(name);
+    dataSeries.push_back(series);
+    series->append(0,0);
+    addSeries(series);
+    legend()->markers(series).first()->setLabelBrush(QBrush(QColor(232, 218, 197)));
+}
+void GraphWidget::addSeriesCustom(const QString &name) {
+    QLineSeries* series = new QLineSeries();
+    series->setColor(QColor(name.toInt(nullptr, 8), name.toInt(nullptr, 10), name.toInt(nullptr, 16)));
     series->setName(name);
     dataSeries.push_back(series);
     series->append(0,0);
@@ -68,9 +78,14 @@ void GraphWidget::yZeroFill(qreal valx) {
 //TODO would be MUCH better if QLineSeries was using a list instead of a vector
 void GraphWidget::removeTail(qreal now) {
     if(now > windowRange) {
+        qreal lowestXValueDisplayed = now-windowRange;
         for (QLineSeries *l: dataSeries) {
-            if (l->count() > 0) {
-                l->remove(0);
+            for(int i = 0; i < l->count(); i++) {
+                if (l->at(i).x() < lowestXValueDisplayed) {
+                    l->remove(i);
+                } else {
+                    break;
+                }
             }
         }
     }
