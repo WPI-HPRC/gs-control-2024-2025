@@ -13,7 +13,7 @@ PacketsPerSecWidget::PacketsPerSecWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::PacketsPerSecWidget) {
     ui->setupUi(this);
 
-    connect(&Backend::getInstance(), &Backend::packetsPerSecond, this, PacketsPerSecWidget::packetsPerSecondUpdate);
+    connect(&Backend::getInstance(), &Backend::packetsPerSecond, this, &PacketsPerSecWidget::packetsPerSecondUpdate);
 }
 
 void PacketsPerSecWidget::packetsPerSecondUpdate(uint32_t packetsPerSec)

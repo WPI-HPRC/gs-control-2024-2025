@@ -13,7 +13,7 @@ BytesPerSecWidget::BytesPerSecWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::BytesPerSecWidget) {
     ui->setupUi(this);
 
-    connect(&Backend::getInstance(), &Backend::bytesPerSecond, this, BytesPerSecWidget::bytesPerSecondUpdate);
+    connect(&Backend::getInstance(), &Backend::bytesPerSecond, this, &BytesPerSecWidget::bytesPerSecondUpdate);
 }
 
 void BytesPerSecWidget::bytesPerSecondUpdate(uint64_t bytesPerSec)

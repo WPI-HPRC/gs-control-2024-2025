@@ -13,7 +13,7 @@ DroppedPacketsWidget::DroppedPacketsWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::DroppedPacketsWidget) {
     ui->setupUi(this);
 
-    connect(&Backend::getInstance(), &Backend::droppedPackets, this, DroppedPacketsWidget::droppedPacketsCount);
+    connect(&Backend::getInstance(), &Backend::droppedPackets, this, &DroppedPacketsWidget::droppedPacketsCount);
 }
 
 void DroppedPacketsWidget::droppedPacketsCount(uint32_t count)

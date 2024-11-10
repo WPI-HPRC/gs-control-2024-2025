@@ -14,7 +14,7 @@ RSSIWidget::RSSIWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::RSSIWidget) {
     ui->setupUi(this);
 
-    connect(&Backend::getInstance(), &Backend::receivedAtCommandResponse, this, RSSIWidget::receiveAtCommandResponse);
+    connect(&Backend::getInstance(), &Backend::receivedAtCommandResponse, this, &RSSIWidget::receiveAtCommandResponse);
 }
 
 void RSSIWidget::receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes)
