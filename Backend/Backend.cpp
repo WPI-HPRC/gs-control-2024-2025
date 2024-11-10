@@ -411,8 +411,11 @@ void Backend::updateThroughputSpeeds()
     lastPacketCount = getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount;
 
     // get the latest error count from the radio module
+    module->dontWaitOnNextFrame = true;
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount);
+    module->dontWaitOnNextFrame = true;
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
+
 
 
 }
