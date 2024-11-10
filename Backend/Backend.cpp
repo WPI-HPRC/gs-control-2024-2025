@@ -415,6 +415,8 @@ void Backend::updateThroughputSpeeds()
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount);
     module->dontWaitOnNextFrame = true;
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
+    module->dontWaitOnNextFrame = true;
+    Backend::setParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount, 0);
 
 
 
