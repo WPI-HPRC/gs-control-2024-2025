@@ -18,5 +18,3 @@ The first time the Backend is accessed, a new ``static`` instance is created and
 
 .. note::
     The documentation for the Backend is in active development.
-
-Test
