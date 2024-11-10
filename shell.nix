@@ -10,6 +10,6 @@
   ];
 
   shellHook = ''
-    export PS1="\[\e[31m\]hprc gs: \[\e[m\]\[\e[37m\]\W\[\e[m\]\[\e[37m\] \[\e[m\]\[\e[37m\]% \[\e[m\] "
+    export PS1="\[\e[31m\]hprc gs: \[\e[m\]\[\e[37m\]\W\[\e[m\]\[\e[37m\] \[\e[m\]\[\e[37m\]% \[\e[m\]"
   '';
 }

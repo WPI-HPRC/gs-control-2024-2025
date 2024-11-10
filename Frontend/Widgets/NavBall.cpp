@@ -1,5 +1,7 @@
 #include "NavBall.h"
 
+#include <QMatrix4x4>
+
 #include <math.h>
 #include <tuple>
 
@@ -18,14 +20,21 @@ void NavBall::initializeGL()
 
 void NavBall::paintGL()
 {
+    QMatrix4x4 transform;
+    static float angle = 0.0f;
+    transform.rotate(angle, 1, 0, 0);
+    angle += 10.0f;
+    glMatrixMode(GL_MODELVIEW);
+    glLoadMatrixf(transform.transposed().constData());
+
     glClear(GL_COLOR_BUFFER_BIT 
           | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
 
     auto spherical = [](float theta, float rho) {
-      if (rho > 0) {
-        glColor3f(1,0.4,0);
+      if (rho < 0) {
+        glColor3f(0.6,0.2,0);
       }
       else {
         glColor3f(0,1,1);
@@ -61,6 +70,4 @@ void NavBall::resizeGL(int w, int h)
     glLoadIdentity();
     const float aspect = float(w) / float(h);
     glOrtho(-aspect, aspect, -1, 1, -1, 1);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 }
