@@ -231,11 +231,10 @@ void RadioModule::handlingFrame(const uint8_t *frame)
         logString.append(QString::asprintf("%02X ", ((int)frame[i] & 0xFF)));
     }
 
-    if(dontRecordThroughput)
+    if(recordThroughput)
     {
         packetsReceivedCount++;
         bytesReceivedCount += length + 4;
-        dontRecordThroughput = false;
     }
 
     Backend::getInstance().newBytesRead(logString);
