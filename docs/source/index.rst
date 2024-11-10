@@ -1,4 +1,4 @@
-WPI HPRC Ground Station Documentation
+HPRC Ground Station
 =====================================
 
 Welcome to the documentation for WPI HPRC's Ground Station!
@@ -18,6 +18,7 @@ Contents
 .. toctree::
     self
     backend
+    frontend
 
 
 
