@@ -47,7 +47,7 @@ sending of data.
 Running Throughput Tests
 ************************
 There are three functions that handle the running of throughput tests, one called  ``runThroughputTest`` and another called ``_runThroughputTest``,
-and a third called ``runThroughputTestsWithRange``. The underscore (`_`) denotes the private version of a public method. In this case, the public
+and a third called ``runThroughputTestsWithRange``. The underscore (``_``) denotes the private version of a public method. In this case, the public
 method ``runThroughputTest`` starts a throughput test with given constant parameters. ``runThroughputTestsWithRange`` allows for a range
 of parameters to be specified, and these parameters are iterated through in order to allow the user to find the best operating conditions given
 a certain set of constant parameters. If this function did not exist, the user would have to manually change each parameter every time they wanted
