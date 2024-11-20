@@ -93,5 +93,128 @@ When a link test is complete, ``linkTestComplete`` is called. This method takes 
 The logic for this is much simpler than that for throughput tests. It is also possible for link tests to fail, in which case the ``RadioModule`` emits a signal to notify the
 Backend, which in turn emits a signal to update the Frontend accordingly. Again, much of this logic is implemented by the ``RadioModule``.
 
+#################
+Structs and Enums
+#################
+The ``Backend`` class holds various structs and enums that are necessary for data storage and organization.
+
+=======
+Structs
+=======
+There are three structs contained within the Backend: ``ThroughputTestParams``, ``ThroughputTestResults``, and ``Telemetry``. The first two are only important to the Backend,
+while the third is vital to the rest of the project as well.
+
+ThroughputTestParams
+********************
+``ThroughputTestParams``, as you can guess, holds parameters for running throughput tests. This struct is used for starting a throughput test,
+and is populated when a throughput test is started by the user. It is laid out as follows:
+
+.. code-block:: cpp
+
+    struct ThroughputTestParams
+    {
+        RadioModule *receiveModule;
+        uint64_t destinationAddress;
+        uint8_t payloadSize;
+        uint packetRate;
+        uint duration;
+        uint8_t transmitOptions;
+    };
+
+The first field, ``receiveModule``, is a pointer to the radio module that was running the throughput test.
+
+The second field, ``destinationAddress``, is a ``uint64_t`` which holds the address of the radio module data was being sent to.
+
+The last field, ``transmitOptions``, is a ``uint8_t`` which holds transmit options that can be specified by the user. More information on what these transmit options
+can look like can be found in XBee-specific documentation.
+
+The rest of the fields are not annotated here, since they are fairly self-explanatory.
+
+ThroughputTestResults
+*********************
+``ThroughputTestResults`` holds information for a completed throughput test. This struct is used to communicate the results of a throughput test
+and display it on the Frontend, along with logging it to a file. It is laid out as followed:
+
+.. code-block:: cpp
+
+    struct ThroughputTestResults
+        {
+            uint8_t payloadSize;
+            uint packetRate;
+            uint duration;
+            uint8_t transmitOptions;
+            uint numPacketsReceived;
+            float percentReceived;
+            float throughput;
+        }
+
+The struct holds parameters for the test, which are defined above in ``ThroughputTestParams``. Additionally, information about how the test went is included.
+These are the number of packets received, the percent of packets received, and the calculated throughput during the test.
+
+Telemetry
+*********
+The ``Telemetry`` struct is one of the most important in the Ground Station, as it holds information about a received packet. This struct is used universally
+throughout the project to communicate telemetry. It is laid out as follows:
+
+.. code-block:: cpp
+
+    struct Telemetry
+    {
+        GroundStation::PacketType packetType;
+        union data
+        {
+            GroundStation::RocketTelemPacket *rocketData;
+            GroundStation::PayloadTelemPacket *payloadData;
+        } data;
+    };
+
+The first field in the struct, ``packetType``, represents the type of information in the packet. Currently, only rocket data and payload data exist as possible
+packet types, but this will be extended as the telemetry system becomes more complex. A value of ``unknown`` is also supported as a default value.
+
+The second field, ``data``, is a union which holds the actual data contained within the packet. A union is used so that this single field can hold any possible
+packet data, which can then be extracted with the use of ``packetType``. The packet data is represented by a pointer. As mentioned previously, the only two current
+telemetry packets supported are ``rocketData`` and ``payloadData``.
+
+Extraction of data may look something like this:
+
+.. code-block:: cpp
+
+    Telemetry telemetry = getTelemetry();
+    if (telemetry.packetType == GroundStation::Rocket)
+    {
+        GroundStation::RocketTelemPacket *rocketData = telemetry.data.rocketData;
+        // Handle rocket data
+    }
+    else if (telemetry.packetType == GroundStation::Payload)
+    {
+        GroundStation::PayloadTelemPacket *payloadData = telemetry.data.payloadData;
+        // Handle payload data
+    }
+    else
+    {
+        // Unknown packet type
+    }
+
+Note that with more packet types, using a switch-case statement may be more efficient
+
+=====
+Enums
+=====
+There is currently only one enum, ``RadioModuleType``, that exists in the Backend.
+
+RadioModuleType
+***************
+The ``RadioModuleType`` enum is used in some Ground Station testing procedures, where a radio module is connected and treated as either a Rocket or Payload radio module.
+This can change the information the radio modules transmit and how data is received. This enum is not used much, but it is worth mentioning since it is present. The enum
+looks like this:
+
+.. code-block:: cpp
+
+    enum RadioModuleType
+    {
+        Default,
+        Rocket,
+        Payload
+    };
 .. note::
     The documentation for the Backend is in active development.
