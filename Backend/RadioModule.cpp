@@ -42,6 +42,7 @@ QSerialPortInfo getTargetPort()
         }
     }
 
+
     return targetPort;
 }
 

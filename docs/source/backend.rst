@@ -72,6 +72,26 @@ even while more are being run.
 ==========
 Link Tests
 ==========
+A link test is, intuitively, used to test the link between two radio modules. The term "link" refers to how strong the connection is between the two modules. During a
+link test, a radio module will record the strength of the signal it receives, as well as how many packets were successfully transmitted, giving us insight into both
+how strong the connection was, and how well data was able to be transferred. This is important, since information in the XBee datasheet is given under idealized
+conditions, which are not representative of the real word.
+
+Running Link Tests
+******************
+Unlike throughput tests, only one method is necessary to run a link test, which is called ``runLinkTest``. This method takes in the address of the remote radio module
+with which to complete the link test, the size of the packets we want to send, how many packets to send, and how many times we want to repeat the link test (or if
+we want to let it run indefinitely). The looping of link tests is handled by the ``RadioModule`` class itself, so that will not be discussed in this document. When
+``runLinkTest`` is called, it relays information to the ``RadioModule`` so that the Backend does not have to be concerned with the exact implementation of link tests.
+
+Link tests can also be canceled, which is important since they can be set to run indefinitely. When ``cancelLinkTest`` is called, the Backend sends information to the
+correct ``RadioModule`` to tell it to stop the loop test.
+
+Handling Link Tests
+*******************
+When a link test is complete, ``linkTestComplete`` is called. This method takes data from the most recent link test and emits a signal to update the Frontend accordingly.
+The logic for this is much simpler than that for throughput tests. It is also possible for link tests to fail, in which case the ``RadioModule`` emits a signal to notify the
+Backend, which in turn emits a signal to update the Frontend accordingly. Again, much of this logic is implemented by the ``RadioModule``.
 
 .. note::
     The documentation for the Backend is in active development.
