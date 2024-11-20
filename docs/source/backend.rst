@@ -6,6 +6,11 @@ The Backend is responsible for all data collection and handling, as well as inte
 The conceptual overview will discuss functions and operation of the Backend without going into much technical detail,
 while the technical documentation will go into more detail about what the code for each function is specifically doing.
 
+Table of Contents
+-----------------
+.. toctree::
+    self
+
 ########
 Conceptual Overview
 ########
