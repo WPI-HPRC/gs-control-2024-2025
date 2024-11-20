@@ -9,6 +9,7 @@ while the technical documentation will go into more detail about what the code f
 Table of Contents
 -----------------
 .. toctree::
+
     Conceptual Overview
     Structs and Enums
 
