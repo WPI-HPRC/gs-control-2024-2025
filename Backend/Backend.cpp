@@ -393,6 +393,35 @@ void Backend::newBytesWritten(QString text)
     emit newBytesWrittenAvailable(text);
 }
 
+void Backend::updateThroughputSpeeds()
+{
+    RadioModule *module = getModuleWithName(GROUND_STATION_MODULE);
+
+    if(!module){return;} // safety measure to prevent crashing the program if the radio isn't actually connected
+
+    int multiple = (1000/throughputTimer->interval());
+    uint64_t bytesPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount) -lastByteCount ) * multiple;
+    uint32_t packetsPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount) -lastPacketCount ) * multiple;
+    emit bytesPerSecond(bytesPerSec);
+    emit packetsPerSecond(packetsPerSec);
+    emit droppedPackets(getModuleWithName(GROUND_STATION_MODULE)->droppedPacketsCount);
+
+    // update our "last" counters to get the difference next loop cycle
+    lastByteCount = getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount;
+    lastPacketCount = getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount;
+
+    // get the latest error count from the radio module
+    module->sendNextFrameImmediately = true;
+    Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount);
+    module->sendNextFrameImmediately = true;
+    Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
+    module->sendNextFrameImmediately = true;
+    Backend::setParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount, 0);
+
+
+
+}
+
 void Backend::start()
 {
     getPorts();
@@ -420,6 +449,12 @@ void Backend::start()
 
     connect(timer, &QTimer::timeout, this, &Backend::runRadioModuleCycles);
     timer->start();
+
+    throughputTimer = new QTimer();
+    throughputTimer->setInterval(100);
+
+    connect(throughputTimer, &QTimer::timeout, this, &Backend::updateThroughputSpeeds);
+    throughputTimer->start();
 }
 
 Backend::Backend(QObject *parent) : QObject(parent)

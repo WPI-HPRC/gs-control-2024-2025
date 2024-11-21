@@ -198,6 +198,8 @@ void RadioModule::incorrectChecksum(uint8_t calculated, uint8_t received)
     dataLogger->writeToTextFile(str.c_str(), str.length());
 
     dataLogger->flushTextFile();
+
+    droppedPacketsCount++;
 }
 
 void RadioModule::log(const char *format, ...)
@@ -227,6 +229,12 @@ void RadioModule::handlingFrame(const uint8_t *frame)
     for(int i = 0; i < length + 4; i++)
     {
         logString.append(QString::asprintf("%02X ", ((int)frame[i] & 0xFF)));
+    }
+
+    if(recordThroughput)
+    {
+        packetsReceivedCount++;
+        bytesReceivedCount += length + 4;
     }
 
     Backend::getInstance().newBytesRead(logString);
@@ -335,6 +343,17 @@ void RadioModule::_handleAtCommandResponse(const uint8_t *frame, uint8_t length_
     const uint8_t *response = &frame[XBee::AtCommandResponse::BytesBeforeCommandData];
 
     Backend::getInstance().receiveAtCommandResponse(command, response, response_length_bytes);
+
+    if(command == XBee::AtCommand::ErrorCount)
+    {
+        uint16_t errorCount = frame[XBee::AtCommandResponse::BytesBeforeCommandData] << 8 |
+                           frame[XBee::AtCommandResponse::BytesBeforeCommandData + 1];
+
+        droppedPacketsCount += errorCount;
+
+        // we want to reset the counter internal to the radio module to simplify the logic on our end
+        setParameter(XBee::AtCommand::ErrorCount, nullptr, 1);
+    }
 }
 
 void RadioModule::_handleRemoteAtCommandResponse(const uint8_t *frame, uint8_t length_bytes)
