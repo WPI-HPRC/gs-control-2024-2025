@@ -29,7 +29,9 @@ private slots:
 private:
     Ui::Raw_Telemetry *ui;
     QSerialPort *serialPort;
-    void updateTable(int row, int column, const QString &value); //function to update table cells
+    void updateTable1(int row, int column, const QString &value); //function to update Column 1 cells
+    void updateTable2(int row, int column, const QString &value); //function to update Column 2 cells
+    void updateTable3(int row, int column, const QString &value); //function to update Column 3 cells
     void processTelemetryData(const GroundStation::RocketTelemPacket &data); //function to process the incoming telemetry data
 };
 

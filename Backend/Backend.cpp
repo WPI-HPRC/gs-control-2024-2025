@@ -9,7 +9,7 @@
 #include <utility>
 #include "Constants.h"
 
-//#define SIMULATE_DATA
+#define SIMULATE_DATA
 
 QSerialPortInfo getTargetPort(const QString& portName)
 {
