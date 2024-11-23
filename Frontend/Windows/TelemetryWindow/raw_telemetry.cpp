@@ -124,9 +124,6 @@ void Raw_Telemetry::processTelemetryData(const GroundStation::RocketTelemPacket 
     ui->Column_2->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->Column_3->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-
-
-
 }
 
 void Raw_Telemetry::updateTable1(int row, int column, const QString &value){ //function to update Column 1
