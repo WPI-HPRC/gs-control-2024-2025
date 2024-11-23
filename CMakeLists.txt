@@ -6,6 +6,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+set(CMAKE_OSX_SYSROOT /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 find_package(Qt6 COMPONENTS
@@ -77,6 +79,17 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.cpp
         Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.h
         Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/bytespersecwidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/bytespersecwidget.h
+        Frontend/Widgets/RadioPerformanceWidgets/packetspersecwidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/packetspersecwidget.h
+        Frontend/Widgets/RadioPerformanceWidgets/droppedpacketswidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/droppedpacketswidget.h
+        Frontend/Widgets/RadioPerformanceWidgets/rssiwidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/rssiwidget.h
+        Frontend/Windows/RadioPerformanceWindow/radioperformancewindow.cpp
+        Frontend/Windows/RadioPerformanceWindow/radioperformancewindow.h
+        Frontend/Windows/RadioPerformanceWindow/radioperformancewindow.ui
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core

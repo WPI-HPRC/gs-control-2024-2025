@@ -44,6 +44,7 @@ class RadioModule : public XBeeDevice
 public:
     RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo &portInfo);
     RadioModule(int baudRate, DataLogger *logger);
+    void setBaudRate(int baudRate);
 
     void configureRadio();
 
@@ -62,6 +63,8 @@ public:
 
     void _handleTransmitStatus(uint8_t frameID, uint8_t statusCode) override;
 
+    void _handleAtCommandResponse(const uint8_t *frame, uint8_t length_bytes) override;
+
     void incorrectChecksum(uint8_t calculated, uint8_t received) override;
 
     void sentFrame(uint8_t frameID) override;
@@ -71,6 +74,10 @@ public:
     void disconnectPort();
 
     void connectPort();
+
+    uint32_t packetsReceivedCount = 0;
+    uint64_t bytesReceivedCount = 0;
+    uint32_t droppedPacketsCount = 0;
 
     DataLogger *dataLogger{};
     SerialPort *serialPort{};
@@ -87,6 +94,9 @@ public:
 
     bool receivingThroughputTest = false;
     uint throughputTestPacketsReceived = 0;
+
+private:
+    void handlingFrame(const uint8_t *frame) override;
 };
 
 class ServingRadioModule

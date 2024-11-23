@@ -8,6 +8,7 @@
 #include <QHeaderView>
 #include <QMainWindow>
 #include <qapplication.h>
+#include <QComboBox>
 
 QMainWindow* getMainWindow()
 {
@@ -28,7 +29,7 @@ SerialPortList::SerialPortList(QWidget *parent) : QTableWidget(parent)
 
 //    connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(portChosen(QListWidgetItem*)));
 
-    connect(this, SIGNAL(openSerialPort(QString,RadioModuleType)), &SerialPortManager::getInstance(), SLOT(openPort(QString,RadioModuleType)));
+    connect(this, &SerialPortList::openSerialPort, &SerialPortManager::getInstance(), &SerialPortManager::openPort);
     connect(this, SIGNAL(closeSerialPort(QString)), &SerialPortManager::getInstance(), SLOT(closePort(QString)));
 
     /*
@@ -43,7 +44,7 @@ void SerialPortList::serialPortsFound(const QList<QSerialPortInfo>& ports)
     this->serialPorts.clear();
     for(const QSerialPortInfo& port : ports)
     {
-        if(port.portName().contains("Bluetooth") || port.portName().contains("debug-console") || !port.portName().contains("tty"))
+        if(port.portName().contains("Bluetooth") || port.portName().contains("debug-console"))
         {
             continue;
         }
@@ -95,7 +96,9 @@ void SerialPortList::buttonClicked()
         button->setText("Connecting...");
         button->setEnabled(false);
 
-        emit(openSerialPort(portName, Backend::Default));
+        int baud = parent()->findChild<QComboBox *>("BaudRateDropdown")->currentText().toInt();
+
+        emit(openSerialPort(portName, Backend::Default, baud));
     }
     else
     {

@@ -27,6 +27,7 @@ Q_OBJECT
 
 public:
     SerialPort(const QSerialPortInfo& port, int baudRate, DataLogger *dataLogger);
+    void setBaudRate(int baudRate);
 
     int write(const char *buf, const int &size);
     size_t read(char *buffer, size_t max_bytes);

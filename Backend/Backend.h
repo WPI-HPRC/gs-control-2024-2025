@@ -9,6 +9,9 @@
 #include <QElapsedTimer>
 #include <QDateTime>
 #include <QMutex>
+#include <QDateTime>
+#include <QMutex>
+#include <QMap>
 #include "RadioModule.h"
 #include "../Utility/WebServer.h"
 #include "../Utility/DataLogger.h"
@@ -49,8 +52,8 @@ public:
                 percentReceived,
                 throughput
                 );
-    }
-    struct Telmetry
+    };
+    struct Telemetry
     {
         GroundStation::PacketType packetType;
         union data
@@ -74,9 +77,16 @@ public:
     }
     Backend(const Backend&) = delete;
     Backend &operator=(const Backend&) = delete;
-    bool connectToModule(const QString& name, RadioModuleType moduleType);
+    bool connectToModule(const QString& name, RadioModuleType moduleType, int baudRate);
     void disconnectFromModule(const QString& name);
     bool moduleExistsWithName(const QString &name);
+
+    void queryParameter(const QString &moduleName, uint16_t parameter);
+    void queryParameters(const QString &moduleName, const QList<uint16_t>& parameters);
+
+    void setParameter(const QString &moduleName, uint16_t parameter, uint8_t *value, size_t valueSize_bytes);
+    void setParameter(const QString &moduleName, uint16_t parameter, uint8_t value);
+    void writeParameters(const QString &moduleName);
 
     void linkTestComplete(LinkTestResults results, int iterationsLeft);
     void receiveTelemetry(Backend::Telemetry telemetry);
@@ -93,9 +103,16 @@ public:
 
     void runThroughputTestsWithRange(const QString& originatingPort, uint64_t destinationAddress, QList<QList<int>> params, uint duration, uint8_t transmitOptions);
 
+    void receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes);
+
+    void newBytesRead(QString text);
+    void newBytesWritten(QString text);
+
     void start();
     void flushFiles();
     void getPorts();
+
+    void setBaudRate(const QString &name, int baudRate);
 
     QList<RadioModule *> radioModules;
     int loopCount;
@@ -114,6 +131,7 @@ public slots:
     void portClosed(const QSerialPortInfo&);
     void throughputTestTimerTicked();
     void runRadioModuleCycles();
+    void updateThroughputSpeeds();
 
 signals:
     void foundSerialPorts(QList<QSerialPortInfo>);
@@ -128,6 +146,14 @@ signals:
     void throughputTestDataAvailable(float, uint, uint);
     void telemetryAvailable(Backend::Telemetry);
 
+    void receivedAtCommandResponse(uint16_t, const uint8_t *, size_t);
+    void newBytesReadAvailable(QString);
+    void newBytesWrittenAvailable(QString);
+
+    void bytesPerSecond(uint64_t);
+    void packetsPerSecond(uint32_t);
+    void droppedPackets(uint32_t);
+
 private:
     explicit Backend(QObject *parent = nullptr);
 
@@ -139,8 +165,6 @@ private:
 
     QTimer *timer{};
 
-    QMutex mutex;
-
     bool throughputTestShouldStop = false;
 
     // ground date/time
@@ -149,6 +173,12 @@ private:
 
     QElapsedTimer groundFlightTime{};
     uint32_t rocketTimestampStart;
+    QTimer *throughputTimer{};
+
+    uint32_t lastPacketCount;
+    uint64_t lastByteCount;
+
+    QMutex mutex;
 };
 
 

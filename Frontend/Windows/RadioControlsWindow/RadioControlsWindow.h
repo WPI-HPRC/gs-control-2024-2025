@@ -54,6 +54,19 @@ public slots:
 
     void throughputTestDataAvailable(float percentSuccess, uint numSuccess, float throughput);
     void throughputTestButtonPressed();
+
+    void baudRateSelected(const QString &);
+
+    void readSerialParameters();
+    void writeSerialParameters();
+    void readMessagingParameters();
+    void writeMessagingParameters();
+
+
+    void receiveAtCommandResponse(uint16_t command, const uint8_t *response, size_t response_length_bytes);
+
+    void newBytesRead(const QString& text);
+    void newBytesWritten(const QString& text);
 };
 
 
