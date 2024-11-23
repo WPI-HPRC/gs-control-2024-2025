@@ -1,0 +1,3 @@
+[submodule "xbee"]
+	path = xbee
+	url = https://github.com/WPI-HPRC/xbee
