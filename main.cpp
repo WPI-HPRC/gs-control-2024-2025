@@ -22,11 +22,11 @@ int main(int argc, char *argv[])
     radioControlsWindow.update();
     radioControlsWindow.setWindowTitle("Radio Controls");
 
+    
     RadioPerformanceWindow radioPerformanceWindow;
     radioPerformanceWindow.showNormal();
     radioPerformanceWindow.update();
     radioPerformanceWindow.setWindowTitle("Live Radio Performance Stats");
-    
 
     TestStruct test;
     test.address = 0x0013A200423F474C;

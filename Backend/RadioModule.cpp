@@ -125,7 +125,7 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger) : XBeeDevice(SerialIn
     *this = RadioModule(baudRate, logger, targetPort);
 }
 
-void RadioModule::writeBytes(const char *data, size_t length_bytes)
+void RadioModule::writeBytes_uart(const char *data, size_t length_bytes)
 {
     if(!serialPort->isOpen())
         return;
