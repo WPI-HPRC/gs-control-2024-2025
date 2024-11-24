@@ -21,7 +21,7 @@ public:
     SerialPortManager &operator=(const SerialPortManager&) = delete;
 
 public slots:
-    void openPort(const QString&, RadioModuleType);
+    void openPort(const QString&, Backend::RadioModuleType, int);
     void closePort(const QString&);
 
 private:

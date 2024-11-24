@@ -63,6 +63,7 @@ void DataLogger::createFiles()
         payloadLogFile.open(logDir.path().append("/").append(timeString).append("_payload.csv"));
         transmitStatusLog.open(logDir.path().append("/").append(timeString).append("_transmit_status.csv"));
         linkTestLogFile.open(logDir.path().append("/").append(timeString).append("_linkTest.csv"));
+        throughputTestLogFile.open(logDir.path().append("/").append(timeString).append("_throughputTest.csv"));
 
         byteLog.setFileName(logDir.path().append("/").append(timeString).append("_bytes.txt"));
         byteLog.open(QIODeviceBase::WriteOnly | QIODeviceBase::Text);
@@ -73,7 +74,8 @@ void DataLogger::createFiles()
         rocketLogFile.open(logDir.path().append("/").append(timeString).append("_rocket_OFFICIAL.csv"));
         payloadLogFile.open(logDir.path().append("/").append(timeString).append("_payload_OFFICIAL.csv"));
         transmitStatusLog.open(logDir.path().append("/").append(timeString).append("_transmit_status_OFFICIAL.csv"));
-
+        linkTestLogFile.open(logDir.path().append("/").append(timeString).append("_linkTest_OFFICIAL.csv"));
+        throughputTestLogFile.open(logDir.path().append("/").append(timeString).append("_throughputTest_OFFICIAL.csv"));
         byteLog.setFileName(logDir.path().append("/").append(timeString).append("_bytes_OFFICIAL.txt"));
         byteLog.open(QIODeviceBase::WriteOnly | QIODeviceBase::Text);
 
@@ -88,6 +90,12 @@ void DataLogger::logLinkTest(const QJsonObject &jsonData)
 {
     linkTestLogFile.write(jsonData);
     linkTestLogFile.file.flush();
+}
+
+void DataLogger::logThroughputTest(const QJsonObject &jsonData)
+{
+    throughputTestLogFile.write(jsonData);
+    throughputTestLogFile.file.flush();
 }
 
 void DataLogger::logTransmitStatus(const QJsonObject &jsonData)
@@ -133,14 +141,14 @@ void DataLogger::flushDataFiles()
     payloadLogFile.file.flush();
 }
 
-void DataLogger::writeData(const QJsonObject &jsonData, DataLogger::PacketType packetType)
+void DataLogger::writeData(const QJsonObject &jsonData, GroundStation::PacketType packetType)
 {
     switch (packetType)
     {
-        case Rocket:
+        case GroundStation::Rocket:
             rocketLogFile.write(jsonData);
             break;
-        case Payload:
+        case GroundStation::Payload:
             payloadLogFile.write(jsonData);
             break;
         default:
@@ -149,12 +157,12 @@ void DataLogger::writeData(const QJsonObject &jsonData, DataLogger::PacketType p
 //    flushDataFiles();
 }
 
-void DataLogger::dataReady(const char *data, DataLogger::PacketType packetType)
+void DataLogger::dataReady(const char *data, GroundStation::PacketType packetType)
 {
     writeData(QJsonDocument::fromJson(data).object(), packetType);
 }
 
-void DataLogger::dataReady(const char *data, DataLogger::PacketType packetType, uint8_t rssi)
+void DataLogger::dataReady(const char *data, GroundStation::PacketType packetType, uint8_t rssi)
 {
     QJsonObject json = QJsonDocument::fromJson(data).object();
     json.insert("rssi", -1 * (int) rssi);

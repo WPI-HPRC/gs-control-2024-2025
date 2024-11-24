@@ -50,28 +50,32 @@ DataLogger::Packet parsePacket(const uint8_t *frame)
     std::string str;
 
     // This way of assigning the packet type seems redundant, but the packetType byte can take on any value from 0-255; we want to set it to an enum value that we understand
-    DataLogger::PacketType packetType;
+    Backend::Telemetry telemetry{};
 
     switch (frame[0])
     {
-        case DataLogger::Rocket:
-            str = JS::serializeStruct(*(RocketTelemPacket *) (&frame[1]));
-            packetType = DataLogger::Rocket;
+        case GroundStation::Rocket:
+            telemetry.packetType = GroundStation::Rocket;
+            telemetry.data.rocketData = (GroundStation::RocketTelemPacket *) (&frame[1]);
+            str = JS::serializeStruct(*telemetry.data.rocketData);
             break;
-        case DataLogger::Payload:
-            str = JS::serializeStruct(*(PayloadTelemPacket *) (&frame[1]));
-            packetType = DataLogger::Payload;
+        case GroundStation::Payload:
+            telemetry.data.payloadData = (GroundStation::PayloadTelemPacket *) (&frame[1]);
+            str = JS::serializeStruct(*telemetry.data.payloadData);
+            telemetry.packetType = GroundStation::Payload;
             break;
         default:
             str = "";
-            packetType = DataLogger::Unknown;
+            telemetry.packetType = GroundStation::Unknown;
             break;
     }
+
+    Backend::getInstance().receiveTelemetry(telemetry);
 
     str = std::regex_replace(str, std::regex("nan"), "0");
     str = std::regex_replace(str, std::regex("inf"), "0");
 
-    return {str, packetType};
+    return {str, telemetry.packetType};
 }
 
 void RadioModule::disconnectPort()
@@ -97,7 +101,7 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger, const QSerialPortInfo
 
     serialPort = new SerialPort(portInfo, baudRate, dataLogger);
 
-    sendTransmitRequestsImmediately = false;
+    sendTransmitRequestsImmediately = true;
 
     sendFramesImmediately = false;
 
@@ -121,7 +125,7 @@ RadioModule::RadioModule(int baudRate, DataLogger *logger) : XBeeDevice(SerialIn
     *this = RadioModule(baudRate, logger, targetPort);
 }
 
-void RadioModule::writeBytes(const char *data, size_t length_bytes)
+void RadioModule::writeBytes_uart(const char *data, size_t length_bytes)
 {
     if(!serialPort->isOpen())
         return;
@@ -134,19 +138,27 @@ void RadioModule::writeBytes(const char *data, size_t length_bytes)
     int bytes_written = serialPort->write(data, (int) length_bytes);
 
     dataLogger->writeToTextFile("Writing: ");
+    QString logString{};
     for (int i = 0; i < length_bytes; i++)
     {
-        dataLogger->writeToTextFile(QString::asprintf("%02x ", data[i] & 0xFF));
+        logString.append(QString::asprintf("%02X ", (int)(data[i] & 0xFF)));
+//        dataLogger->writeToTextFile(QString::asprintf("%02x ", data[i] & 0xFF));
     }
+    dataLogger->writeToTextFile(logString);
     dataLogger->writeToTextFile("\n");
     dataLogger->flushTextFile();
 
+    Backend::getInstance().newBytesWritten(logString);
 
     if (bytes_written != length_bytes)
     {
         log("FAILED TO WRITE ALL BYTES. EXPECTED %d, RECEIVED %d\n", length_bytes, bytes_written);
     }
+}
 
+void RadioModule::setBaudRate(int baudRate)
+{
+   serialPort->setBaudRate(baudRate);
 }
 
 size_t RadioModule::readBytes_uart(char *buffer, size_t max_bytes)
@@ -159,12 +171,21 @@ size_t RadioModule::readBytes_uart(char *buffer, size_t max_bytes)
 
 void RadioModule::handleReceivePacket(XBee::ReceivePacket::Struct *frame)
 {
+    if(receivingThroughputTest)
+    {
+        throughputTestPacketsReceived ++;
+    }
+
     lastPacket = parsePacket(frame->data);
     dataLogger->dataReady(lastPacket.data.c_str(), lastPacket.packetType);
 }
 
 void RadioModule::handleReceivePacket64Bit(XBee::ReceivePacket64Bit::Struct *frame)
 {
+    if(receivingThroughputTest)
+    {
+        throughputTestPacketsReceived ++;
+    }
     lastPacket = parsePacket(frame->data);
     dataLogger->dataReady(lastPacket.data.c_str(), lastPacket.packetType, frame->negativeRssi);
 }
@@ -174,13 +195,11 @@ void RadioModule::incorrectChecksum(uint8_t calculated, uint8_t received)
     std::string str = QString::asprintf("\nWRONG CHECKSUM. calculated: %02x, received: %02x\n\n", calculated & 0xFF,
                                         received & 0xFF).toStdString();
 
-//    log(str.c_str());
-
-//    dataLogger->writeToByteFile(str.c_str(), str.length());
     dataLogger->writeToTextFile(str.c_str(), str.length());
 
-//    dataLogger->flushByteFile();
     dataLogger->flushTextFile();
+
+    droppedPacketsCount++;
 }
 
 void RadioModule::log(const char *format, ...)
@@ -202,6 +221,25 @@ void RadioModule::log(const char *format, ...)
     va_end(args);
 }
 
+void RadioModule::handlingFrame(const uint8_t *frame)
+{
+    QString logString{};
+    uint16_t length = frame[1] << 8 | frame[2];
+
+    for(int i = 0; i < length + 4; i++)
+    {
+        logString.append(QString::asprintf("%02X ", ((int)frame[i] & 0xFF)));
+    }
+
+    if(recordThroughput)
+    {
+        packetsReceivedCount++;
+        bytesReceivedCount += length + 4;
+    }
+
+    Backend::getInstance().newBytesRead(logString);
+}
+
 void RadioModule::sendLinkTestRequest(uint64_t destinationAddress, uint16_t payloadSize, uint16_t iterations)
 {
     std::cout << "Sending link test request" << std::endl;
@@ -212,8 +250,6 @@ void RadioModule::sendLinkTestRequest(uint64_t destinationAddress, uint16_t payl
 void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t length_bytes)
 {
     using namespace XBee::ExtendedTransmitStatus;
-
-    auto *data = (Struct *)(&frame[4]);
 
     auto *status = (Struct *)(&frame[BytesBeforeFrameID]);
 
@@ -228,7 +264,7 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
 
     dataLogger->logTransmitStatus(json);
 
-    std::cout << "Got transmit status: " << std::hex << (int)status->deliveryStatus << std::endl;
+//    std::cout << "Got transmit status: " << std::hex << (int)status->deliveryStatus << std::endl;
 
     if(status->deliveryStatus != 0x00)
     {
@@ -236,6 +272,26 @@ void RadioModule::_handleExtendedTransmitStatus(const uint8_t *frame, uint8_t le
         {
             std::cout << "Link test failed!" << std::endl;
             Backend::getInstance().linkTestFailed();
+        }
+    }
+
+    if(receivingThroughputTest)
+    {
+        if(status->deliveryStatus == 0x00)
+        {
+            throughputTestPacketsReceived++;
+        }
+    }
+}
+
+void RadioModule::_handleTransmitStatus(uint8_t frameID, uint8_t statusCode)
+{
+    return;
+    if(receivingThroughputTest)
+    {
+        if(statusCode == 0x00)
+        {
+            throughputTestPacketsReceived++;
         }
     }
 }
@@ -254,12 +310,6 @@ void RadioModule::handleLinkTest(XBee::ExplicitRxIndicator::LinkTest data)
 
     Backend::getInstance().linkTestComplete(results, linkTestsLeft);
 
-    /*
-    log("Finished link test.\n\tPayload Size: %d\n\tIterations: %d\n\tSuccess: %d\n\tRetries: %d\n\tResult: %02x\n\tRR: %d\n\tMax RSSI: %d\n\tMin RSSI: %d\n\tAvg RSSI: %d\n",
-        data.payloadSize, data.iterations, data.success, data.retries, data.result, data.RR, data.maxRssi, data.minRssi, data.avgRssi
-        );
-
-     */
     std::cout << "Got link test result" << std::endl;
 
     if(linkTestsLeft != 0)
@@ -284,6 +334,26 @@ void RadioModule::handleEnergyDetectResponse(uint8_t *energyValues, uint8_t numC
 void RadioModule::sentFrame(uint8_t frameID)
 {
     cycleCountsFromFrameID[frameID] = cycleCount;
+}
+
+void RadioModule::_handleAtCommandResponse(const uint8_t *frame, uint8_t length_bytes)
+{
+    uint16_t command = getAtCommand(frame);
+    size_t response_length_bytes = length_bytes - XBee::AtCommandResponse::PacketBytes;
+    const uint8_t *response = &frame[XBee::AtCommandResponse::BytesBeforeCommandData];
+
+    Backend::getInstance().receiveAtCommandResponse(command, response, response_length_bytes);
+
+    if(command == XBee::AtCommand::ErrorCount)
+    {
+        uint16_t errorCount = frame[XBee::AtCommandResponse::BytesBeforeCommandData] << 8 |
+                           frame[XBee::AtCommandResponse::BytesBeforeCommandData + 1];
+
+        droppedPacketsCount += errorCount;
+
+        // we want to reset the counter internal to the radio module to simplify the logic on our end
+        setParameter(XBee::AtCommand::ErrorCount, nullptr, 1);
+    }
 }
 
 void RadioModule::_handleRemoteAtCommandResponse(const uint8_t *frame, uint8_t length_bytes)
