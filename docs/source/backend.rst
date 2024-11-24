@@ -10,6 +10,7 @@ Contents
 -----------------
 .. contents::
     :local:
+    :depth:
 
 ########
 Conceptual Overview
@@ -221,5 +222,26 @@ looks like this:
         Rocket,
         Payload
     };
+
+#############
+Class Methods
+#############
+Class methods are split into the following sections: Static, Public, Private, Slots, and Signals.
+
+==============
+Static Methods
+==============
+Only one true static method currently exists for the Backend, ``getInstance``, which is what gives the Backend its singleton functionality.
+
+getInstance
+***********
+This method is resposible for the singleton nature of the Backend. When it is called, a static variable ``instance`` is created, which is then returned by the method.
+This ensures that exactly one instance of the Backend will always exist.
+
+Backend and &operator=
+******************************
+The definitions for ``Backend()`` and ``&operator=`` are both set to ``delete``, which ensures that an instance of the Backend cannot be created by calling either of
+these methods. This way, the Backend can only be accessed by calling ``getInstance``
+
 .. note::
     The documentation for the Backend is in active development.
