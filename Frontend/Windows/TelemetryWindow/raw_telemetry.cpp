@@ -130,18 +130,39 @@ void Raw_Telemetry::processTelemetryData(const GroundStation::RocketTelemPacket 
 
 void Raw_Telemetry::updateTable1(int row, int column, const QString &value){ //function to update Column 1
     QTableWidget *widget = ui->Column_1;
-    auto *label = new QLabel(value);
-    widget->setCellWidget(row, column, label);
+    auto *cell = (QLabel *)widget->cellWidget(row, column);
+    if(!cell)
+    {
+        widget->setCellWidget(row, column, new QLabel(value));
+    }
+    else
+    {
+        cell->setText(value);
+    }
 }
 void Raw_Telemetry::updateTable2(int row, int column, const QString &value){ //function to update Column 2
     QTableWidget *widget = ui->Column_2;
-    auto *label = new QLabel(value);
-    widget->setCellWidget(row, column, label);
+    auto *cell = (QLabel *)widget->cellWidget(row, column);
+    if(!cell)
+    {
+        widget->setCellWidget(row, column, new QLabel(value));
+    }
+    else
+    {
+        cell->setText(value);
+    }
 }
 void Raw_Telemetry::updateTable3(int row, int column, const QString &value){ //function to update Column 3
     QTableWidget *widget = ui->Column_3;
-    auto *label = new QLabel(value);
-    widget->setCellWidget(row, column, label);
+    auto *cell = (QLabel *)widget->cellWidget(row, column);
+    if(!cell)
+    {
+        widget->setCellWidget(row, column, new QLabel(value));
+    }
+    else
+    {
+        cell->setText(value);
+    }
 }
 
 

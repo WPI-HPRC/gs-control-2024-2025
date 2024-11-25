@@ -17,6 +17,10 @@ DataSimulator::DataSimulator(const QString &filePath, WebServer *webServer, QObj
 
 void DataSimulator::start()
 {
+    if(file->isOpen())
+    {
+        file->close();
+    }
     if (!file->open(QIODeviceBase::ReadOnly))
     {
         qDebug() << "Failed to open file:" << file->fileName() << "Error:" << file->errorString();
@@ -89,6 +93,12 @@ void DataSimulator::sendNextLine()
 
     QJsonDocument currentDocument = nextDocument;
     nextDocument = parseLine(nextLine());
+
+    if(nextDocument.isEmpty())
+    {
+        start();
+        return;
+    }
 
     int currentTimestamp = currentDocument.object().find("timestamp")->toInt();
     int nextTimestamp = nextDocument.object().find("timestamp")->toInt();
