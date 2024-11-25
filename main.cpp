@@ -3,7 +3,6 @@
 #include "Backend/Backend.h"
 #include "Frontend/Windows/RadioControlsWindow/RadioControlsWindow.h"
 #include "Frontend/Windows/RadioPerformanceWindow/radioperformancewindow.h"
-
 #include "Frontend/Windows/TelemetryWindow/raw_telemetry.h"
 struct TestStruct
 {
@@ -33,9 +32,6 @@ int main(int argc, char *argv[])
     raw_telemetryWindow.showNormal();
     raw_telemetryWindow.update();
     raw_telemetryWindow.setWindowTitle("Raw Telemetry");
-
-    TestStruct test;
-    test.address = 0x0013A200423F474C;
 
     backend.start();
 

@@ -450,8 +450,11 @@ void Backend::start()
 
     webServer = new WebServer(8001);
 
+    QString simulationFile = "/Users/will/Desktop/LIFT_rocket_trimmed.csv";
+//    QString simulationFile = "../Utility/SamplePayloadData.csv";
+
     dataSimulator = new DataSimulator(
-            "../Utility/SamplePayloadData.csv",
+            simulationFile,
             webServer);
 
 #ifdef SIMULATE_DATA

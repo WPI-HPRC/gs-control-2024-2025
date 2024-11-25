@@ -16,9 +16,14 @@ find_package(Qt6 COMPONENTS
         Widgets
         SerialPort
         WebSockets
+        3DCore
+        3DExtras
+        3DInput
+        3DRender
         REQUIRED)
 
 add_executable(gs_backend_2024_2025 main.cpp
+        Resources/Resources.qrc
         Backend/Backend.cpp
         Backend/Backend.h
         Backend/RadioModule.cpp
@@ -96,6 +101,8 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Windows/TelemetryWindow/raw_telemetry.cpp
         Frontend/Windows/TelemetryWindow/raw_telemetry.h
         Frontend/Windows/TelemetryWindow/raw_telemetry.ui
+        Frontend/Widgets/Viewer3D/Viewer3D.cpp
+        Frontend/Widgets/Viewer3D/Viewer3D.h
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core
@@ -103,5 +110,9 @@ target_link_libraries(gs_backend_2024_2025
         Qt6::Widgets
         Qt6::SerialPort
         Qt6::WebSockets
+        Qt6::3DCore
+        Qt6::3DExtras
+        Qt6::3DInput
+        Qt6::3DRender
 )
 
