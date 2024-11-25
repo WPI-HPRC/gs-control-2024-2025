@@ -97,6 +97,21 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="dockWidget">
+   <property name="windowTitle">
+    <string>Radio Performance</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QGridLayout" name="gridLayout_5">
+     <item row="0" column="0">
+      <widget class="RadioPerformanceWindow" name="widget_6" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -121,6 +136,12 @@
    <class>RadioControlsWindow</class>
    <extends>QWidget</extends>
    <header>Frontend/Windows/RadioControlsWindow/RadioControlsWindow.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RadioPerformanceWindow</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Windows/RadioPerformanceWindow/radioperformancewindow.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
