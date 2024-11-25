@@ -1,15 +1,7 @@
 
 #include <QApplication>
 #include "Backend/Backend.h"
-#include "Frontend/Windows/RadioControlsWindow/RadioControlsWindow.h"
-#include "Frontend/Windows/RadioPerformanceWindow/radioperformancewindow.h"
-#include "Frontend/Windows/TelemetryWindow/raw_telemetry.h"
 #include "Frontend/Windows/MainWindow/mainwindow.h"
-
-struct TestStruct
-{
-    uint64_t address;
-};
 
 int main(int argc, char *argv[])
 {
@@ -19,12 +11,11 @@ int main(int argc, char *argv[])
     font.setStyleHint(QFont::Monospace);
     QApplication::setFont(font);
 
-    Backend &backend = Backend::getInstance();
-
     MainWindow mainWindow;
-    mainWindow.showNormal();
+    mainWindow.showMaximized();
     mainWindow.setWindowTitle("Main Window");
 
+    Backend &backend = Backend::getInstance();
     backend.start();
 
     int code = QApplication::exec();
