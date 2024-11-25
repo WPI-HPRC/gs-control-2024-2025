@@ -25,12 +25,6 @@ public:
 
     ~MainWindow() override;
 
-    QLabel *altitudeLabel;
-    QPushButton *testButton;
-
-public slots:
-    void buttonPressed();
-
 private:
     Ui::MainWindow *ui;
 };

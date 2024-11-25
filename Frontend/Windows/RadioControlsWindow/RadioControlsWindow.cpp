@@ -463,7 +463,7 @@ void RadioControlsWindow::writeMessagingParameters()
 }
 
 RadioControlsWindow::RadioControlsWindow(QWidget *parent) :
-        QMainWindow(parent), ui(new Ui::RadioControlsWindow)
+        QWidget(parent), ui(new Ui::RadioControlsWindow)
 {
     ui->setupUi(this);
 

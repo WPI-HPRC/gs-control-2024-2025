@@ -12,24 +12,6 @@ MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    altitudeLabel = this->findChild<QLabel *>("Altitude");
-
-    testButton = this->findChild<QPushButton *>("TestButton");
-    if(!testButton)
-    {
-        qDebug() << "BAD";
-    }
-
-    connect(testButton, &QPushButton::pressed, this, &MainWindow::buttonPressed);
-
-    altitudeLabel->setText("100000km");
-}
-
-void MainWindow::buttonPressed()
-{
-    qDebug() << "TEST";
-    altitudeLabel->setText("TEST");
 }
 
 MainWindow::~MainWindow()

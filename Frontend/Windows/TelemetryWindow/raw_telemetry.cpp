@@ -12,7 +12,7 @@
 #include "Backend/Backend.h"
 
 Raw_Telemetry::Raw_Telemetry(QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::Raw_Telemetry)
+        QWidget(parent), ui(new Ui::Raw_Telemetry)
 {
     ui->setupUi(this);
     connect (&Backend::getInstance(), &Backend::telemetryAvailable, this, &Raw_Telemetry::telemetryAvailable);

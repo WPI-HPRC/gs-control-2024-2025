@@ -11,12 +11,14 @@
 #include <QSerialPort>
 
 #include "Backend/Backend.h"
+#include <QWidget.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Raw_Telemetry; }
 QT_END_NAMESPACE
 
-class Raw_Telemetry : public QMainWindow {
+class Raw_Telemetry : public QWidget
+{
 Q_OBJECT
 
 public:

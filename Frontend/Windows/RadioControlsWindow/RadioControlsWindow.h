@@ -26,7 +26,7 @@ namespace Ui
 }
 QT_END_NAMESPACE
 
-class RadioControlsWindow : public QMainWindow
+class RadioControlsWindow : public QWidget
 {
 Q_OBJECT
 
