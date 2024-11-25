@@ -15,6 +15,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    QFont font("Courier");
+    font.setStyleHint(QFont::Monospace);
+    QApplication::setFont(font);
+
     Backend &backend = Backend::getInstance();
 
     MainWindow mainWindow;
