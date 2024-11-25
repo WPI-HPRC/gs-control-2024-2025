@@ -6,639 +6,900 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1047</width>
-    <height>880</height>
+    <width>1163</width>
+    <height>762</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>RadioControlsWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="2">
-     <widget class="QTabWidget" name="RadioModuleControls">
-      <property name="tabPosition">
-       <enum>QTabWidget::TabPosition::North</enum>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1139</width>
+        <height>738</height>
+       </rect>
       </property>
-      <property name="tabShape">
-       <enum>QTabWidget::TabShape::Rounded</enum>
-      </property>
-      <property name="currentIndex">
-       <number>1</number>
-      </property>
-      <property name="elideMode">
-       <enum>Qt::TextElideMode::ElideRight</enum>
-      </property>
-      <property name="usesScrollButtons">
-       <bool>false</bool>
-      </property>
-      <property name="documentMode">
-       <bool>false</bool>
-      </property>
-      <property name="tabsClosable">
-       <bool>false</bool>
-      </property>
-      <property name="tabBarAutoHide">
-       <bool>false</bool>
-      </property>
-      <widget class="QWidget" name="LinkTest">
-       <attribute name="title">
-        <string>Link Test</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="1" column="1">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Destination</string>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="1">
-         <widget class="QLabel" name="label_12">
-          <property name="text">
-           <string>Min RSSI</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Payload Size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1" colspan="3">
-         <widget class="Line" name="line">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="1">
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>Retries</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Repeat</string>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="3">
-         <widget class="QLabel" name="LinkTestResults_Success">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="1">
-         <widget class="QLabel" name="label_11">
-          <property name="text">
-           <string>Max RSSI</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="3">
-         <widget class="QLabel" name="LinkTestResults_NoiseFloor">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>0 dBm</string>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="3">
-         <widget class="QLabel" name="LinkTestResults_AvgRssi">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>0 dBm</string>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="1">
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Success</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Iterations</string>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="1">
-         <widget class="QLabel" name="label_13">
-          <property name="text">
-           <string>Avg RSSI</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="3">
-         <widget class="QSpinBox" name="LinkTest_Repeat">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>200</number>
-          </property>
-          <property name="singleStep">
-           <number>10</number>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="3">
-         <widget class="QLabel" name="LinkTestResults_MaxRssi">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>0 dBm</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="3">
-         <widget class="QSpinBox" name="LinkTest_Iterations">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>4000</number>
-          </property>
-          <property name="singleStep">
-           <number>100</number>
-          </property>
-          <property name="value">
-           <number>200</number>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="3">
-         <widget class="QLabel" name="LinkTestResults_MinRssi">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>0 dBm</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1" colspan="3">
-         <widget class="QPushButton" name="LinkTest_Button">
-          <property name="text">
-           <string>Run link test</string>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="3">
-         <widget class="QLabel" name="LinkTestResults_Retries">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="1">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Noise Floor</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QLineEdit" name="LinkTest_DestinationAddress">
-          <property name="inputMask">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>0013A200422CDAC2</string>
-          </property>
-          <property name="maxLength">
-           <number>16</number>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1" colspan="3">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Results</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="23" column="1" colspan="3">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="19" column="3">
-         <widget class="QLabel" name="LinkTestResults_RR">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="19" column="1">
-         <widget class="QLabel" name="label_10">
-          <property name="text">
-           <string>RR</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="3">
-         <widget class="QSpinBox" name="LinkTest_PayloadSize">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>256</number>
-          </property>
-          <property name="singleStep">
-           <number>20</number>
-          </property>
-          <property name="value">
-           <number>200</number>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1" colspan="3">
-         <widget class="QCheckBox" name="LinkTest_Loop">
-          <property name="text">
-           <string>Loop</string>
-          </property>
-         </widget>
-        </item>
-        <item row="20" column="1" colspan="3">
-         <widget class="Line" name="line_2">
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Plain</enum>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="21" column="1">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Total Packets</string>
-          </property>
-         </widget>
-        </item>
-        <item row="22" column="1">
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>% Success</string>
-          </property>
-         </widget>
-        </item>
-        <item row="21" column="3">
-         <widget class="QLabel" name="LinkTestResults_TotalPackets">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>1000</string>
-          </property>
-         </widget>
-        </item>
-        <item row="22" column="3">
-         <widget class="QLabel" name="LinkTestResults_PercentSuccess">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>100%</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="ThroughputTest">
-       <attribute name="title">
-        <string>Throughput Test</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="22" column="1">
-         <widget class="QLabel" name="ThroughputTestResults_Throughput">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>160000 kbps</string>
-          </property>
-         </widget>
-        </item>
-        <item row="22" column="0">
-         <widget class="QLabel" name="label_23">
-          <property name="text">
-           <string>Throughput</string>
-          </property>
-         </widget>
-        </item>
-        <item row="21" column="1">
-         <widget class="QLabel" name="ThroughputTestResults_NumSuccess">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>1000</string>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="0" colspan="2">
-         <widget class="QPushButton" name="ThroughputTest_Button">
-          <property name="focusPolicy">
-           <enum>Qt::FocusPolicy::NoFocus</enum>
-          </property>
-          <property name="text">
-           <string>Run throughput test</string>
-          </property>
-         </widget>
-        </item>
-        <item row="20" column="1">
-         <widget class="QLabel" name="ThroughputTestResults_PercentSuccess">
-          <property name="frameShape">
-           <enum>QFrame::Shape::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Sunken</enum>
-          </property>
-          <property name="text">
-           <string>100</string>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="0" colspan="2">
-         <widget class="Line" name="line_3">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="23" column="0" colspan="2">
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="20" column="0">
-         <widget class="QLabel" name="label_21">
-          <property name="text">
-           <string>% Success</string>
-          </property>
-         </widget>
-        </item>
-        <item row="21" column="0">
-         <widget class="QLabel" name="label_22">
-          <property name="text">
-           <string>Num Success</string>
-          </property>
-         </widget>
-        </item>
-        <item row="19" column="0" colspan="2">
-         <widget class="QLabel" name="label_20">
-          <property name="text">
-           <string>Results</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="2">
-         <widget class="QWidget" name="ThroughputTest_ParamsContainer" native="true">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_7">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item row="1" column="0">
-            <widget class="Line" name="line_4">
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QFrame" name="frame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Plain</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QWidget" name="widget" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="RefreshSerialPortsButton">
+               <property name="text">
+                <string>Refresh Serial Ports</string>
+               </property>
+               <property name="icon">
+                <iconset theme="view-refresh"/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_2" native="true">
+            <layout class="QGridLayout" name="gridLayout_3">
+             <property name="sizeConstraint">
+              <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item row="1" column="2">
+              <widget class="QComboBox" name="BaudRateDropdown">
+               <item>
+                <property name="text">
+                 <string>1200</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2400</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>4800</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>9600</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>19200</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>38400</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>57600</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>115200</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>230400</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>460800</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>921600</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_32">
+               <property name="text">
+                <string>Baud Rate</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="SerialPortList" name="SerialPortListObj">
+            <property name="frameShape">
+             <enum>QFrame::Shape::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Plain</enum>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+            </property>
+            <property name="textElideMode">
+             <enum>Qt::TextElideMode::ElideMiddle</enum>
+            </property>
+            <property name="showGrid">
+             <bool>false</bool>
+            </property>
+            <property name="cornerButtonEnabled">
+             <bool>false</bool>
+            </property>
+            <property name="rowCount">
+             <number>1</number>
+            </property>
+            <property name="columnCount">
+             <number>2</number>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <row/>
+            <column/>
+            <column/>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_3" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLabel" name="label_43">
+               <property name="font">
+                <font>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Bytes Read</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="ClearBytesReadButton">
+               <property name="text">
+                <string>Clear</string>
+               </property>
+               <property name="icon">
+                <iconset theme="edit-clear"/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextBrowser" name="BytesReadBrowser">
+            <property name="font">
+             <font>
+              <family>Courier New</family>
+             </font>
+            </property>
+            <property name="lineWrapMode">
+             <enum>QTextEdit::LineWrapMode::NoWrap</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_4" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_44">
+               <property name="text">
+                <string>Bytes Written</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="ClearBytesWrittenButton">
+               <property name="text">
+                <string>Clear</string>
+               </property>
+               <property name="icon">
+                <iconset theme="edit-clear"/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextBrowser" name="BytesWrittenBrowser">
+            <property name="font">
+             <font>
+              <family>Courier New</family>
+             </font>
+            </property>
+            <property name="lineWrapMode">
+             <enum>QTextEdit::LineWrapMode::NoWrap</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QTabWidget" name="RadioModuleParameters">
+         <property name="currentIndex">
+          <number>1</number>
+         </property>
+         <widget class="QWidget" name="RadioParameters_Serial">
+          <attribute name="title">
+           <string>Serial Parameters</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="5" column="2" colspan="2">
+            <widget class="QComboBox" name="RadioParameters_ApiMode">
+             <property name="ParameterID" stdset="0">
+              <string>AP</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>Transparent [0]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>API Without Escapes [1]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>API With Escapes</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="2" colspan="2">
+            <widget class="QComboBox" name="RadioParameters_BaudRate">
+             <property name="ParameterID" stdset="0">
+              <string>BD</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>1200 [0]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>2400 [1]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>4800 [2]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>9600 [3]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>19200 [4]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>38400 [5]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>57600 [6]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>115200 [7]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>230400 [8]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>460800 [9]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>921600 [A]</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="9" column="2">
+            <spacer name="horizontalSpacer">
              <property name="orientation">
               <enum>Qt::Orientation::Horizontal</enum>
              </property>
-            </widget>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
-           <item row="0" column="0">
-            <widget class="QWidget" name="ThroughputTest_BasicParamsContainer" native="true">
-             <layout class="QGridLayout" name="gridLayout_5">
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <item row="1" column="1">
-               <widget class="QLineEdit" name="ThroughputTest_DestinationAddress">
-                <property name="text">
-                 <string>0013A200422CDAC2</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_15">
-                <property name="text">
-                 <string>Destination</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0">
-               <widget class="QLabel" name="label_19">
-                <property name="text">
-                 <string>Transmit Options</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QLabel" name="label_18">
-                <property name="text">
-                 <string>Duration (s)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QSpinBox" name="ThroughputTest_PacketRate">
-                <property name="buttonSymbols">
-                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-                </property>
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>200</number>
-                </property>
-                <property name="value">
-                 <number>10</number>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_16">
-                <property name="text">
-                 <string>Payload Size</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QSpinBox" name="ThroughputTest_Duration">
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>600</number>
-                </property>
-                <property name="value">
-                 <number>5</number>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="1">
-               <widget class="QSpinBox" name="ThroughputTest_TransmitOptions">
-                <property name="buttonSymbols">
-                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-                </property>
-                <property name="maximum">
-                 <number>255</number>
-                </property>
-                <property name="value">
-                 <number>0</number>
-                </property>
-                <property name="displayIntegerBase">
-                 <number>16</number>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="label_17">
-                <property name="text">
-                 <string>Packet Rate (Hz)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QSpinBox" name="ThroughputTest_PayloadSize">
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>245</number>
-                </property>
-                <property name="singleStep">
-                 <number>10</number>
-                </property>
-                <property name="value">
-                 <number>200</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" colspan="2">
-               <widget class="QLabel" name="label_31">
-                <property name="text">
-                 <string>Parameters</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignmentFlag::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_24">
+           <item row="3" column="4">
+            <widget class="QLabel" name="label_38">
              <property name="text">
-              <string>Range Scanning</string>
+              <string>NB</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="4">
+            <widget class="QLabel" name="label_37">
+             <property name="text">
+              <string>BD </string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="label_33">
+             <property name="text">
+              <string>Baud Rate</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QPushButton" name="RadioParameters_Serial_ReadButton">
+             <property name="text">
+              <string>Read</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="4">
+            <widget class="QLabel" name="label_42">
+             <property name="text">
+              <string>AO</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QLabel" name="label_36">
+             <property name="text">
+              <string>API Options</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="label_39">
+             <property name="text">
+              <string>Stop Bits</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="2" colspan="2">
+            <widget class="QComboBox" name="RadioParameters_ApiOptions">
+             <property name="ParameterID" stdset="0">
+              <string>AO</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>RX Indicator [0]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Explicit RX Indicator [1]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Legacy RX Indicator [2]</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QLabel" name="label_35">
+             <property name="text">
+              <string>API Mode</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2" colspan="2">
+            <widget class="QComboBox" name="RadioParameters_Parity">
+             <property name="ParameterID" stdset="0">
+              <string>NB</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>No Parity [0]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Even Parity [1]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Odd Parity [2]</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="4" column="2" colspan="2">
+            <widget class="QComboBox" name="RadioParameters_StopBits">
+             <property name="ParameterID" stdset="0">
+              <string>SB</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>One Stop Bit [0]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Two Stop Bits [1]</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="8" column="1">
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Orientation::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="label_34">
+             <property name="text">
+              <string>Parity</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="4">
+            <widget class="QLabel" name="label_40">
+             <property name="text">
+              <string>SB</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="4">
+            <widget class="QLabel" name="label_41">
+             <property name="text">
+              <string>AP</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="2" colspan="3">
+            <widget class="QPushButton" name="RadioParameters_Serial_WriteButton">
+             <property name="text">
+              <string>Write</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="MessagingParameters">
+          <attribute name="title">
+           <string>Messaging Parameters</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_9">
+           <item row="10" column="0">
+            <widget class="QLabel" name="label_51">
+             <property name="text">
+              <string>RF Data Rate</string>
+             </property>
+            </widget>
+           </item>
+           <item row="14" column="0">
+            <widget class="QLabel" name="label_58">
+             <property name="text">
+              <string>Unicast Retries</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_47">
+             <property name="text">
+              <string>Preamble ID</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QSpinBox" name="RadioParameters_NetworkDiscoveryBackOff">
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+             </property>
+             <property name="maximum">
+              <number>12000</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2">
+            <widget class="QLabel" name="label_66">
+             <property name="text">
+              <string>HP</string>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="2">
+            <widget class="QLabel" name="label_72">
+             <property name="text">
+              <string>TO</string>
+             </property>
+            </widget>
+           </item>
+           <item row="16" column="1">
+            <widget class="QSpinBox" name="RadioParameters_NetworkHops">
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+             </property>
+             <property name="maximum">
+              <number>32</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="17" column="2">
+            <widget class="QLabel" name="label_76">
+             <property name="text">
+              <string>BH</string>
+             </property>
+            </widget>
+           </item>
+           <item row="15" column="0">
+            <widget class="QLabel" name="label_57">
+             <property name="text">
+              <string>Mesh Unicast Retries</string>
+             </property>
+            </widget>
+           </item>
+           <item row="14" column="1">
+            <widget class="QSpinBox" name="RadioParameters_UnicastRetries">
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+             </property>
+             <property name="maximum">
+              <number>16</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="16" column="0">
+            <widget class="QLabel" name="label_55">
+             <property name="text">
+              <string>Network Hops</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="2">
+            <widget class="QLabel" name="label_67">
+             <property name="text">
+              <string>CI</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLabel" name="label_64">
+             <property name="text">
+              <string>NI</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLabel" name="label_48">
+             <property name="text">
+              <string>Addressing</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_63">
+             <property name="text">
+              <string>CE</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="2">
+            <widget class="QLabel" name="label_68">
+             <property name="text">
+              <string>NT</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_46">
+             <property name="text">
+              <string>Network ID</string>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="0">
+            <widget class="QLabel" name="label_52">
+             <property name="text">
+              <string>TX Power Level</string>
+             </property>
+            </widget>
+           </item>
+           <item row="17" column="0">
+            <widget class="QLabel" name="label_56">
+             <property name="text">
+              <string>Broadcast Hops</string>
+             </property>
+            </widget>
+           </item>
+           <item row="18" column="2">
+            <widget class="QLabel" name="label_77">
+             <property name="text">
+              <string>MT</string>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="2">
+            <widget class="QLabel" name="label_71">
+             <property name="text">
+              <string>PL</string>
+             </property>
+            </widget>
+           </item>
+           <item row="19" column="0">
+            <widget class="QPushButton" name="RadioParameters_Messaging_ReadButton">
+             <property name="text">
+              <string>Read</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="0">
+            <widget class="QLabel" name="label_61">
+             <property name="text">
+              <string>Network Discovery Options</string>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="0">
+            <widget class="QLabel" name="label_53">
+             <property name="text">
+              <string>Transmit Options</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="1">
+            <widget class="QComboBox" name="RadioParameters_RfDataRate">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <item>
+              <property name="text">
+               <string>10 kbps [0]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>110 kbps [1]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>250 kbps [2]</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="18" column="0">
+            <widget class="QLabel" name="label_62">
+             <property name="text">
+              <string>Broadcast Multi-Transmits</string>
+             </property>
+            </widget>
+           </item>
+           <item row="19" column="1" colspan="2">
+            <widget class="QPushButton" name="RadioParameters_Messaging_WriteButton">
+             <property name="text">
+              <string>Write</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QSpinBox" name="RadioParameters_ClusterID">
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+             </property>
+             <property name="maximum">
+              <number>65535</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="15" column="2">
+            <widget class="QLabel" name="label_74">
+             <property name="text">
+              <string>MR</string>
+             </property>
+            </widget>
+           </item>
+           <item row="18" column="1">
+            <widget class="QSpinBox" name="RadioParameters_BroadcastMultiTransmits">
+             <property name="maximum">
+              <number>5</number>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="2">
+            <widget class="QLabel" name="label_69">
+             <property name="text">
+              <string>NO</string>
+             </property>
+            </widget>
+           </item>
+           <item row="13" column="0" colspan="2">
+            <widget class="QLabel" name="label_54">
+             <property name="text">
+              <string>Network</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="0" colspan="2">
+            <widget class="QLabel" name="label_50">
+             <property name="text">
+              <string>Transmission</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -646,15 +907,698 @@
             </widget>
            </item>
            <item row="3" column="0">
-            <widget class="QCheckBox" name="ThroughputTest_RangeScanning">
+            <widget class="QLabel" name="label_49">
              <property name="text">
-              <string>Use Range Scanning</string>
+              <string>Node Identifier</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
-            <widget class="QWidget" name="ThroughputTest_RangeScanningParamsContainer" native="true">
-             <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_59">
+             <property name="text">
+              <string>Routing/Messaging Mode</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_45">
+             <property name="text">
+              <string>Cluster ID</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QSpinBox" name="RadioParameters_PreambleID">
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QLabel" name="label_60">
+             <property name="text">
+              <string>Network Discovery Back-Off</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="RadioParameters_MessagingMode">
+             <item>
+              <property name="text">
+               <string>Standard Router [0]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Indirect Msg Coordinator [1]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Non-Routing Module [2]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Non-Routing Coordinator [3]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Indirect Msg Poller [4]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>N/A [5]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Non-Routing Poller [6]</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="10" column="2">
+            <widget class="QLabel" name="label_70">
+             <property name="text">
+              <string>BR</string>
+             </property>
+            </widget>
+           </item>
+           <item row="15" column="1">
+            <widget class="QSpinBox" name="RadioParameters_MeshUnicastRetries">
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+             </property>
+             <property name="maximum">
+              <number>7</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QSpinBox" name="RadioParameters_NetworkID">
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+             </property>
+             <property name="maximum">
+              <number>32767</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="1">
+            <widget class="QSpinBox" name="RadioParameters_TransmitOptions">
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+             </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QLabel" name="label_65">
+             <property name="text">
+              <string>ID</string>
+             </property>
+            </widget>
+           </item>
+           <item row="16" column="2">
+            <widget class="QLabel" name="label_75">
+             <property name="text">
+              <string>NH</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="RadioParameters_NodeIdentifier">
+             <property name="text">
+              <string>HPRC_GroundStation</string>
+             </property>
+             <property name="maxLength">
+              <number>20</number>
+             </property>
+            </widget>
+           </item>
+           <item row="14" column="2">
+            <widget class="QLabel" name="label_73">
+             <property name="text">
+              <string>RR</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="1">
+            <widget class="QSpinBox" name="RadioParameters_NetworkDiscoveryOptions">
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+             </property>
+             <property name="maximum">
+              <number>7</number>
+             </property>
+            </widget>
+           </item>
+           <item row="17" column="1">
+            <widget class="QSpinBox" name="RadioParameters_BroadcastHops">
+             <property name="buttonSymbols">
+              <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+             </property>
+             <property name="maximum">
+              <number>32</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="1">
+            <widget class="QComboBox" name="RadioParameters_TxPowerLevel">
+             <item>
+              <property name="text">
+               <string>20 dBm [0]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>27 dBm [1]</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>30 dBm [2]</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="21" column="1" colspan="2">
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="20" column="0">
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Orientation::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QTabWidget" name="RadioModuleControls">
+         <property name="tabPosition">
+          <enum>QTabWidget::TabPosition::North</enum>
+         </property>
+         <property name="tabShape">
+          <enum>QTabWidget::TabShape::Rounded</enum>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <property name="elideMode">
+          <enum>Qt::TextElideMode::ElideRight</enum>
+         </property>
+         <property name="usesScrollButtons">
+          <bool>false</bool>
+         </property>
+         <property name="documentMode">
+          <bool>false</bool>
+         </property>
+         <property name="tabsClosable">
+          <bool>false</bool>
+         </property>
+         <property name="tabBarAutoHide">
+          <bool>false</bool>
+         </property>
+         <widget class="QWidget" name="LinkTest">
+          <attribute name="title">
+           <string>Link Test</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="1" column="1">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Destination</string>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="1">
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>Min RSSI</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Payload Size</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1" colspan="3">
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="18" column="1">
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>Retries</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Repeat</string>
+             </property>
+            </widget>
+           </item>
+           <item row="17" column="3">
+            <widget class="QLabel" name="LinkTestResults_Success">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="1">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>Max RSSI</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="3">
+            <widget class="QLabel" name="LinkTestResults_NoiseFloor">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>0 dBm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="16" column="3">
+            <widget class="QLabel" name="LinkTestResults_AvgRssi">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>0 dBm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="17" column="1">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Success</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Iterations</string>
+             </property>
+            </widget>
+           </item>
+           <item row="16" column="1">
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>Avg RSSI</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="3">
+            <widget class="QSpinBox" name="LinkTest_Repeat">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>200</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="3">
+            <widget class="QLabel" name="LinkTestResults_MaxRssi">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>0 dBm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="QSpinBox" name="LinkTest_Iterations">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>4000</number>
+             </property>
+             <property name="singleStep">
+              <number>100</number>
+             </property>
+             <property name="value">
+              <number>200</number>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="3">
+            <widget class="QLabel" name="LinkTestResults_MinRssi">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>0 dBm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1" colspan="3">
+            <widget class="QPushButton" name="LinkTest_Button">
+             <property name="text">
+              <string>Run link test</string>
+             </property>
+            </widget>
+           </item>
+           <item row="18" column="3">
+            <widget class="QLabel" name="LinkTestResults_Retries">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="1">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Noise Floor</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QLineEdit" name="LinkTest_DestinationAddress">
+             <property name="inputMask">
+              <string notr="true"/>
+             </property>
+             <property name="text">
+              <string>0013A200422CDAC2</string>
+             </property>
+             <property name="maxLength">
+              <number>16</number>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignJustify|Qt::AlignmentFlag::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="1" colspan="3">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Results</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="23" column="1" colspan="3">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="19" column="3">
+            <widget class="QLabel" name="LinkTestResults_RR">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </item>
+           <item row="19" column="1">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>RR</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
+            <widget class="QSpinBox" name="LinkTest_PayloadSize">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>256</number>
+             </property>
+             <property name="singleStep">
+              <number>20</number>
+             </property>
+             <property name="value">
+              <number>200</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" colspan="3">
+            <widget class="QCheckBox" name="LinkTest_Loop">
+             <property name="text">
+              <string>Loop</string>
+             </property>
+            </widget>
+           </item>
+           <item row="20" column="1" colspan="3">
+            <widget class="Line" name="line_2">
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Plain</enum>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="21" column="1">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Total Packets</string>
+             </property>
+            </widget>
+           </item>
+           <item row="22" column="1">
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>% Success</string>
+             </property>
+            </widget>
+           </item>
+           <item row="21" column="3">
+            <widget class="QLabel" name="LinkTestResults_TotalPackets">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>1000</string>
+             </property>
+            </widget>
+           </item>
+           <item row="22" column="3">
+            <widget class="QLabel" name="LinkTestResults_PercentSuccess">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>100%</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="ThroughputTest">
+          <attribute name="title">
+           <string>Throughput Test</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="22" column="1">
+            <widget class="QLabel" name="ThroughputTestResults_Throughput">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>160000 kbps</string>
+             </property>
+            </widget>
+           </item>
+           <item row="22" column="0">
+            <widget class="QLabel" name="label_23">
+             <property name="text">
+              <string>Throughput</string>
+             </property>
+            </widget>
+           </item>
+           <item row="21" column="1">
+            <widget class="QLabel" name="ThroughputTestResults_NumSuccess">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>1000</string>
+             </property>
+            </widget>
+           </item>
+           <item row="17" column="0" colspan="2">
+            <widget class="QPushButton" name="ThroughputTest_Button">
+             <property name="focusPolicy">
+              <enum>Qt::FocusPolicy::NoFocus</enum>
+             </property>
+             <property name="text">
+              <string>Run throughput test</string>
+             </property>
+            </widget>
+           </item>
+           <item row="20" column="1">
+            <widget class="QLabel" name="ThroughputTestResults_PercentSuccess">
+             <property name="frameShape">
+              <enum>QFrame::Shape::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Shadow::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>100</string>
+             </property>
+            </widget>
+           </item>
+           <item row="18" column="0" colspan="2">
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="23" column="0" colspan="2">
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Orientation::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="20" column="0">
+            <widget class="QLabel" name="label_21">
+             <property name="text">
+              <string>% Success</string>
+             </property>
+            </widget>
+           </item>
+           <item row="21" column="0">
+            <widget class="QLabel" name="label_22">
+             <property name="text">
+              <string>Num Success</string>
+             </property>
+            </widget>
+           </item>
+           <item row="19" column="0" colspan="2">
+            <widget class="QLabel" name="label_20">
+             <property name="text">
+              <string>Results</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QWidget" name="ThroughputTest_ParamsContainer" native="true">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_7">
               <property name="leftMargin">
                <number>0</number>
               </property>
@@ -667,133 +1611,306 @@
               <property name="bottomMargin">
                <number>0</number>
               </property>
-              <item row="4" column="1">
-               <widget class="QSpinBox" name="ThroughputTest_MaxPacketRate">
-                <property name="buttonSymbols">
-                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-                </property>
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>200</number>
-                </property>
-                <property name="value">
-                 <number>200</number>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QSpinBox" name="ThroughputTest_MaxPayloadSize">
-                <property name="buttonSymbols">
-                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-                </property>
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>245</number>
-                </property>
-                <property name="value">
-                 <number>240</number>
+              <item row="1" column="0">
+               <widget class="Line" name="line_4">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
                 </property>
                </widget>
               </item>
               <item row="0" column="0">
-               <widget class="QLabel" name="label_25">
-                <property name="text">
-                 <string>Min Payload Size</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QSpinBox" name="ThroughputTest_MinPayloadSize">
-                <property name="buttonSymbols">
-                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-                </property>
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>245</number>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QSpinBox" name="ThroughputTest_MinPacketRate">
-                <property name="buttonSymbols">
-                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-                </property>
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>200</number>
-                </property>
-                <property name="value">
-                 <number>1</number>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QSpinBox" name="ThroughputTest_PayloadSizeStep">
-                <property name="buttonSymbols">
-                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-                </property>
-                <property name="maximum">
-                 <number>100</number>
-                </property>
-                <property name="value">
-                 <number>10</number>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QLabel" name="label_29">
-                <property name="text">
-                 <string>Max Packet Rate</string>
-                </property>
+               <widget class="QWidget" name="ThroughputTest_BasicParamsContainer" native="true">
+                <layout class="QGridLayout" name="gridLayout_5">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item row="1" column="1">
+                  <widget class="QLineEdit" name="ThroughputTest_DestinationAddress">
+                   <property name="text">
+                    <string>0013A200422CDAC2</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_15">
+                   <property name="text">
+                    <string>Destination</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="0">
+                  <widget class="QLabel" name="label_19">
+                   <property name="text">
+                    <string>Transmit Options</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_18">
+                   <property name="text">
+                    <string>Duration (s)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QSpinBox" name="ThroughputTest_PacketRate">
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                   </property>
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>200</number>
+                   </property>
+                   <property name="value">
+                    <number>10</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_16">
+                   <property name="text">
+                    <string>Payload Size</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QSpinBox" name="ThroughputTest_Duration">
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>600</number>
+                   </property>
+                   <property name="value">
+                    <number>5</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="1">
+                  <widget class="QSpinBox" name="ThroughputTest_TransmitOptions">
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                   </property>
+                   <property name="maximum">
+                    <number>255</number>
+                   </property>
+                   <property name="value">
+                    <number>0</number>
+                   </property>
+                   <property name="displayIntegerBase">
+                    <number>16</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_17">
+                   <property name="text">
+                    <string>Packet Rate (Hz)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QSpinBox" name="ThroughputTest_PayloadSize">
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>245</number>
+                   </property>
+                   <property name="singleStep">
+                    <number>10</number>
+                   </property>
+                   <property name="value">
+                    <number>200</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0" colspan="2">
+                  <widget class="QLabel" name="label_31">
+                   <property name="text">
+                    <string>Parameters</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
               <item row="2" column="0">
-               <widget class="QLabel" name="label_27">
+               <widget class="QLabel" name="label_24">
                 <property name="text">
-                 <string>Payload Size Step</string>
+                 <string>Range Scanning</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
               <item row="3" column="0">
-               <widget class="QLabel" name="label_28">
+               <widget class="QCheckBox" name="ThroughputTest_RangeScanning">
                 <property name="text">
-                 <string>Min Packet Rate</string>
+                 <string>Use Range Scanning</string>
                 </property>
                </widget>
               </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_26">
-                <property name="text">
-                 <string>Max Payload Size</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0">
-               <widget class="QLabel" name="label_30">
-                <property name="text">
-                 <string>Packet Rate Step</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="1">
-               <widget class="QSpinBox" name="ThroughputTest_PacketRateStep">
-                <property name="buttonSymbols">
-                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-                </property>
-                <property name="maximum">
-                 <number>100</number>
-                </property>
-                <property name="value">
-                 <number>10</number>
-                </property>
+              <item row="4" column="0">
+               <widget class="QWidget" name="ThroughputTest_RangeScanningParamsContainer" native="true">
+                <layout class="QGridLayout" name="gridLayout_6">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item row="4" column="1">
+                  <widget class="QSpinBox" name="ThroughputTest_MaxPacketRate">
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                   </property>
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>200</number>
+                   </property>
+                   <property name="value">
+                    <number>200</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QSpinBox" name="ThroughputTest_MaxPayloadSize">
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                   </property>
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>245</number>
+                   </property>
+                   <property name="value">
+                    <number>240</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_25">
+                   <property name="text">
+                    <string>Min Payload Size</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QSpinBox" name="ThroughputTest_MinPayloadSize">
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                   </property>
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>245</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QSpinBox" name="ThroughputTest_MinPacketRate">
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                   </property>
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>200</number>
+                   </property>
+                   <property name="value">
+                    <number>1</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QSpinBox" name="ThroughputTest_PayloadSizeStep">
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                   </property>
+                   <property name="maximum">
+                    <number>100</number>
+                   </property>
+                   <property name="value">
+                    <number>10</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_29">
+                   <property name="text">
+                    <string>Max Packet Rate</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_27">
+                   <property name="text">
+                    <string>Payload Size Step</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_28">
+                   <property name="text">
+                    <string>Min Packet Rate</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_26">
+                   <property name="text">
+                    <string>Max Payload Size</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="0">
+                  <widget class="QLabel" name="label_30">
+                   <property name="text">
+                    <string>Packet Rate Step</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="1">
+                  <widget class="QSpinBox" name="ThroughputTest_PacketRateStep">
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                   </property>
+                   <property name="maximum">
+                    <number>100</number>
+                   </property>
+                   <property name="value">
+                    <number>10</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
              </layout>
@@ -801,1092 +1918,13 @@
            </item>
           </layout>
          </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QFrame" name="frame">
-      <property name="frameShape">
-       <enum>QFrame::Shape::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Shadow::Plain</enum>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QWidget" name="widget" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QPushButton" name="RefreshSerialPortsButton">
-            <property name="text">
-             <string>Refresh Serial Ports</string>
-            </property>
-            <property name="icon">
-             <iconset theme="view-refresh"/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_2" native="true">
-         <layout class="QGridLayout" name="gridLayout_3">
-          <property name="sizeConstraint">
-           <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <item row="1" column="2">
-           <widget class="QComboBox" name="BaudRateDropdown">
-            <item>
-             <property name="text">
-              <string>1200</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>2400</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>4800</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>9600</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>19200</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>38400</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>57600</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>115200</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>230400</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>460800</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>921600</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="label_32">
-            <property name="text">
-             <string>Baud Rate</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="SerialPortList" name="SerialPortListObj">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Plain</enum>
-         </property>
-         <property name="sizeAdjustPolicy">
-          <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
-         </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
-         </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
-         </property>
-         <property name="textElideMode">
-          <enum>Qt::TextElideMode::ElideMiddle</enum>
-         </property>
-         <property name="showGrid">
-          <bool>false</bool>
-         </property>
-         <property name="cornerButtonEnabled">
-          <bool>false</bool>
-         </property>
-         <property name="rowCount">
-          <number>1</number>
-         </property>
-         <property name="columnCount">
-          <number>2</number>
-         </property>
-         <attribute name="horizontalHeaderVisible">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="horizontalHeaderHighlightSections">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="verticalHeaderVisible">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="verticalHeaderHighlightSections">
-          <bool>false</bool>
-         </attribute>
-         <row/>
-         <column/>
-         <column/>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_3" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QLabel" name="label_43">
-            <property name="font">
-             <font>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Bytes Read</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignmentFlag::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="ClearBytesReadButton">
-            <property name="text">
-             <string>Clear</string>
-            </property>
-            <property name="icon">
-             <iconset theme="edit-clear"/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextBrowser" name="BytesReadBrowser">
-         <property name="font">
-          <font>
-           <family>Courier New</family>
-          </font>
-         </property>
-         <property name="lineWrapMode">
-          <enum>QTextEdit::LineWrapMode::NoWrap</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_4" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <widget class="QLabel" name="label_44">
-            <property name="text">
-             <string>Bytes Written</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignmentFlag::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="ClearBytesWrittenButton">
-            <property name="text">
-             <string>Clear</string>
-            </property>
-            <property name="icon">
-             <iconset theme="edit-clear"/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextBrowser" name="BytesWrittenBrowser">
-         <property name="font">
-          <font>
-           <family>Courier New</family>
-          </font>
-         </property>
-         <property name="lineWrapMode">
-          <enum>QTextEdit::LineWrapMode::NoWrap</enum>
-         </property>
         </widget>
        </item>
       </layout>
      </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QTabWidget" name="RadioModuleParameters">
-      <property name="currentIndex">
-       <number>1</number>
-      </property>
-      <widget class="QWidget" name="RadioParameters_Serial">
-       <attribute name="title">
-        <string>Serial Parameters</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_8">
-        <item row="5" column="2" colspan="2">
-         <widget class="QComboBox" name="RadioParameters_ApiMode">
-          <property name="ParameterID" stdset="0">
-           <string>AP</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>Transparent [0]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>API Without Escapes [1]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>API With Escapes</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="2" column="2" colspan="2">
-         <widget class="QComboBox" name="RadioParameters_BaudRate">
-          <property name="ParameterID" stdset="0">
-           <string>BD</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>1200 [0]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>2400 [1]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>4800 [2]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>9600 [3]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>19200 [4]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>38400 [5]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>57600 [6]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>115200 [7]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>230400 [8]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>460800 [9]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>921600 [A]</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="9" column="2">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="3" column="4">
-         <widget class="QLabel" name="label_38">
-          <property name="text">
-           <string>NB</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="4">
-         <widget class="QLabel" name="label_37">
-          <property name="text">
-           <string>BD </string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="label_33">
-          <property name="text">
-           <string>Baud Rate</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QPushButton" name="RadioParameters_Serial_ReadButton">
-          <property name="text">
-           <string>Read</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="4">
-         <widget class="QLabel" name="label_42">
-          <property name="text">
-           <string>AO</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QLabel" name="label_36">
-          <property name="text">
-           <string>API Options</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLabel" name="label_39">
-          <property name="text">
-           <string>Stop Bits</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2" colspan="2">
-         <widget class="QComboBox" name="RadioParameters_ApiOptions">
-          <property name="ParameterID" stdset="0">
-           <string>AO</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>RX Indicator [0]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Explicit RX Indicator [1]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Legacy RX Indicator [2]</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QLabel" name="label_35">
-          <property name="text">
-           <string>API Mode</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2" colspan="2">
-         <widget class="QComboBox" name="RadioParameters_Parity">
-          <property name="ParameterID" stdset="0">
-           <string>NB</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>No Parity [0]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Even Parity [1]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Odd Parity [2]</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="4" column="2" colspan="2">
-         <widget class="QComboBox" name="RadioParameters_StopBits">
-          <property name="ParameterID" stdset="0">
-           <string>SB</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>One Stop Bit [0]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Two Stop Bits [1]</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="label_34">
-          <property name="text">
-           <string>Parity</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="4">
-         <widget class="QLabel" name="label_40">
-          <property name="text">
-           <string>SB</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="4">
-         <widget class="QLabel" name="label_41">
-          <property name="text">
-           <string>AP</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="2" colspan="3">
-         <widget class="QPushButton" name="RadioParameters_Serial_WriteButton">
-          <property name="text">
-           <string>Write</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="MessagingParameters">
-       <attribute name="title">
-        <string>Messaging Parameters</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_9">
-        <item row="10" column="0">
-         <widget class="QLabel" name="label_51">
-          <property name="text">
-           <string>RF Data Rate</string>
-          </property>
-         </widget>
-        </item>
-        <item row="14" column="0">
-         <widget class="QLabel" name="label_58">
-          <property name="text">
-           <string>Unicast Retries</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_47">
-          <property name="text">
-           <string>Preamble ID</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QSpinBox" name="RadioParameters_NetworkDiscoveryBackOff">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-          </property>
-          <property name="maximum">
-           <number>12000</number>
-          </property>
-          <property name="displayIntegerBase">
-           <number>16</number>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QLabel" name="label_66">
-          <property name="text">
-           <string>HP</string>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="2">
-         <widget class="QLabel" name="label_72">
-          <property name="text">
-           <string>TO</string>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="1">
-         <widget class="QSpinBox" name="RadioParameters_NetworkHops">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
-          </property>
-          <property name="maximum">
-           <number>32</number>
-          </property>
-          <property name="displayIntegerBase">
-           <number>16</number>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="2">
-         <widget class="QLabel" name="label_76">
-          <property name="text">
-           <string>BH</string>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="0">
-         <widget class="QLabel" name="label_57">
-          <property name="text">
-           <string>Mesh Unicast Retries</string>
-          </property>
-         </widget>
-        </item>
-        <item row="14" column="1">
-         <widget class="QSpinBox" name="RadioParameters_UnicastRetries">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
-          </property>
-          <property name="maximum">
-           <number>16</number>
-          </property>
-          <property name="displayIntegerBase">
-           <number>16</number>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="0">
-         <widget class="QLabel" name="label_55">
-          <property name="text">
-           <string>Network Hops</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="QLabel" name="label_67">
-          <property name="text">
-           <string>CI</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QLabel" name="label_64">
-          <property name="text">
-           <string>NI</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QLabel" name="label_48">
-          <property name="text">
-           <string>Addressing</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_63">
-          <property name="text">
-           <string>CE</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="2">
-         <widget class="QLabel" name="label_68">
-          <property name="text">
-           <string>NT</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_46">
-          <property name="text">
-           <string>Network ID</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0">
-         <widget class="QLabel" name="label_52">
-          <property name="text">
-           <string>TX Power Level</string>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="0">
-         <widget class="QLabel" name="label_56">
-          <property name="text">
-           <string>Broadcast Hops</string>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="2">
-         <widget class="QLabel" name="label_77">
-          <property name="text">
-           <string>MT</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="2">
-         <widget class="QLabel" name="label_71">
-          <property name="text">
-           <string>PL</string>
-          </property>
-         </widget>
-        </item>
-        <item row="19" column="0">
-         <widget class="QPushButton" name="RadioParameters_Messaging_ReadButton">
-          <property name="text">
-           <string>Read</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="label_61">
-          <property name="text">
-           <string>Network Discovery Options</string>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="0">
-         <widget class="QLabel" name="label_53">
-          <property name="text">
-           <string>Transmit Options</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <widget class="QComboBox" name="RadioParameters_RfDataRate">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <item>
-           <property name="text">
-            <string>10 kbps [0]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>110 kbps [1]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>250 kbps [2]</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="18" column="0">
-         <widget class="QLabel" name="label_62">
-          <property name="text">
-           <string>Broadcast Multi-Transmits</string>
-          </property>
-         </widget>
-        </item>
-        <item row="19" column="1" colspan="2">
-         <widget class="QPushButton" name="RadioParameters_Messaging_WriteButton">
-          <property name="text">
-           <string>Write</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QSpinBox" name="RadioParameters_ClusterID">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-          </property>
-          <property name="maximum">
-           <number>65535</number>
-          </property>
-          <property name="displayIntegerBase">
-           <number>16</number>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="2">
-         <widget class="QLabel" name="label_74">
-          <property name="text">
-           <string>MR</string>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="1">
-         <widget class="QSpinBox" name="RadioParameters_BroadcastMultiTransmits">
-          <property name="maximum">
-           <number>5</number>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="2">
-         <widget class="QLabel" name="label_69">
-          <property name="text">
-           <string>NO</string>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="0" colspan="2">
-         <widget class="QLabel" name="label_54">
-          <property name="text">
-           <string>Network</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="0" colspan="2">
-         <widget class="QLabel" name="label_50">
-          <property name="text">
-           <string>Transmission</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_49">
-          <property name="text">
-           <string>Node Identifier</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_59">
-          <property name="text">
-           <string>Routing/Messaging Mode</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_45">
-          <property name="text">
-           <string>Cluster ID</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QSpinBox" name="RadioParameters_PreambleID">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-          </property>
-          <property name="maximum">
-           <number>9</number>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_60">
-          <property name="text">
-           <string>Network Discovery Back-Off</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QComboBox" name="RadioParameters_MessagingMode">
-          <item>
-           <property name="text">
-            <string>Standard Router [0]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Indirect Msg Coordinator [1]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Non-Routing Module [2]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Non-Routing Coordinator [3]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Indirect Msg Poller [4]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>N/A [5]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Non-Routing Poller [6]</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="10" column="2">
-         <widget class="QLabel" name="label_70">
-          <property name="text">
-           <string>BR</string>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="1">
-         <widget class="QSpinBox" name="RadioParameters_MeshUnicastRetries">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
-          </property>
-          <property name="maximum">
-           <number>7</number>
-          </property>
-          <property name="displayIntegerBase">
-           <number>16</number>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QSpinBox" name="RadioParameters_NetworkID">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-          </property>
-          <property name="maximum">
-           <number>32767</number>
-          </property>
-          <property name="displayIntegerBase">
-           <number>16</number>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="1">
-         <widget class="QSpinBox" name="RadioParameters_TransmitOptions">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-          </property>
-          <property name="maximum">
-           <number>255</number>
-          </property>
-          <property name="displayIntegerBase">
-           <number>16</number>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QLabel" name="label_65">
-          <property name="text">
-           <string>ID</string>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="2">
-         <widget class="QLabel" name="label_75">
-          <property name="text">
-           <string>NH</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="RadioParameters_NodeIdentifier">
-          <property name="text">
-           <string>HPRC_GroundStation</string>
-          </property>
-          <property name="maxLength">
-           <number>20</number>
-          </property>
-         </widget>
-        </item>
-        <item row="14" column="2">
-         <widget class="QLabel" name="label_73">
-          <property name="text">
-           <string>RR</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <widget class="QSpinBox" name="RadioParameters_NetworkDiscoveryOptions">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-          </property>
-          <property name="maximum">
-           <number>7</number>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="1">
-         <widget class="QSpinBox" name="RadioParameters_BroadcastHops">
-          <property name="buttonSymbols">
-           <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
-          </property>
-          <property name="maximum">
-           <number>32</number>
-          </property>
-          <property name="displayIntegerBase">
-           <number>16</number>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="1">
-         <widget class="QComboBox" name="RadioParameters_TxPowerLevel">
-          <item>
-           <property name="text">
-            <string>20 dBm [0]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>27 dBm [1]</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>30 dBm [2]</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="21" column="1" colspan="2">
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="20" column="0">
-         <spacer name="verticalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
