@@ -11,8 +11,6 @@ struct TestStruct
 
 int main(int argc, char *argv[])
 {
-
-
     QApplication a(argc, argv);
 
     Backend &backend = Backend::getInstance();

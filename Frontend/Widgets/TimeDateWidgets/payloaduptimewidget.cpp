@@ -17,7 +17,7 @@ PayloadUptimeWidget::PayloadUptimeWidget(QWidget *parent) :
 
 void PayloadUptimeWidget::newPacket(Backend::Telemetry telemPacket)
 {
-    uint32_t currentUpTime = telemPacket.data.payloadData->p_timestamp;
+    uint32_t currentUpTime = telemPacket.data.payloadData->timestamp;
 
     emit newUptime(currentUpTime);
 

@@ -32,7 +32,8 @@ private:
     void updateTable1(int row, int column, const QString &value); //function to update Column 1 cells
     void updateTable2(int row, int column, const QString &value); //function to update Column 2 cells
     void updateTable3(int row, int column, const QString &value); //function to update Column 3 cells
-    void processTelemetryData(const GroundStation::RocketTelemPacket &data); //function to process the incoming telemetry data
+    void processRocketTelemetryData(const GroundStation::RocketTelemPacket &data); //function to process the incoming telemetry data
+    void processPayloadTelemetryData(const GroundStation::PayloadTelemPacket &data); //function to process the incoming telemetry data
 };
 
 #endif //RAW_TELEMETRY_H

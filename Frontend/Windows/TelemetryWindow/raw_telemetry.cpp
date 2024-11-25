@@ -22,15 +22,27 @@ Raw_Telemetry::~Raw_Telemetry() {
 }
 
 void Raw_Telemetry::telemetryAvailable(Backend::Telemetry telemetry){
-    if(telemetry.packetType== GroundStation::Rocket){
-    GroundStation::RocketTelemPacket *data = telemetry.data.rocketData;
-        processTelemetryData(*data);
+    if(telemetry.packetType== GroundStation::Rocket)
+    {
+        GroundStation::RocketTelemPacket *data = telemetry.data.rocketData;
+        processRocketTelemetryData(*data);
     }
-    else if(telemetry.packetType== GroundStation::Payload){
-    GroundStation::PayloadTelemPacket *data = telemetry.data.payloadData;}
+    else if(telemetry.packetType== GroundStation::Payload)
+    {
+        GroundStation::PayloadTelemPacket *data = telemetry.data.payloadData;
+        processPayloadTelemetryData(*data);
+    }
+    //resizing columns
+    ui->Column_1->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->Column_2->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->Column_3->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    ui->Column_1->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->Column_2->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->Column_3->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
-void Raw_Telemetry::processTelemetryData(const GroundStation::RocketTelemPacket &data)
+void Raw_Telemetry::processRocketTelemetryData(const GroundStation::RocketTelemPacket &data)
 {   //Rocket Column1 Update
     updateTable1(0, 1, QString::number(data.accelX));
     updateTable1(1,1, QString::number(data.accelY));
@@ -47,6 +59,36 @@ void Raw_Telemetry::processTelemetryData(const GroundStation::RocketTelemPacket 
     updateTable1(12,1,QString::number(data.gyroX));
     updateTable1(13,1,QString::number(data.gyroY));
     updateTable1(14,1,QString::number(data.gyroZ));
+
+    //Rocket Column2 update
+    updateTable2(0,1,QString::number(data.epochTime));
+    updateTable2(1,1,QString::number(data.timestamp));
+    updateTable2(2,1,QString::number(data.state));
+    //Rocket GPS Lock update
+    if (data.gpsLock){
+        updateTable2(3,1,"yes");
+    }
+    else {
+        updateTable2(3,1,"no");
+    }
+    updateTable2(4,1,QString::number(data.satellites));
+    //...
+
+    //Rocket Column3 update
+    updateTable3(0,1, QString::number(data.i));
+    updateTable3(1,1, QString::number(data.j));
+    updateTable3(2,1, QString::number(data.k));
+    updateTable3(3,1, QString::number(data.w));
+    updateTable3(4,1,QString::number(data.gpsLat));
+    updateTable3(5,1,QString::number(data.gpsLong));
+    updateTable3(6,1,QString::number(data.gpsAltMSL));
+    updateTable3(7,1,QString::number(data.gpsAltAGL));
+    updateTable3(8,1,QString::number(data.altitude));
+    updateTable3(9,1,QString::number(data.pressure));
+}
+
+void Raw_Telemetry::processPayloadTelemetryData(const GroundStation::PayloadTelemPacket &data)
+{
     //Payload Column1 Update
     updateTable1(0,2,QString::number(data.accelX));
     updateTable1(1,2,QString::number(data.accelY));
@@ -64,19 +106,17 @@ void Raw_Telemetry::processTelemetryData(const GroundStation::RocketTelemPacket 
     updateTable1(13,2,QString::number(data.gyroY));
     updateTable1(14,2,QString::number(data.gyroZ));
 
-    //Rocket Column2 update
-    updateTable2(0,1,QString::number(data.epochTime));
-    updateTable2(1,1,QString::number(data.timestamp));
-    updateTable2(2,1,QString::number(data.state));
-    //Rocket GPS Lock update
-    if (data.gpsLock){
-        updateTable2(3,1,"yes");
-    }
-    else {
-        updateTable2(3,1,"no");
-    }
-    updateTable2(4,1,QString::number(data.satellites));
-    //...
+    //Payload Column3 update
+    updateTable3(0,2,QString::number(data.i));
+    updateTable3(1,2,QString::number(data.j));
+    updateTable3(2,2,QString::number(data.k));
+    updateTable3(3,2,QString::number(data.w));
+    updateTable3(4,2,QString::number(data.gpsLat));
+    updateTable3(5,2,QString::number(data.gpsLong));
+    updateTable3(6,2,QString::number(data.gpsAltMSL));
+    updateTable3(7,2,QString::number(data.gpsAltAGL));
+    updateTable3(8,2,QString::number(data.altitude));
+    updateTable3(9,2,QString::number(data.pressure));
 
     //Payload Column2 update
     updateTable2(0,2,QString::number(data.epochTime));
@@ -91,41 +131,6 @@ void Raw_Telemetry::processTelemetryData(const GroundStation::RocketTelemPacket 
         updateTable2(3,2,"no");
     }
     updateTable2(4,2,QString::number(data.satellites));
-    //...
-
-
-    //Rocket Column3 update
-    updateTable3(0,1, QString::number(data.i));
-    updateTable3(1,1, QString::number(data.j));
-    updateTable3(2,1, QString::number(data.k));
-    updateTable3(3,1, QString::number(data.w));
-    updateTable3(4,1,QString::number(data.gpsLat));
-    updateTable3(5,1,QString::number(data.gpsLong));
-    updateTable3(6,1,QString::number(data.gpsAltMSL));
-    updateTable3(7,1,QString::number(data.gpsAltAGL));
-    updateTable3(8,1,QString::number(data.altitude));
-    updateTable3(9,1,QString::number(data.pressure));
-    //Payload Column3 update
-    updateTable3(0,2,QString::number(data.i));
-    updateTable3(1,2,QString::number(data.j));
-    updateTable3(2,2,QString::number(data.k));
-    updateTable3(3,2,QString::number(data.w));
-    updateTable3(4,2,QString::number(data.gpsLat));
-    updateTable3(5,2,QString::number(data.gpsLong));
-    updateTable3(6,2,QString::number(data.gpsAltMSL));
-    updateTable3(7,2,QString::number(data.gpsAltAGL));
-    updateTable3(8,2,QString::number(data.altitude));
-    updateTable3(9,2,QString::number(data.pressure));
-
-    //resizing columns
-    ui->Column_1->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->Column_2->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->Column_3->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    ui->Column_1->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->Column_2->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->Column_3->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
 }
 
 void Raw_Telemetry::updateTable1(int row, int column, const QString &value){ //function to update Column 1
