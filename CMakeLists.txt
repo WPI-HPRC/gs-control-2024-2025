@@ -1,27 +1,52 @@
 cmake_minimum_required(VERSION 3.27)
-SET(protobuf_VERBOSE true)
-
-SET(ABSL_PROPAGATE_CXX_STD ON)
-SET(CMAKE_CURRENT_SOURCE_DIR  ${CMAKE_CURRENT_SOURCE_DIR}/protobuf)
-SET(CMAKE_SOURCE_DIR  ${CMAKE_CURRENT_SOURCE_DIR})
-SET(protobuf_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt)
-
-SET(CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
-SET(CMAKE_SOURCE_DIR  ${CMAKE_CURRENT_SOURCE_DIR})
-
 project(gs_backend_2024_2025)
 
 set(CMAKE_CXX_STANDARD 17)
+
+set(ABSL_PROPAGATE_CXX_STD, ON)
+
+# Add Protobuf as a subdirectory
+set(BUILD_SHARED_LIBS OFF)  # Use static libraries for Protobuf
+set(protobuf_BUILD_TESTS OFF CACHE BOOL "Disable Protobuf tests")
+add_subdirectory(protobuf cmake-protobuf-build)
+
+# Set Protobuf variables
+set(Protobuf_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/cmake-protobuf-build/src/protobuf-build/include)
+set(Protobuf_LIBRARIES protobuf::libprotobuf)
+set(Protobuf_PROTOC_EXECUTABLE $<TARGET_FILE:protoc>)
+
+# Output Protobuf variables for debugging
+message(STATUS "Protobuf_INCLUDE_DIRS: ${Protobuf_INCLUDE_DIRS}")
+message(STATUS "Protobuf_LIBRARIES: ${Protobuf_LIBRARIES}")
+message(STATUS "Protobuf_PROTOC_EXECUTABLE: ${Protobuf_PROTOC_EXECUTABLE}")
+
+# Protobuf input file (example .proto file)
+set(PROTO_FILE ${CMAKE_CURRENT_SOURCE_DIR}/HPRC_TEST.proto)
+
+# Custom command to generate Protobuf files
+set(PROTO_SRCS ${CMAKE_CURRENT_BINARY_DIR}/HPRC_TEST.pb.cc)
+set(PROTO_HDRS ${CMAKE_CURRENT_BINARY_DIR}/HPRC_TEST.pb.h)
+add_custom_command(
+        OUTPUT ${PROTO_SRCS} ${PROTO_HDRS}
+        COMMAND ${Protobuf_PROTOC_EXECUTABLE}
+        --cpp_out=${CMAKE_CURRENT_BINARY_DIR}
+        --proto_path=${CMAKE_CURRENT_SOURCE_DIR}
+        ${PROTO_FILE}
+        DEPENDS ${PROTO_FILE}
+        COMMENT "Generating Protobuf files for ${PROTO_FILE}"
+)
+
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_OSX_SYSROOT /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
+include_directories(
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${PROTO_HDRS})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 find_package(Qt6 COMPONENTS
         Core
         Gui
@@ -34,7 +59,9 @@ find_package(Qt6 COMPONENTS
         3DRender
         REQUIRED)
 
-add_executable(gs_backend_2024_2025 main.cpp
+add_executable(gs_backend_2024_2025
+        ${PROTO_SRCS}
+        main.cpp
         Resources/Resources.qrc
         Backend/Backend.cpp
         Backend/Backend.h
@@ -129,5 +156,5 @@ target_link_libraries(gs_backend_2024_2025
         Qt6::3DExtras
         Qt6::3DInput
         Qt6::3DRender
+        ${Protobuf_LIBRARIES}
 )
-

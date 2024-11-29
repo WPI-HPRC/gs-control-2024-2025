@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package HPRC_TEST;
+
+message Test {
+  required string name = 1;
+  required int32 id = 2;
+}
