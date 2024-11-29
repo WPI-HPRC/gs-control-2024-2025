@@ -1,3 +1,6 @@
 [submodule "xbee"]
 	path = xbee
 	url = https://github.com/WPI-HPRC/xbee
+[submodule "protobuf"]
+	path = protobuf
+	url = https://github.com/protocolbuffers/protobuf.git
