@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.27)
 project(gs_backend_2024_2025)
 
 set(CMAKE_CXX_STANDARD 17)
-
 set(ABSL_PROPAGATE_CXX_STD, ON)
 
 # Add Protobuf as a subdirectory
@@ -20,22 +19,57 @@ message(STATUS "Protobuf_INCLUDE_DIRS: ${Protobuf_INCLUDE_DIRS}")
 message(STATUS "Protobuf_LIBRARIES: ${Protobuf_LIBRARIES}")
 message(STATUS "Protobuf_PROTOC_EXECUTABLE: ${Protobuf_PROTOC_EXECUTABLE}")
 
-# Protobuf input file (example .proto file)
-set(PROTO_FILE ${CMAKE_CURRENT_SOURCE_DIR}/HPRC_TEST.proto)
+# Automatically find all .proto files in a directory
+file(GLOB_RECURSE PROTO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/telemetry/*.proto")
+list(REMOVE_DUPLICATES PROTO_FILES)  # Ensure no duplicates
 
-# Custom command to generate Protobuf files
-set(PROTO_SRCS ${CMAKE_CURRENT_BINARY_DIR}/HPRC_TEST.pb.cc)
-set(PROTO_HDRS ${CMAKE_CURRENT_BINARY_DIR}/HPRC_TEST.pb.h)
-add_custom_command(
-        OUTPUT ${PROTO_SRCS} ${PROTO_HDRS}
-        COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-        --cpp_out=${CMAKE_CURRENT_BINARY_DIR}
-        --proto_path=${CMAKE_CURRENT_SOURCE_DIR}
-        ${PROTO_FILE}
-        DEPENDS ${PROTO_FILE}
-        COMMENT "Generating Protobuf files for ${PROTO_FILE}"
-)
+# Print all .proto files line-by-line
+message(STATUS "Proto Files Found:")
+foreach(PROTO_FILE ${PROTO_FILES})
+    message(STATUS "  - ${PROTO_FILE}")
+endforeach()
 
+# Create lists for the generated sources and headers
+set(PROTO_SRCS)
+set(PROTO_HDRS)
+
+# Loop over all found .proto files
+foreach(PROTO_FILE ${PROTO_FILES})
+    # Get the file name without the directory
+    get_filename_component(PROTO_NAME ${PROTO_FILE} NAME_WE)
+
+    # Get the relative directory of the .proto file from the source folder
+    file(RELATIVE_PATH REL_PATH ${CMAKE_CURRENT_SOURCE_DIR}/telemetry ${PROTO_FILE})
+    get_filename_component(PROTO_DIR ${REL_PATH} DIRECTORY)
+
+    # Define the output directory for generated files
+    # Make sure the output directory structure doesn't get nested unnecessarily
+    set(PROTO_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/generated/telemetry)
+    file(MAKE_DIRECTORY ${PROTO_OUTPUT_DIR})  # Create the directory if it doesn't exist
+
+    # Log to check if the directories are being resolved correctly
+    message(STATUS "Proto File: ${PROTO_FILE}")
+    message(STATUS "Output Directory: ${PROTO_OUTPUT_DIR}")
+
+    # Generate Protobuf files
+    add_custom_command(
+            OUTPUT ${PROTO_OUTPUT_DIR}/${PROTO_NAME}.pb.cc
+            ${PROTO_OUTPUT_DIR}/${PROTO_NAME}.pb.h
+            COMMAND ${Protobuf_PROTOC_EXECUTABLE}
+            --cpp_out=${PROTO_OUTPUT_DIR}
+            --proto_path=${CMAKE_CURRENT_SOURCE_DIR}/telemetry
+            ${PROTO_FILE}
+            DEPENDS ${PROTO_FILE}
+            COMMENT "Generating Protobuf files for ${PROTO_FILE}"
+    )
+
+    # Append the generated source file to the list
+    list(APPEND PROTO_SRCS ${PROTO_OUTPUT_DIR}/${PROTO_NAME}.pb.cc)
+endforeach()
+
+# Include directories for generated headers
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PROTO_HDRS})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -43,10 +77,6 @@ set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_OSX_SYSROOT /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk)
 
-include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${PROTO_HDRS})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 find_package(Qt6 COMPONENTS
         Core
         Gui
@@ -59,6 +89,7 @@ find_package(Qt6 COMPONENTS
         3DRender
         REQUIRED)
 
+# Add the executable
 add_executable(gs_backend_2024_2025
         ${PROTO_SRCS}
         main.cpp
@@ -146,6 +177,8 @@ add_executable(gs_backend_2024_2025
         Frontend/Windows/MainWindow/mainwindow.h
         Frontend/Windows/MainWindow/mainwindow.ui
 )
+
+# Link Protobuf and Qt6 libraries
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core
         Qt6::Gui
@@ -158,3 +191,6 @@ target_link_libraries(gs_backend_2024_2025
         Qt6::3DRender
         ${Protobuf_LIBRARIES}
 )
+
+# Include all generated files in the target
+target_sources(gs_backend_2024_2025 PRIVATE ${PROTO_SRCS})
