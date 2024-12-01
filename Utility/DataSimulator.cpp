@@ -136,17 +136,19 @@ void DataSimulator::sendNextLine()
 
     std::string str{};
     absl::Status status = google::protobuf::util::MessageToJsonString(currentPacket, &str);
-    if(status != absl::OkStatus())
+    if(status == absl::OkStatus())
+    {
+        _webServer->broadcast(QString::fromStdString(str));
+    }
+    else
     {
         std::cout << "Error converting rocket packet to JSON string: " << status << std::endl;
     }
-
-    _webServer->broadcast(QString::fromStdString(str));
-
+    
     Backend::Telemetry telemetry{};
     telemetry.packetType = GroundStation::Rocket;
     telemetry.data.rocketData = &currentPacket;
     Backend::getInstance().receiveTelemetry(telemetry);
 
-    timer->start(dt);
+    timer->start((int)dt);
 }
