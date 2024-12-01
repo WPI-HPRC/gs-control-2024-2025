@@ -30,7 +30,9 @@ foreach(PROTO_FILE ${PROTO_FILES})
 endforeach()
 
 # Create lists for the generated sources and headers
-set(PROTO_SRCS)
+set(PROTO_SRCS
+        Utility/TelemetryHandler.cpp
+        Utility/TelemetryHandler.h)
 set(PROTO_HDRS)
 
 # Loop over all found .proto files

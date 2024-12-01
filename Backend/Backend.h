@@ -18,6 +18,9 @@
 #include "Utility/json_struct.h"
 #include "Utility/DataSimulator.h"
 
+#include "generated/telemetry/RocketTelemetryPacket.pb.h"
+#include "generated/telemetry/PayloadTelemetryPacket.pb.h"
+
 class Backend : public QObject
 {
     Q_OBJECT
@@ -58,8 +61,8 @@ public:
         GroundStation::PacketType packetType;
         union data
         {
-            GroundStation::RocketTelemPacket *rocketData;
-            GroundStation::PayloadTelemPacket *payloadData;
+            HPRC::RocketTelemetryPacket *rocketData;
+            HPRC::PayloadTelemetryPacket *payloadData;
         } data;
     };
 

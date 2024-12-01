@@ -12,6 +12,8 @@
 #include <QTimer>
 #include "WebServer.h"
 
+#include "generated/telemetry/RocketTelemetryPacket.pb.h"
+
 class DataSimulator : public QObject
 {
 Q_OBJECT
@@ -27,11 +29,11 @@ private:
 
     QList<QByteArray> nextLine();
 
-    QJsonDocument parseLine(QList<QByteArray> line);
+    HPRC::RocketTelemetryPacket parseLine(QList<QByteArray> line);
 
     QList<QByteArray> headers;
     QTimer *timer;
-    QJsonDocument nextDocument;
+    HPRC::RocketTelemetryPacket nextPacket;
 
     bool shouldStop = false;
 

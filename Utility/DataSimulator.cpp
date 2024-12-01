@@ -1,12 +1,11 @@
 #include "DataSimulator.h"
 #include <iostream>
 #include <QFile>
-#include <QJsonDocument>
-#include <QJsonObject>
 #include <string>
-#include "Utility/json_struct.h"
 #include "Utility.h"
 #include "Backend/Backend.h"
+#include "TelemetryHandler.h"
+#include <google/protobuf/util/json_util.h>
 
 DataSimulator::DataSimulator(const QString &filePath, WebServer *webServer, QObject *parent)
         : QObject(parent), _webServer(webServer)
@@ -40,7 +39,7 @@ void DataSimulator::start()
     timer->setSingleShot(true);
     connect(timer, &QTimer::timeout, this, &DataSimulator::sendNextLine);
 
-    nextDocument = parseLine(nextLine());
+    nextPacket = parseLine(nextLine());
 
     sendNextLine();
 }
@@ -50,7 +49,7 @@ void DataSimulator::stop()
     shouldStop = true;
 }
 
-QJsonDocument DataSimulator::parseLine(QList<QByteArray> line)
+HPRC::RocketTelemetryPacket DataSimulator::parseLine(QList<QByteArray> line)
 {
     if (line.isEmpty())
     {
@@ -58,18 +57,24 @@ QJsonDocument DataSimulator::parseLine(QList<QByteArray> line)
         return {};
     }
 
-    QString jsonString = "{";
+    HPRC::RocketTelemetryPacket packet;
+    const google::protobuf::Descriptor *descriptor = HPRC::RocketTelemetryPacket::GetDescriptor();
+    const google::protobuf::Reflection *reflection = HPRC::RocketTelemetryPacket::GetReflection();
+
     for (int i = 0; i < headers.length(); i++)
     {
-        jsonString.append(
-                QString::asprintf(R"("%s":%s,)", headers[i].toStdString().c_str(), line[i].toStdString().c_str()));
+        bool success = TelemetryHandler::setField(&packet, reflection, descriptor, headers[i].toStdString(), line[i].toStdString());
+        if(success)
+        {
+//            std::cout << "Successfully set " << headers[i].toStdString() << " to " << line[i].toStdString() << std::endl;
+        }
+        else
+        {
+            std::cout << "Could not set " << headers[i].toStdString() << " to " << line[i].toStdString() << std::endl;
+        }
     }
-    jsonString.chop(1);  // Remove the last comma
-    jsonString.append("}");
 
-    QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonString.toUtf8());
-
-    return jsonDocument;
+    return packet;
 }
 
 QList<QByteArray> DataSimulator::nextLine()
@@ -85,27 +90,24 @@ QList<QByteArray> DataSimulator::nextLine()
     return line.split(',');
 }
 
-
 void DataSimulator::sendNextLine()
 {
     if(shouldStop)
         return;
 
-    QJsonDocument currentDocument = nextDocument;
-    nextDocument = parseLine(nextLine());
+    HPRC::RocketTelemetryPacket currentPacket = nextPacket;
+    nextPacket = parseLine(nextLine());
 
-    if(nextDocument.isEmpty())
+    if(!currentPacket.IsInitialized())
     {
         start();
         return;
     }
 
-    int currentTimestamp = currentDocument.object().find("timestamp")->toInt();
-    int nextTimestamp = nextDocument.object().find("timestamp")->toInt();
+    uint32_t currentTimestamp = currentPacket.timestamp();
+    uint32_t nextTimestamp = nextPacket.timestamp();
 
-    int dt = nextTimestamp - currentTimestamp;
-
-//    std::cout << "Current timestamp: " << currentTimestamp << std::endl;
+    uint32_t dt = nextTimestamp - currentTimestamp;
 
     /*
     if (!file->canReadLine())
@@ -130,25 +132,15 @@ void DataSimulator::sendNextLine()
         return;
     }
 
-    std::string str = currentDocument.toJson(QJsonDocument::Compact).toStdString();
+    std::string str{};
+    google::protobuf::util::MessageToJsonString(currentPacket, &str);
 
     _webServer->broadcast(QString::fromStdString(str));
 
-    JS::ParseContext context(str);
-    GroundStation::RocketTelemPacket rocketPacket;
-    JS::Error err = context.parseTo(rocketPacket);
-
-    if(err != JS::Error::NoError)
-    {
-        std::cout << "Error parsing json: " << context.makeErrorString().c_str() << std::endl;
-    }
-    else
-    {
-        Backend::Telemetry telemetry{};
-        telemetry.packetType = GroundStation::Rocket;
-        telemetry.data.rocketData = &rocketPacket;
-        Backend::getInstance().receiveTelemetry(telemetry);
-    }
+    Backend::Telemetry telemetry{};
+    telemetry.packetType = GroundStation::Rocket;
+    telemetry.data.rocketData = &currentPacket;
+    Backend::getInstance().receiveTelemetry(telemetry);
 
     timer->start(dt);
 }
