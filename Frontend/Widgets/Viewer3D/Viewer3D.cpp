@@ -87,6 +87,6 @@ void Viewer3D::telemetryAvailable(Backend::Telemetry telemetry) const
 {
     if (telemetry.packetType == GroundStation::Rocket)
     {
-        orientRocket({telemetry.data.rocketData->w, telemetry.data.rocketData->i, telemetry.data.rocketData->j, telemetry.data.rocketData->k});
+        orientRocket({telemetry.data.rocketData->w(), telemetry.data.rocketData->i(), telemetry.data.rocketData->j(), telemetry.data.rocketData->k()});
     }
 }

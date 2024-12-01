@@ -70,7 +70,7 @@ HPRC::RocketTelemetryPacket DataSimulator::parseLine(QList<QByteArray> line)
         }
         else
         {
-            std::cout << "Could not set " << headers[i].toStdString() << " to " << line[i].toStdString() << std::endl;
+//            std::cout << "Could not set " << headers[i].toStdString() << " to " << line[i].toStdString() << std::endl;
         }
     }
 
@@ -85,6 +85,8 @@ QList<QByteArray> DataSimulator::nextLine()
         std::cout << "Line is empty" << std::endl;
         return {};
     }
+
+    line.replace("\xEF\xBB\xBF", "");  // Removes the zero-width space (U+200B)
 
     line.replace("\"", "");
     return line.split(',');
@@ -126,14 +128,18 @@ void DataSimulator::sendNextLine()
      */
 
     // If the timestamps don't make sense, just skip this line
-    if (dt > 20000 || dt < 0)
+    if (dt > 20000)
     {
         sendNextLine();
         return;
     }
 
     std::string str{};
-    google::protobuf::util::MessageToJsonString(currentPacket, &str);
+    absl::Status status = google::protobuf::util::MessageToJsonString(currentPacket, &str);
+    if(status != absl::OkStatus())
+    {
+        std::cout << "Error converting rocket packet to JSON string: " << status << std::endl;
+    }
 
     _webServer->broadcast(QString::fromStdString(str));
 

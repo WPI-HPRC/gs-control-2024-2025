@@ -24,12 +24,12 @@ Raw_Telemetry::~Raw_Telemetry() {
 void Raw_Telemetry::telemetryAvailable(Backend::Telemetry telemetry){
     if(telemetry.packetType== GroundStation::Rocket)
     {
-        GroundStation::RocketTelemPacket *data = telemetry.data.rocketData;
+        HPRC::RocketTelemetryPacket *data = telemetry.data.rocketData;
         processRocketTelemetryData(*data);
     }
     else if(telemetry.packetType== GroundStation::Payload)
     {
-        GroundStation::PayloadTelemPacket *data = telemetry.data.payloadData;
+        HPRC::PayloadTelemetryPacket *data = telemetry.data.payloadData;
         processPayloadTelemetryData(*data);
     }
     //resizing columns
@@ -42,95 +42,95 @@ void Raw_Telemetry::telemetryAvailable(Backend::Telemetry telemetry){
     ui->Column_3->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
-void Raw_Telemetry::processRocketTelemetryData(const GroundStation::RocketTelemPacket &data)
+void Raw_Telemetry::processRocketTelemetryData(const HPRC::RocketTelemetryPacket &data)
 {   //Rocket Column1 Update
-    updateTable1(0, 1, QString::number(data.accelX));
-    updateTable1(1,1, QString::number(data.accelY));
-    updateTable1(2,1, QString::number(data.accelZ));
-    updateTable1(3,1,QString::number(data.velX));
-    updateTable1(4,1,QString::number(data.velY));
-    updateTable1(5,1,QString::number(data.velZ));
-    updateTable1(6,1,QString::number(data.posX));
-    updateTable1(7,1,QString::number(data.posY));
-    updateTable1(8,1,QString::number(data.posZ));
-    updateTable1(9,1,QString::number(data.magX));
-    updateTable1(10,1,QString::number(data.magY));
-    updateTable1(11,1,QString::number(data.magZ));
-    updateTable1(12,1,QString::number(data.gyroX));
-    updateTable1(13,1,QString::number(data.gyroY));
-    updateTable1(14,1,QString::number(data.gyroZ));
+    updateTable1(0, 1, QString::number(data.accelx()));
+    updateTable1(1,1, QString::number(data.accely()));
+    updateTable1(2,1, QString::number(data.accelz()));
+    updateTable1(3,1,QString::number(data.velx()));
+    updateTable1(4,1,QString::number(data.vely()));
+    updateTable1(5,1,QString::number(data.velz()));
+    updateTable1(6,1,QString::number(data.posx()));
+    updateTable1(7,1,QString::number(data.posx()));
+    updateTable1(8,1,QString::number(data.posz()));
+    updateTable1(9,1,QString::number(data.magx()));
+    updateTable1(10,1,QString::number(data.magy()));
+    updateTable1(11,1,QString::number(data.magz()));
+    updateTable1(12,1,QString::number(data.gyrox()));
+    updateTable1(13,1,QString::number(data.gyroy()));
+    updateTable1(14,1,QString::number(data.gyroz()));
 
     //Rocket Column2 update
-    updateTable2(0,1,QString::number(data.epochTime));
-    updateTable2(1,1,QString::number(data.timestamp));
-    updateTable2(2,1,QString::number(data.state));
+    updateTable2(0,1,QString::number(data.epochtime()));
+    updateTable2(1,1,QString::number(data.timestamp()));
+    updateTable2(2,1,QString::number(data.state()));
     //Rocket GPS Lock update
-    if (data.gpsLock){
+    if (data.gpslock()){
         updateTable2(3,1,"yes");
     }
     else {
         updateTable2(3,1,"no");
     }
-    updateTable2(4,1,QString::number(data.satellites));
+    updateTable2(4,1,QString::number(data.satellites()));
     //...
 
     //Rocket Column3 update
-    updateTable3(0,1, QString::number(data.i));
-    updateTable3(1,1, QString::number(data.j));
-    updateTable3(2,1, QString::number(data.k));
-    updateTable3(3,1, QString::number(data.w));
-    updateTable3(4,1,QString::number(data.gpsLat));
-    updateTable3(5,1,QString::number(data.gpsLong));
-    updateTable3(6,1,QString::number(data.gpsAltMSL));
-    updateTable3(7,1,QString::number(data.gpsAltAGL));
-    updateTable3(8,1,QString::number(data.altitude));
-    updateTable3(9,1,QString::number(data.pressure));
+    updateTable3(0,1, QString::number(data.i()));
+    updateTable3(1,1, QString::number(data.j()));
+    updateTable3(2,1, QString::number(data.k()));
+    updateTable3(3,1, QString::number(data.w()));
+    updateTable3(4,1,QString::number(data.gpslat()));
+    updateTable3(5,1,QString::number(data.gpslong()));
+    updateTable3(6,1,QString::number(data.gpsaltmsl()));
+    updateTable3(7,1,QString::number(data.gpsaltagl()));
+    updateTable3(8,1,QString::number(data.altitude()));
+    updateTable3(9,1,QString::number(data.pressure()));
 }
 
-void Raw_Telemetry::processPayloadTelemetryData(const GroundStation::PayloadTelemPacket &data)
+void Raw_Telemetry::processPayloadTelemetryData(const HPRC::PayloadTelemetryPacket &data)
 {
     //Payload Column1 Update
-    updateTable1(0,2,QString::number(data.accelX));
-    updateTable1(1,2,QString::number(data.accelY));
-    updateTable1(2,2,QString::number(data.accelZ));
-    updateTable1(3,2,QString::number(data.velX));
-    updateTable1(4,2,QString::number(data.velY));
-    updateTable1(5,2,QString::number(data.velZ));
-    updateTable1(6,2,QString::number(data.posX));
-    updateTable1(7,2,QString::number(data.posY));
-    updateTable1(8,2,QString::number(data.posZ));
-    updateTable1(9,2,QString::number(data.magX));
-    updateTable1(10,2,QString::number(data.magY));
-    updateTable1(11,2,QString::number(data.magZ));
-    updateTable1(12,2,QString::number(data.gyroX));
-    updateTable1(13,2,QString::number(data.gyroY));
-    updateTable1(14,2,QString::number(data.gyroZ));
+    updateTable1(0,2,QString::number(data.accelx()));
+    updateTable1(1,2,QString::number(data.accely()));
+    updateTable1(2,2,QString::number(data.accelz()));
+    updateTable1(3,2,QString::number(data.velx()));
+    updateTable1(4,2,QString::number(data.vely()));
+    updateTable1(5,2,QString::number(data.velz()));
+    updateTable1(6,2,QString::number(data.posx()));
+    updateTable1(7,2,QString::number(data.posy()));
+    updateTable1(8,2,QString::number(data.posz()));
+    updateTable1(9,2,QString::number(data.magx()));
+    updateTable1(10,2,QString::number(data.magy()));
+    updateTable1(11,2,QString::number(data.magz()));
+    updateTable1(12,2,QString::number(data.gyrox()));
+    updateTable1(13,2,QString::number(data.gyroy()));
+    updateTable1(14,2,QString::number(data.gyroz()));
 
     //Payload Column3 update
-    updateTable3(0,2,QString::number(data.i));
-    updateTable3(1,2,QString::number(data.j));
-    updateTable3(2,2,QString::number(data.k));
-    updateTable3(3,2,QString::number(data.w));
-    updateTable3(4,2,QString::number(data.gpsLat));
-    updateTable3(5,2,QString::number(data.gpsLong));
-    updateTable3(6,2,QString::number(data.gpsAltMSL));
-    updateTable3(7,2,QString::number(data.gpsAltAGL));
-    updateTable3(8,2,QString::number(data.altitude));
-    updateTable3(9,2,QString::number(data.pressure));
+    updateTable3(0,2,QString::number(data.i()));
+    updateTable3(1,2,QString::number(data.j()));
+    updateTable3(2,2,QString::number(data.k()));
+    updateTable3(3,2,QString::number(data.w()));
+    updateTable3(4,2,QString::number(data.gpslat()));
+    updateTable3(5,2,QString::number(data.gpslong()));
+    updateTable3(6,2,QString::number(data.gpsaltmsl()));
+    updateTable3(7,2,QString::number(data.gpsaltagl()));
+    updateTable3(8,2,QString::number(data.altitude()));
+    updateTable3(9,2,QString::number(data.pressure()));
 
     //Payload Column2 update
-    updateTable2(0,2,QString::number(data.epochTime));
-    updateTable2(1,2,QString::number(data.timestamp));
-    updateTable2(2,2,QString::number(data.state));
+    updateTable2(0,2,QString::number(data.epochtime()));
+    updateTable2(1,2,QString::number(data.timestamp()));
+    updateTable2(2,2,QString::number(data.state()));
     //Payload GPS Lock update
-    if (data.gpsLock){
+    if (data.gpslock()){
         updateTable2(3,2,"yes");
     }
     else
     {
         updateTable2(3,2,"no");
     }
-    updateTable2(4,2,QString::number(data.satellites));
+    updateTable2(4,2,QString::number(data.satellites()));
 }
 
 void Raw_Telemetry::updateTable1(int row, int column, const QString &value){ //function to update Column 1
