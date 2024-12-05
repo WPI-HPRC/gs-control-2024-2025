@@ -11,6 +11,8 @@
 RadioPerformanceWindow::RadioPerformanceWindow(QWidget *parent) :
     QWidget(parent), ui(new Ui::RadioPerformanceWindow) {
     ui->setupUi(this);
+
+
 }
 
 RadioPerformanceWindow::~RadioPerformanceWindow() {

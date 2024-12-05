@@ -450,8 +450,30 @@ namespace GroundStation
 //    );
 //};
 
-
 #pragma pack(pop)
 }
+
+namespace RadioPerformanceStat
+{
+    enum PacketType
+    {
+        Combined = 0x00,
+        Rocket = 0x01,
+        Payload = 0x02
+    };
+
+    enum StatType
+    {
+        Throughput = 0;
+        Count = 1;
+    };
+
+    enum DataType
+    {
+        Packets = 0,
+        Bytes = 1
+    };
+}
+
 
 #endif //GS_BACKEND_2024_2025_UTILITY_H

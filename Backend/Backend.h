@@ -163,8 +163,12 @@ signals:
     void newBytesReadAvailable(QString);
     void newBytesWrittenAvailable(QString);
 
-    void bytesPerSecond(uint64_t);
-    void packetsPerSecond(uint32_t);
+    void rocketThroughputStats(RadioThroughputStats);
+    void payloadThroughputStats(RadioThroughputStats);
+    void combinedThroughputStats(RadioThroughputStats);
+    void rocketCountStats(RadioCountStats);
+    void payloadCountStats(RadioCountStats);
+    void combinedCountStats(RadioCountStats);
     void droppedPackets(uint32_t);
 
 private:
@@ -194,8 +198,8 @@ private:
     uint32_t rocketTimestampStart;
     QTimer *throughputTimer{};
 
-    uint32_t lastPacketCount;
-    uint64_t lastByteCount;
+    RadioCountStats lastRocketCount;
+    RadioCountStats lastPayloadCount;
 
     QMutex mutex;
 };
