@@ -449,9 +449,8 @@ void Backend::start()
     getPorts();
 
     webServer = new WebServer(8001);
-
-    QString simulationFile = "/Users/will/Desktop/LIFT_rocket_trimmed.csv";
-//    QString simulationFile = "../Utility/SamplePayloadData.csv";
+    
+    QString simulationFile = "../Utility/SamplePayloadData.csv";
 
     dataSimulator = new DataSimulator(
             simulationFile,
