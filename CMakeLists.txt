@@ -87,10 +87,6 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.cpp
         Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.h
         Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.cpp
-        Frontend/Widgets/RadioPerformanceWidgets/bytespersecwidget.cpp
-        Frontend/Widgets/RadioPerformanceWidgets/bytespersecwidget.h
-        Frontend/Widgets/RadioPerformanceWidgets/packetspersecwidget.cpp
-        Frontend/Widgets/RadioPerformanceWidgets/packetspersecwidget.h
         Frontend/Widgets/RadioPerformanceWidgets/droppedpacketswidget.cpp
         Frontend/Widgets/RadioPerformanceWidgets/droppedpacketswidget.h
         Frontend/Widgets/RadioPerformanceWidgets/rssiwidget.cpp
@@ -106,6 +102,8 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Windows/MainWindow/mainwindow.cpp
         Frontend/Windows/MainWindow/mainwindow.h
         Frontend/Windows/MainWindow/mainwindow.ui
+        Frontend/Widgets/RadioPerformanceWidgets/throughputdisplaywidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/throughputdisplaywidget.h
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core

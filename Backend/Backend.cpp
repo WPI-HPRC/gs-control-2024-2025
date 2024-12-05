@@ -422,26 +422,47 @@ void Backend::updateThroughputSpeeds()
     if(!module){return;} // safety measure to prevent crashing the program if the radio isn't actually connected
 
     int multiple = (1000/throughputTimer->interval());
-    uint64_t bytesPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount) -lastByteCount ) * multiple;
-    uint32_t packetsPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount) -lastPacketCount ) * multiple;
-    emit bytesPerSecond(bytesPerSec);
-    emit packetsPerSecond(packetsPerSec);
-    emit droppedPackets(getModuleWithName(GROUND_STATION_MODULE)->droppedPacketsCount);
+
+    RadioThroughputStats rocketStats;
+    RadioThroughputStats payloadStats;
+    RadioThroughputStats combinedStats;
+    RadioCountStats combinedCount;
+
+    combinedCount.bytesReceivedCount = module->rocketRadioStats.bytesReceivedCount + module->payloadRadioStats.bytesReceivedCount;
+    combinedCount.packetsReceivedCount = module->rocketRadioStats.packetsReceivedCount + module->payloadRadioStats.packetsReceivedCount;
+
+    rocketStats.bytesPerSecond = module->rocketRadioStats.bytesReceivedCount - lastRocketCount.bytesReceivedCount;
+    rocketStats.packetsPerSecond = module->rocketRadioStats.packetsReceivedCount - lastRocketCount.packetsReceivedCount;
+
+    payloadStats.bytesPerSecond = module->payloadRadioStats.bytesReceivedCount - lastPayloadCount.bytesReceivedCount;
+    payloadStats.packetsPerSecond = module->payloadRadioStats.packetsReceivedCount - lastPayloadCount.packetsReceivedCount;
+
+    combinedStats.bytesPerSecond = rocketStats.bytesPerSecond + payloadStats.bytesPerSecond;
+    combinedStats.packetsPerSecond = rocketStats.packetsPerSecond + payloadStats.packetsPerSecond;
+
+    emit rocketThroughputStats(rocketStats);
+    emit payloadThroughputStats(payloadStats);
+    emit combinedThroughputStats(combinedStats);
+
+    emit rocketCountStats(module->rocketRadioStats);
+    emit payloadCountStats(module->payloadRadioStats);
+    emit combinedCountStats(combinedCount);
+
+    emit droppedPackets(module->droppedPacketsCount);
 
     // update our "last" counters to get the difference next loop cycle
-    lastByteCount = getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount;
-    lastPacketCount = getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount;
+    lastRocketCount = module->rocketRadioStats;
+    lastPayloadCount = module->payloadRadioStats;
 
     // get the latest error count from the radio module
     module->sendNextFrameImmediately = true;
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount);
+    // ask for the latest RSSI from the radio module
     module->sendNextFrameImmediately = true;
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
+    // reset the radio's internal error count
     module->sendNextFrameImmediately = true;
     Backend::setParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount, 0);
-
-
-
 }
 
 void Backend::start()

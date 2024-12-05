@@ -177,6 +177,24 @@ void RadioModule::handleReceivePacket(XBee::ReceivePacket::Struct *frame)
     }
 
     lastPacket = parsePacket(frame->data);
+
+    if(recordThroughput) // performance statistics
+    {
+        switch (lastPacket.packetType)
+        {
+        case GroundStation::Payload:
+            payloadStats.packetsReceivedCount++;
+            payloadStats.bytesReceivedCount += frame->dataLength_bytes + XBee::ReceivePacket::PacketBytes;
+            break;
+        case GroundStation::Rocket:
+            rocketStats.packetsReceivedCount++;
+            rocketStats.bytesReceivedCount+= frame->dataLength_bytes + XBee::ReceivePacket::PacketBytes;
+            break;
+        case GroundStation::Unknown:
+            break;;
+        }
+    }
+
     dataLogger->dataReady(lastPacket.data.c_str(), lastPacket.packetType);
 }
 
@@ -187,6 +205,24 @@ void RadioModule::handleReceivePacket64Bit(XBee::ReceivePacket64Bit::Struct *fra
         throughputTestPacketsReceived ++;
     }
     lastPacket = parsePacket(frame->data);
+
+    if(recordThroughput) // performance statistics
+    {
+        switch (lastPacket.packetType)
+        {
+        case GroundStation::Payload:
+            payloadStats.packetsReceivedCount++;
+            payloadStats.bytesReceivedCount += frame->dataLength_bytes + XBee::ReceivePacket64Bit::PacketBytes;
+            break;
+        case GroundStation::Rocket:
+            rocketStats.packetsReceivedCount++;
+            rocketStats.bytesReceivedCount+= frame->dataLength_bytes + XBee::ReceivePacket64Bit::PacketBytes;
+            break;
+        case GroundStation::Unknown:
+            break;;
+        }
+    }
+
     dataLogger->dataReady(lastPacket.data.c_str(), lastPacket.packetType, frame->negativeRssi);
 }
 
@@ -229,12 +265,6 @@ void RadioModule::handlingFrame(const uint8_t *frame)
     for(int i = 0; i < length + 4; i++)
     {
         logString.append(QString::asprintf("%02X ", ((int)frame[i] & 0xFF)));
-    }
-
-    if(recordThroughput)
-    {
-        packetsReceivedCount++;
-        bytesReceivedCount += length + 4;
     }
 
     Backend::getInstance().newBytesRead(logString);

@@ -39,6 +39,18 @@ struct LinkTestResults
     );
 };
 
+struct RadioCountStats
+{
+    uint32_t packetsReceivedCount;
+    uint64_t bytesReceivedCount;
+};
+
+struct RadioThroughputStats
+{
+    uint32_t packetsPerSecond;
+    uint64_t bytesPerSecond;
+};
+
 class RadioModule : public XBeeDevice
 {
 public:
@@ -75,9 +87,10 @@ public:
 
     void connectPort();
 
-    uint32_t packetsReceivedCount = 0;
-    uint64_t bytesReceivedCount = 0;
-    uint32_t droppedPacketsCount = 0;
+    RadioCountStats rocketRadioStats;
+    RadioCountStats payloadRadioStats;
+
+    uint32_t droppedPacketsCount;
 
     DataLogger *dataLogger{};
     SerialPort *serialPort{};
