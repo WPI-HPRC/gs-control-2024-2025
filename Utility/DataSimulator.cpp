@@ -102,6 +102,7 @@ void DataSimulator::sendNextLine()
 
     if(!currentPacket.IsInitialized())
     {
+        std::cout << "Packet was not initialized; restarting" << std::endl;
         start();
         return;
     }
@@ -110,22 +111,6 @@ void DataSimulator::sendNextLine()
     uint32_t nextTimestamp = nextPacket.timestamp();
 
     uint32_t dt = nextTimestamp - currentTimestamp;
-
-    /*
-    if (!file->canReadLine())
-    {
-        if (file->atEnd())
-        {
-            std::cout << "Reached end of file." << std::endl;
-        }
-        else
-        {
-            std::cout << "Can't read line: " << file->errorString().toStdString() << std::endl;
-        }
-        timer->stop();
-        return;
-    }
-     */
 
     // If the timestamps don't make sense, just skip this line
     if (dt > 20000)
@@ -149,6 +134,13 @@ void DataSimulator::sendNextLine()
     telemetry.packetType = GroundStation::Rocket;
     telemetry.data.rocketData = &currentPacket;
     Backend::getInstance().receiveTelemetry(telemetry);
+
+    if (file->atEnd())
+    {
+        std::cout << "Reached end of file. Restarting" << std::endl;
+        start();
+        return;
+    }
 
     timer->start((int)dt);
 }
