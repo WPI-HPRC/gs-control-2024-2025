@@ -163,7 +163,8 @@ private:
     RadioModule *getModuleWithName(const QString& name);
 
     WebServer *webServer{};
-    DataSimulator *dataSimulator;
+    DataSimulator *rocketDataSimulator;
+    DataSimulator *payloadDataSimulator;
     DataLogger *dataLogger{};
 
     QTimer *timer{};

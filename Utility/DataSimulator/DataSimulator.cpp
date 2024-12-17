@@ -77,15 +77,7 @@ std::unique_ptr<google::protobuf::Message> DataSimulator::parseLine(QList<QByteA
 
     for (int i = 0; i < headers.length(); i++)
     {
-        bool success = TelemetryHandler::setField(message.get(), reflection, descriptor, headers[i].toStdString(), line[i].toStdString());
-        if(success)
-        {
-//            std::cout << "Successfully set " << headers[i].toStdString() << " to " << line[i].toStdString() << std::endl;
-        }
-        else
-        {
-//            std::cout << "Could not set " << headers[i].toStdString() << " to " << line[i].toStdString() << std::endl;
-        }
+        TelemetryHandler::setField(message.get(), reflection, descriptor, headers[i].toStdString(), line[i].toStdString());
     }
 
     return message;
