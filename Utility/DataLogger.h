@@ -153,6 +153,8 @@ public:
 
     QString directoryPrefix;
 
+    void openLogsDefault();
+
 private:
     void createDirectory(const QString &dirName);
     void createFiles();

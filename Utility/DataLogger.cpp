@@ -7,6 +7,7 @@
 #include <QJsonDocument>
 #include <iostream>
 #include <utility>
+#include <QDesktopServices>
 
 //#define OFFICIAL_TEST
 
@@ -84,6 +85,13 @@ void DataLogger::createFiles()
 #endif
     }
 
+}
+
+void DataLogger::openLogsDefault()
+{
+    QDesktopServices::openUrl(QUrl("file://" + rocketLogFile.file.fileName(), QUrl::TolerantMode));
+    QDesktopServices::openUrl(QUrl("file://" + payloadLogFile.file.fileName(), QUrl::TolerantMode));
+    QDesktopServices::openUrl(QUrl("file://" + byteLog.fileName(), QUrl::TolerantMode));
 }
 
 void DataLogger::logLinkTest(const QJsonObject &jsonData)
