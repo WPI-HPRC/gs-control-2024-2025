@@ -10,8 +10,6 @@
 #include <chrono>
 #include "Constants.h"
 
-#define SIMULATE_DATA
-
 QSerialPortInfo getTargetPort(const QString& portName)
 {
     QList serialPorts = QSerialPortInfo::availablePorts();
@@ -268,17 +266,17 @@ void Backend::receiveTelemetry(Backend::Telemetry telemetry)
     emit telemetryAvailable(telemetry);
 
     if(!groundFlightTime.isValid() // if we haven't started the launch-elapsed timer
-    && (telemetry.data.rocketData->state > 0)) // and we're in a non-prelaunch state
+    && (telemetry.data.rocketData->state() > 0)) // and we're in a non-prelaunch state
     {
         std::cout << "Launched!" << std::endl;
         groundFlightTime.start(); // start a timer within the application
-        rocketTimestampStart = telemetry.data.rocketData->timestamp; // get our start value for rocket time
+        rocketTimestampStart = telemetry.data.rocketData->timestamp(); // get our start value for rocket time
     }
 
     if(groundFlightTime.isValid())
     {
         emit newGroundFlightTime(groundFlightTime.elapsed());
-        emit newRocketFlightTime((telemetry.data.rocketData->timestamp)-rocketTimestampStart);
+        emit newRocketFlightTime((telemetry.data.rocketData->timestamp())-rocketTimestampStart);
     }
     else
     {
@@ -407,12 +405,12 @@ void Backend::runRadioModuleCycles()
 
 void Backend::newBytesRead(QString text)
 {
-    emit newBytesReadAvailable(text);
+    emit newBytesReadAvailable(std::move(text));
 }
 
 void Backend::newBytesWritten(QString text)
 {
-    emit newBytesWrittenAvailable(text);
+    emit newBytesWrittenAvailable(std::move(text));
 }
 
 void Backend::updateThroughputSpeeds()
@@ -439,9 +437,6 @@ void Backend::updateThroughputSpeeds()
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
     module->sendNextFrameImmediately = true;
     Backend::setParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount, 0);
-
-
-
 }
 
 void Backend::start()
@@ -449,17 +444,23 @@ void Backend::start()
     getPorts();
 
     webServer = new WebServer(8001);
+  
+    QString simulationFile = "../Utility/DataSimulator/SimulationData/SamplePayloadData.csv";
 
-    QString simulationFile = "/Users/will/Desktop/LIFT_rocket_trimmed.csv";
-//    QString simulationFile = "../Utility/SamplePayloadData.csv";
-
-    dataSimulator = new DataSimulator(
+    payloadDataSimulator = new DataSimulator(
             simulationFile,
-            webServer);
+            webServer,
+            HPRC::PayloadTelemetryPacket::descriptor(),
+            GroundStation::PacketType::Payload
+            );
 
-#ifdef SIMULATE_DATA
-    dataSimulator->start();
-#endif
+    simulationFile = "../Utility/DataSimulator/SimulationData/SampleRocketData.csv";
+    rocketDataSimulator = new DataSimulator(
+            simulationFile,
+            webServer,
+            HPRC::RocketTelemetryPacket::descriptor(),
+            GroundStation::PacketType::Rocket
+    );
 
     QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);
     if(!modem.isNull())
