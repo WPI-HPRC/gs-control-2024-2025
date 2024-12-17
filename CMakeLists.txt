@@ -32,7 +32,9 @@ endforeach()
 # Create lists for the generated sources and headers
 set(PROTO_SRCS
         Utility/TelemetryHandler.cpp
-        Utility/TelemetryHandler.h)
+        Utility/TelemetryHandler.h
+        Frontend/Widgets/DataSimulationButton/DataSimulationButton.cpp
+        Frontend/Widgets/DataSimulationButton/DataSimulationButton.h)
 set(PROTO_HDRS)
 
 # Loop over all found .proto files

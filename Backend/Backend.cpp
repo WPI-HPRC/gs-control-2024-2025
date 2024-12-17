@@ -10,8 +10,6 @@
 #include <chrono>
 #include "Constants.h"
 
-#define SIMULATE_DATA
-
 QSerialPortInfo getTargetPort(const QString& portName)
 {
     QList serialPorts = QSerialPortInfo::availablePorts();
@@ -463,11 +461,6 @@ void Backend::start()
             HPRC::RocketTelemetryPacket::descriptor(),
             GroundStation::PacketType::Rocket
     );
-
-#ifdef SIMULATE_DATA
-    payloadDataSimulator->start();
-    rocketDataSimulator->start();
-#endif
 
     QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);
     if(!modem.isNull())
