@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ThroughputDisplay</class>
- <widget class="QWidget" name="ThroughputDisplay">
+ <class>ThroughputDisplayWidget</class>
+ <widget class="QWidget" name="ThroughputDisplayWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

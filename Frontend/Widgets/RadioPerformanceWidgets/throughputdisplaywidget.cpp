@@ -23,6 +23,9 @@ void ThroughputDisplayWidget::throughPutStatsUpdate(RadioThroughputStats stats)
         case RadioPerformanceStat::DataType::Bytes:
             ui->Data->setText(QString::number(stats.bytesPerSecond));
             break;
+        default:
+            ui->Data->setText("");
+            break;
     }
     ui->Data->setEnabled(true);
 }
@@ -37,6 +40,9 @@ void ThroughputDisplayWidget::countStatsUpdate(RadioCountStats stats)
     case RadioPerformanceStat::DataType::Bytes:
         ui->Data->setText(QString::number(stats.bytesReceivedCount));
         break;
+    default:
+        ui->Data->setText("");
+        break;
     }
     ui->Data->setEnabled(true);
 }
@@ -49,28 +55,38 @@ void ThroughputDisplayWidget::chooseType(RadioPerformanceStat::StatType stat, Ra
     switch(currentStatType)
     {
     case RadioPerformanceStat::StatType::Throughput:
-        ui->DataLabel.setText("Throughput:");
+        ui->DataLabel->setText("Throughput:");
         switch(currentDataType)
         {
             case RadioPerformanceStat::DataType::Packets:
-                ui->DataUnit.setText("Packets/s");
+                ui->DataUnit->setText("Packets/s");
                 break;
             case RadioPerformanceStat::DataType::Bytes:
-                ui->DataUnit.setText("Bytes/s");
+                ui->DataUnit->setText("Bytes/s");
+                break;
+            default:
+                ui->DataUnit->setText("");
                 break;
         }
         break;
     case RadioPerformanceStat::StatType::Count:
-        ui->DataLabel.setText("Total Received Count:");
+        ui->DataLabel->setText("Total Received Count:");
         switch(currentDataType)
         {
         case RadioPerformanceStat::DataType::Packets:
-            ui->DataUnit.setText("Packets");
+            ui->DataUnit->setText("Packets");
             break;
         case RadioPerformanceStat::DataType::Bytes:
-            ui->DataUnit.setText("Bytes");
+            ui->DataUnit->setText("Bytes");
+            break;
+        default:
+            ui->DataUnit->setText("");
             break;
         }
+        break;
+    default:
+        ui->DataLabel->setText("");
+        ui->DataUnit->setText("");
         break;
     }
 }
@@ -90,6 +106,7 @@ void ThroughputDisplayWidget::chooseTarget(RadioPerformanceStat::PacketType targ
         case RadioPerformanceStat::StatType::Throughput:
             connection = connect(&Backend::getInstance(), &Backend::rocketThroughputStats, this, &ThroughputDisplayWidget::throughPutStatsUpdate);
             break;
+        default: break;
         }
         break;
     case RadioPerformanceStat::PacketType::Payload:
@@ -103,6 +120,7 @@ void ThroughputDisplayWidget::chooseTarget(RadioPerformanceStat::PacketType targ
         case RadioPerformanceStat::StatType::Throughput:
             connection = connect(&Backend::getInstance(), &Backend::payloadThroughputStats, this, &ThroughputDisplayWidget::throughPutStatsUpdate);
             break;
+        default: break;;
         }
         break;
     case RadioPerformanceStat::PacketType::Combined:
@@ -115,8 +133,10 @@ void ThroughputDisplayWidget::chooseTarget(RadioPerformanceStat::PacketType targ
         case RadioPerformanceStat::StatType::Throughput:
             connection = connect(&Backend::getInstance(), &Backend::combinedThroughputStats, this, &ThroughputDisplayWidget::throughPutStatsUpdate);
             break;
+        default: break;
         }
         break;
+    default: break;
     }
 }
 

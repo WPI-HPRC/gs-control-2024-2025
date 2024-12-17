@@ -347,12 +347,12 @@ void RadioModule::handleReceivePacket(XBee::ReceivePacket::Struct *frame)
         switch (lastPacket.packetType)
         {
         case GroundStation::Payload:
-            payloadStats.packetsReceivedCount++;
-            payloadStats.bytesReceivedCount += frame->dataLength_bytes + XBee::ReceivePacket::PacketBytes;
+            payloadRadioStats.packetsReceivedCount++;
+            payloadRadioStats.bytesReceivedCount += frame->dataLength_bytes + XBee::ReceivePacket::PacketBytes;
             break;
         case GroundStation::Rocket:
-            rocketStats.packetsReceivedCount++;
-            rocketStats.bytesReceivedCount+= frame->dataLength_bytes + XBee::ReceivePacket::PacketBytes;
+            rocketRadioStats.packetsReceivedCount++;
+            rocketRadioStats.bytesReceivedCount+= frame->dataLength_bytes + XBee::ReceivePacket::PacketBytes;
             break;
         case GroundStation::Unknown:
             break;;
@@ -375,12 +375,12 @@ void RadioModule::handleReceivePacket64Bit(XBee::ReceivePacket64Bit::Struct *fra
         switch (lastPacket.packetType)
         {
         case GroundStation::Payload:
-            payloadStats.packetsReceivedCount++;
-            payloadStats.bytesReceivedCount += frame->dataLength_bytes + XBee::ReceivePacket64Bit::PacketBytes;
+            payloadRadioStats.packetsReceivedCount++;
+            payloadRadioStats.bytesReceivedCount += frame->dataLength_bytes + XBee::ReceivePacket64Bit::PacketBytes;
             break;
         case GroundStation::Rocket:
-            rocketStats.packetsReceivedCount++;
-            rocketStats.bytesReceivedCount+= frame->dataLength_bytes + XBee::ReceivePacket64Bit::PacketBytes;
+            rocketRadioStats.packetsReceivedCount++;
+            rocketRadioStats.bytesReceivedCount+= frame->dataLength_bytes + XBee::ReceivePacket64Bit::PacketBytes;
             break;
         case GroundStation::Unknown:
             break;;

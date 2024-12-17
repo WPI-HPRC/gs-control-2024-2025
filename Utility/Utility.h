@@ -457,21 +457,24 @@ namespace RadioPerformanceStat
 {
     enum PacketType
     {
-        Combined = 0x00,
+        NoPacketType = 0x00,
         Rocket = 0x01,
-        Payload = 0x02
+        Payload = 0x02,
+        Combined = 0x03
     };
 
     enum StatType
     {
-        Throughput = 0;
-        Count = 1;
+        NoStatType = 0x00,
+        Throughput = 0x01,
+        Count = 0x02
     };
 
     enum DataType
     {
-        Packets = 0,
-        Bytes = 1
+        NoDataType = 0x00,
+        Packets = 0x01,
+        Bytes = 0x02
     };
 }
 
