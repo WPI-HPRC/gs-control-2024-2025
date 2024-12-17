@@ -3,9 +3,12 @@
 //
 
 #include "Viewer3D.h"
+#include <QVBoxLayout>
 
 Viewer3D::Viewer3D(QWidget *parent): QWidget(parent)
 {
+    setMinimumSize(1, 1);
+
     auto *view = new Qt3DExtras::Qt3DWindow;
 
     auto *rootEntity = new Qt3DCore::QEntity;
@@ -59,8 +62,13 @@ Viewer3D::Viewer3D(QWidget *parent): QWidget(parent)
     m_rocketMaterial = rocketMaterial;
 
     QWidget *container = QWidget::createWindowContainer(view, this);
-
     container->setContentsMargins(0, 0, 0, 0);
+    container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    auto *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(container);
+    setLayout(layout);
 
     // Resize the 3D viewer to match the container widget
     m_view->resize(this->size());
@@ -72,7 +80,6 @@ void Viewer3D::orientRocket(QQuaternion orientation) const
 {
     // Set the rotation of the rocket based on the input quaternion
     m_rocketTransform->setRotation(orientation * m_rocketOrientVertically);
-    m_view->resize(this->size());
     m_view->defaultFrameGraph()->setClearColor(QWidget::palette().window().color());
 }
 
