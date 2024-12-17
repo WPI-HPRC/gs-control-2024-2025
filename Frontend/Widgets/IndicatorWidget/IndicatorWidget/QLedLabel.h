@@ -2,6 +2,8 @@
 // Created by William Scheirey on 12/16/24.
 //
 
+// Code from https://forum.qt.io/topic/101648/how-to-create-simply-virtual-led-indicator/2
+
 #ifndef GS_BACKEND_2024_2025_QLEDLABEL_H
 #define GS_BACKEND_2024_2025_QLEDLABEL_H
 
@@ -15,7 +17,6 @@ public:
 
     enum State{
         StateOk,
-        StateOkBlue,
         StateWarning,
         StateError
     };
