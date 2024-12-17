@@ -128,6 +128,8 @@ public:
     QList<QList<int>> throughputTests;
     int throughputTestIndex;
 
+    DataSimulator *rocketDataSimulator;
+    DataSimulator *payloadDataSimulator;
 
 public slots:
     void portOpened(const QSerialPortInfo&, bool);
@@ -163,8 +165,6 @@ private:
     RadioModule *getModuleWithName(const QString& name);
 
     WebServer *webServer{};
-    DataSimulator *rocketDataSimulator;
-    DataSimulator *payloadDataSimulator;
     DataLogger *dataLogger{};
 
     QTimer *timer{};
