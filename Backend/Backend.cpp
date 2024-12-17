@@ -67,11 +67,11 @@ QSerialPortInfo getTargetPort(const QString& portName)
 void Backend::doConversions(google::protobuf::Message *message, const QMap<std::string, ConversionFunction> &conversionMap)
 {
     const google::protobuf::Reflection *reflection = message->GetReflection();
-    const google::protobuf::Descriptor* descriptor = message->GetDescriptor();
+    const google::protobuf::Descriptor *descriptor = message->GetDescriptor();
 
     for (const std::string& fieldName : conversionMap.keys())
     {
-        const google::protobuf::FieldDescriptor *field = descriptor->FindFieldByName(fieldName);
+        const google::protobuf::FieldDescriptor *field = descriptor->FindFieldByLowercaseName(fieldName);
 
         if(field)
         {
@@ -79,6 +79,10 @@ void Backend::doConversions(google::protobuf::Message *message, const QMap<std::
                                  field,
                                  conversionMap.value(fieldName)(reflection->GetFloat(*message, field))
                                  );
+        }
+        else
+        {
+            qDebug() << "Couldn't find field " << fieldName;
         }
     }
 }
@@ -301,13 +305,35 @@ void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
 
 void Backend::receiveTelemetry(Backend::Telemetry telemetry)
 {
-    if(telemetry.packetType == GroundStation::Rocket)
+    if(convertToEnglish)
     {
-        doConversions(telemetry.data.rocketData, metricToEnglish);
+        if (telemetry.packetType == GroundStation::Rocket)
+        {
+            doConversions(telemetry.data.rocketData, metricToEnglish);
+            if(convertFromGees)
+            {
+                doConversions(telemetry.data.rocketData, geeConversions_English);
+            }
+        }
+        else if (telemetry.packetType == GroundStation::Payload)
+        {
+            doConversions(telemetry.data.payloadData, metricToEnglish);
+            if(convertFromGees)
+            {
+                doConversions(telemetry.data.payloadData, geeConversions_English);
+            }
+        }
     }
-    else if(telemetry.packetType == GroundStation::Payload)
+    else if(convertFromGees)
     {
-        doConversions(telemetry.data.payloadData, metricToEnglish);
+        if (telemetry.packetType == GroundStation::Rocket)
+        {
+            doConversions(telemetry.data.rocketData, geeConversions_Metric);
+        }
+        else if (telemetry.packetType == GroundStation::Payload)
+        {
+            doConversions(telemetry.data.payloadData, geeConversions_Metric);
+        }
     }
 
     emit telemetryAvailable(telemetry);

@@ -132,7 +132,8 @@ public:
     DataSimulator *rocketDataSimulator;
     DataSimulator *payloadDataSimulator;
 
-    bool metricUnits = true;
+    bool convertToEnglish = false;
+    bool convertFromGees = false;
 
 public slots:
     void portOpened(const QSerialPortInfo&, bool);
