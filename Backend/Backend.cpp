@@ -10,6 +10,25 @@
 #include <chrono>
 #include "Constants.h"
 
+QMap<std::string, Backend::ConversionFunction> Backend::metricToEnglish = {
+        {"altitude", &Utility::UnitConversion::meters2feet},
+        {"gpsaltmsl", &Utility::UnitConversion::meters2feet},
+        {"gpsaltagl", &Utility::UnitConversion::meters2feet},
+
+        {"pressure", &Utility::UnitConversion::mbar2psi}
+};
+
+QMap<std::string, Backend::ConversionFunction> Backend::geeConversions_English = {
+        {"accelx", &Utility::UnitConversion::gs2feet},
+        {"accely", &Utility::UnitConversion::gs2feet},
+        {"accelz", &Utility::UnitConversion::gs2feet},
+};
+
+QMap<std::string, Backend::ConversionFunction> Backend::geeConversions_Metric = {
+        {"accelx", &Utility::UnitConversion::gs2meters},
+        {"accely", &Utility::UnitConversion::gs2meters},
+        {"accelz", &Utility::UnitConversion::gs2meters},
+};
 QSerialPortInfo getTargetPort(const QString& portName)
 {
     QList serialPorts = QSerialPortInfo::availablePorts();
@@ -43,6 +62,25 @@ QSerialPortInfo getTargetPort(const QString& portName)
     }
 
     return targetPort;
+}
+
+void Backend::doConversions(google::protobuf::Message *message, const QMap<std::string, ConversionFunction> &conversionMap)
+{
+    const google::protobuf::Reflection *reflection = message->GetReflection();
+    const google::protobuf::Descriptor* descriptor = message->GetDescriptor();
+
+    for (const std::string& fieldName : conversionMap.keys())
+    {
+        const google::protobuf::FieldDescriptor *field = descriptor->FindFieldByName(fieldName);
+
+        if(field)
+        {
+            reflection->SetFloat(message,
+                                 field,
+                                 conversionMap.value(fieldName)(reflection->GetFloat(*message, field))
+                                 );
+        }
+    }
 }
 
 void Backend::portOpened(const QSerialPortInfo& portInfo, bool success)
@@ -263,6 +301,15 @@ void Backend::linkTestComplete(LinkTestResults results, int iterationsLeft)
 
 void Backend::receiveTelemetry(Backend::Telemetry telemetry)
 {
+    if(telemetry.packetType == GroundStation::Rocket)
+    {
+        doConversions(telemetry.data.rocketData, metricToEnglish);
+    }
+    else if(telemetry.packetType == GroundStation::Payload)
+    {
+        doConversions(telemetry.data.payloadData, metricToEnglish);
+    }
+
     emit telemetryAvailable(telemetry);
 
     if(!groundFlightTime.isValid() // if we haven't started the launch-elapsed timer
@@ -283,8 +330,6 @@ void Backend::receiveTelemetry(Backend::Telemetry telemetry)
         emit newGroundFlightTime(0);
         emit newRocketFlightTime(0);
     }
-
-
 }
 
 void Backend::setBaudRate(const QString &name, int baudRate)

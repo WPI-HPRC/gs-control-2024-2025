@@ -34,7 +34,8 @@ set(PROTO_SRCS
         Utility/TelemetryHandler.cpp
         Utility/TelemetryHandler.h
         Frontend/Widgets/DataSimulationButton/DataSimulationButton.cpp
-        Frontend/Widgets/DataSimulationButton/DataSimulationButton.h)
+        Frontend/Widgets/DataSimulationButton/DataSimulationButton.h
+        Utility/UnitConversions.h)
 set(PROTO_HDRS)
 
 # Loop over all found .proto files

@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QFont font("Courier");
+    QFont font("Courier New");
     font.setStyleHint(QFont::Monospace);
     QApplication::setFont(font);
 
