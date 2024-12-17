@@ -7,10 +7,7 @@
 #include <iostream>
 #include <google/protobuf/descriptor.h>
 
-template bool TelemetryHandler::setField<HPRC::RocketTelemetryPacket>(const HPRC::RocketTelemetryPacket* message, const google::protobuf::Reflection* reflection, const google::protobuf::Descriptor* descriptor, const std::string& fieldName, const std::string& value);
-
-template <typename T>
-bool TelemetryHandler::setField(const T* message, const google::protobuf::Reflection* reflection, const google::protobuf::Descriptor* descriptor, const std::string& fieldName, const std::string& value) {
+bool TelemetryHandler::setField(google::protobuf::Message *message, const google::protobuf::Reflection* reflection, const google::protobuf::Descriptor* descriptor, const std::string& fieldName, const std::string& value) {
     const google::protobuf::FieldDescriptor* fieldDescriptor = descriptor->FindFieldByName(fieldName);
 
     if (!fieldDescriptor) {
@@ -21,7 +18,7 @@ bool TelemetryHandler::setField(const T* message, const google::protobuf::Reflec
         case google::protobuf::FieldDescriptor::TYPE_INT32: {
             try {
                 int32_t intValue = std::stoi(value);
-                reflection->SetInt32(const_cast<T*>(message), fieldDescriptor, intValue);
+                reflection->SetInt32(message, fieldDescriptor, intValue);
             } catch (...) {
                 return false;
             }
@@ -30,7 +27,7 @@ bool TelemetryHandler::setField(const T* message, const google::protobuf::Reflec
         case google::protobuf::FieldDescriptor::TYPE_INT64: {
             try {
                 int64_t int64Value = std::stoll(value);
-                reflection->SetInt64(const_cast<T*>(message), fieldDescriptor, int64Value);
+                reflection->SetInt64(message, fieldDescriptor, int64Value);
             } catch (...) {
                 return false;
             }
@@ -39,7 +36,7 @@ bool TelemetryHandler::setField(const T* message, const google::protobuf::Reflec
         case google::protobuf::FieldDescriptor::TYPE_UINT32: {
             try {
                 uint32_t uint32Value = std::stoul(value);
-                reflection->SetUInt32(const_cast<T*>(message), fieldDescriptor, uint32Value);
+                reflection->SetUInt32(message, fieldDescriptor, uint32Value);
             } catch (...) {
                 return false;
             }
@@ -48,7 +45,7 @@ bool TelemetryHandler::setField(const T* message, const google::protobuf::Reflec
         case google::protobuf::FieldDescriptor::TYPE_UINT64: {
             try {
                 uint64_t uint64Value = std::stoull(value);
-                reflection->SetUInt64(const_cast<T*>(message), fieldDescriptor, uint64Value);
+                reflection->SetUInt64(message, fieldDescriptor, uint64Value);
             } catch (...) {
                 return false;
             }
@@ -57,7 +54,7 @@ bool TelemetryHandler::setField(const T* message, const google::protobuf::Reflec
         case google::protobuf::FieldDescriptor::TYPE_FLOAT: {
             try {
                 float floatValue = std::stof(value);
-                reflection->SetFloat(const_cast<T*>(message), fieldDescriptor, floatValue);
+                reflection->SetFloat(message, fieldDescriptor, floatValue);
             } catch (...) {
                 return false;
             }
@@ -66,21 +63,21 @@ bool TelemetryHandler::setField(const T* message, const google::protobuf::Reflec
         case google::protobuf::FieldDescriptor::TYPE_DOUBLE: {
             try {
                 double doubleValue = std::stod(value);
-                reflection->SetDouble(const_cast<T*>(message), fieldDescriptor, doubleValue);
+                reflection->SetDouble(message, fieldDescriptor, doubleValue);
             } catch (...) {
                 return false;
             }
             break;
         }
         case google::protobuf::FieldDescriptor::TYPE_STRING: {
-            reflection->SetString(const_cast<T*>(message), fieldDescriptor, value);
+            reflection->SetString(message, fieldDescriptor, value);
             break;
         }
         case google::protobuf::FieldDescriptor::TYPE_BOOL: {
             if (value == "true" || value == "1") {
-                reflection->SetBool(const_cast<T*>(message), fieldDescriptor, true);
+                reflection->SetBool(message, fieldDescriptor, true);
             } else if (value == "false" || value == "0") {
-                reflection->SetBool(const_cast<T*>(message), fieldDescriptor, false);
+                reflection->SetBool(message, fieldDescriptor, false);
             } else {
                 return false;
             }

@@ -439,9 +439,6 @@ void Backend::updateThroughputSpeeds()
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
     module->sendNextFrameImmediately = true;
     Backend::setParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount, 0);
-
-
-
 }
 
 void Backend::start()
@@ -454,7 +451,10 @@ void Backend::start()
 
     dataSimulator = new DataSimulator(
             simulationFile,
-            webServer);
+            webServer,
+            HPRC::PayloadTelemetryPacket::descriptor(),
+            GroundStation::PacketType::Payload
+            );
 
 #ifdef SIMULATE_DATA
     dataSimulator->start();

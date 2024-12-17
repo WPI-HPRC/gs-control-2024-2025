@@ -11,8 +11,7 @@
 class TelemetryHandler
 {
 public:
-    template <typename T>
-    static bool setField(const T *message, const google::protobuf::Reflection *reflection, const google::protobuf::Descriptor *descriptor, const std::string &fieldName, const std::string &value);
+    static bool setField(google::protobuf::Message *message, const google::protobuf::Reflection *reflection, const google::protobuf::Descriptor *descriptor, const std::string &fieldName, const std::string &value);
 
     static TelemetryHandler &getInstance()
     {

@@ -10,16 +10,17 @@
 #include <QObject>
 #include <QJsonDocument>
 #include <QTimer>
-#include "WebServer.h"
+#include "Utility/WebServer.h"
 
 #include "generated/telemetry/RocketTelemetryPacket.pb.h"
+#include "Utility/Utility.h"
 
 class DataSimulator : public QObject
 {
 Q_OBJECT
 
 public:
-    DataSimulator(const QString &filePath, WebServer *webServer, QObject *parent = nullptr);
+    DataSimulator(const QString &filePath, WebServer *webServer, const google::protobuf::Descriptor *messageDescriptor, GroundStation::PacketType packetType, QObject *parent = nullptr);
     void start();
     void stop();
 
@@ -29,13 +30,18 @@ private:
 
     QList<QByteArray> nextLine();
 
-    HPRC::RocketTelemetryPacket parseLine(QList<QByteArray> line);
+    std::unique_ptr<google::protobuf::Message> parseLine(QList<QByteArray> line);
 
     QList<QByteArray> headers;
     QTimer *timer;
-    HPRC::RocketTelemetryPacket nextPacket;
+
+    const google::protobuf::Message *prototype;
+    const google::protobuf::Descriptor *messageDescriptor;  // Descriptor of the Protobuf message type
+    std::unique_ptr<google::protobuf::Message> nextPacket;  // Dynamically allocated message instance
 
     bool shouldStop = false;
+
+    GroundStation::PacketType packetType;
 
 public slots:
 
