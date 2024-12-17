@@ -140,7 +140,7 @@ add_executable(gs_backend_2024_2025
         Frontend/Widgets/TimeDateWidgets/datewidget.cpp
         Frontend/Widgets/TimeDateWidgets/datewidget.h
         Frontend/Widgets/TimeDateWidgets/datewidget.ui
-        Utility/DataSimulator.cpp
+        Utility/DataSimulator/DataSimulator.cpp
         Frontend/Widgets/TimeDateWidgets/datewidget.cpp
         Frontend/Widgets/TimeDateWidgets/datewidget.h
         Frontend/Widgets/TimeDateWidgets/datewidget.ui

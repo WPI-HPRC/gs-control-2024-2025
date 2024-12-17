@@ -439,9 +439,6 @@ void Backend::updateThroughputSpeeds()
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
     module->sendNextFrameImmediately = true;
     Backend::setParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount, 0);
-
-
-
 }
 
 void Backend::start()
@@ -450,14 +447,26 @@ void Backend::start()
 
     webServer = new WebServer(8001);
 
-    QString simulationFile = "../Utility/SamplePayloadData.csv";
+    QString simulationFile = "../Utility/DataSimulator/SimulationData/SamplePayloadData.csv";
 
-    dataSimulator = new DataSimulator(
+    payloadDataSimulator = new DataSimulator(
             simulationFile,
-            webServer);
+            webServer,
+            HPRC::PayloadTelemetryPacket::descriptor(),
+            GroundStation::PacketType::Payload
+            );
+
+    simulationFile = "../Utility/DataSimulator/SimulationData/SampleRocketData.csv";
+    rocketDataSimulator = new DataSimulator(
+            simulationFile,
+            webServer,
+            HPRC::RocketTelemetryPacket::descriptor(),
+            GroundStation::PacketType::Rocket
+    );
 
 #ifdef SIMULATE_DATA
-    dataSimulator->start();
+    payloadDataSimulator->start();
+    rocketDataSimulator->start();
 #endif
 
     QSerialPortInfo modem = getTargetPort(GROUND_STATION_MODULE);

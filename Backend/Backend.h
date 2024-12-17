@@ -16,7 +16,7 @@
 #include "../Utility/WebServer.h"
 #include "../Utility/DataLogger.h"
 #include "Utility/json_struct.h"
-#include "Utility/DataSimulator.h"
+#include "Utility/DataSimulator/DataSimulator.h"
 
 #include "generated/telemetry/RocketTelemetryPacket.pb.h"
 #include "generated/telemetry/PayloadTelemetryPacket.pb.h"
@@ -163,7 +163,8 @@ private:
     RadioModule *getModuleWithName(const QString& name);
 
     WebServer *webServer{};
-    DataSimulator *dataSimulator;
+    DataSimulator *rocketDataSimulator;
+    DataSimulator *payloadDataSimulator;
     DataLogger *dataLogger{};
 
     QTimer *timer{};
