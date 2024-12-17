@@ -52,17 +52,21 @@ DataLogger::Packet parsePacket(const uint8_t *frame)
     // This way of assigning the packet type seems redundant, but the packetType byte can take on any value from 0-255; we want to set it to an enum value that we understand
     Backend::Telemetry telemetry{};
 
+    HPRC::RocketTelemetryPacket rocketPacket;
+    HPRC::PayloadTelemetryPacket payloadPacket;
+
+
     switch (frame[0])
     {
         case GroundStation::Rocket:
             telemetry.packetType = GroundStation::Rocket;
-            telemetry.data.rocketData = (GroundStation::RocketTelemPacket *) (&frame[1]);
-            str = JS::serializeStruct(*telemetry.data.rocketData);
+            rocketPacket.ParseFromArray(&frame[1], 1);
+            telemetry.data.rocketData = &rocketPacket;
             break;
         case GroundStation::Payload:
-            telemetry.data.payloadData = (GroundStation::PayloadTelemPacket *) (&frame[1]);
-            str = JS::serializeStruct(*telemetry.data.payloadData);
-            telemetry.packetType = GroundStation::Payload;
+            telemetry.packetType = GroundStation::Rocket;
+            payloadPacket.ParseFromArray(&frame[1], 1);
+            telemetry.data.payloadData = &payloadPacket;
             break;
         default:
             str = "";
