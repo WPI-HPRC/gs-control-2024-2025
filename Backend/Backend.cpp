@@ -15,6 +15,14 @@ QMap<std::string, Backend::ConversionFunction> Backend::metricToEnglish = {
         {"gpsaltmsl", &Utility::UnitConversion::meters2feet},
         {"gpsaltagl", &Utility::UnitConversion::meters2feet},
 
+        {"velx", &Utility::UnitConversion::meters2feet},
+        {"vely", &Utility::UnitConversion::meters2feet},
+        {"velz", &Utility::UnitConversion::meters2feet},
+
+        {"posx", &Utility::UnitConversion::meters2feet},
+        {"posy", &Utility::UnitConversion::meters2feet},
+        {"posz", &Utility::UnitConversion::meters2feet},
+
         {"pressure", &Utility::UnitConversion::mbar2psi}
 };
 
