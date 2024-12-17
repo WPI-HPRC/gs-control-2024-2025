@@ -106,6 +106,15 @@ add_executable(gs_backend_2024_2025 main.cpp
         Frontend/Windows/MainWindow/mainwindow.cpp
         Frontend/Windows/MainWindow/mainwindow.h
         Frontend/Windows/MainWindow/mainwindow.ui
+        Frontend/Widgets/IndicatorWidget/IndicatorWidget/QLedLabel.cpp
+        Frontend/Widgets/IndicatorWidget/IndicatorWidget/QLedLabel.h
+        Frontend/Widgets/IndicatorWidget/IndicatorWidget/ledwidget.cpp
+        Frontend/Widgets/IndicatorWidget/IndicatorWidget/ledwidget.h
+        Frontend/Widgets/IndicatorWidget/IndicatorWidget/ledwidget.ui
+        Frontend/Widgets/IndicatorWidget/RocketIndicator/RocketConnectionIndicator.cpp
+        Frontend/Widgets/IndicatorWidget/RocketIndicator/RocketConnectionIndicator.h
+        Frontend/Widgets/IndicatorWidget/PayloadIndicator/PayloadConnectionIndicator.cpp
+        Frontend/Widgets/IndicatorWidget/PayloadIndicator/PayloadConnectionIndicator.h
 )
 target_link_libraries(gs_backend_2024_2025
         Qt6::Core
