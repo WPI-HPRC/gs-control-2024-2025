@@ -34,9 +34,9 @@ private:
 
     QMetaObject::Connection connection;
 
-    RadioPerformanceStat::PacketType currentTarget;
-    RadioPerformanceStat::DataType currentDataType;
-    RadioPerformanceStat::StatType currentStatType;
+    RadioPerformanceStat::PacketType currentTarget = RadioPerformanceStat::PacketType::NoPacketType;
+    RadioPerformanceStat::DataType currentDataType = RadioPerformanceStat::DataType::NoDataType;
+    RadioPerformanceStat::StatType currentStatType = RadioPerformanceStat::StatType::NoStatType;
 };
 
 
