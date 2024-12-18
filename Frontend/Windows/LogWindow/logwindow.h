@@ -22,6 +22,8 @@ class LogWindow : public QMainWindow
 public:
     explicit LogWindow(QWidget *parent = nullptr);
 
+    void displayCsv(const QString &filepath);
+
     ~LogWindow() override;
 
 private:

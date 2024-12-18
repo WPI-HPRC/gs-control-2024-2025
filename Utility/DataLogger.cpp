@@ -94,6 +94,11 @@ void DataLogger::openLogsDefault()
     QDesktopServices::openUrl(QUrl("file://" + byteLog.fileName(), QUrl::TolerantMode));
 }
 
+void DataLogger::showFolder()
+{
+    QDesktopServices::openUrl("file://" + logDir.path());
+}
+
 void DataLogger::logLinkTest(const QJsonObject &jsonData)
 {
     linkTestLogFile.write(jsonData);

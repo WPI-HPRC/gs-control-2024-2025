@@ -154,6 +154,7 @@ public:
     QString directoryPrefix;
 
     void openLogsDefault();
+    void showFolder();
 
 private:
     void createDirectory(const QString &dirName);
