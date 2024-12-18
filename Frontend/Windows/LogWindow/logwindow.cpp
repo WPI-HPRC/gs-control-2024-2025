@@ -53,12 +53,13 @@ LogWindow::LogWindow(QWidget *parent) :
            this->displayCsv(this->currentCSV);
        }
     });
+
+    ui->CSVTitle->setStyleSheet(QString::asprintf("font-size: %fpx; font-weight: bold", ui->CSVTitle->fontInfo().pixelSize()*1.5));
 }
 
 void LogWindow::displayCsv(const QString &filepath)
 {
     QFile file(filepath);
-    qDebug() << "Opening " << filepath;
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
         QString line = in.readLine();
@@ -81,6 +82,12 @@ void LogWindow::displayCsv(const QString &filepath)
             row++;
         }
         file.close();
+
+        const QFileInfo info(file);
+        const QDateTime lastModified = info.lastModified();
+
+        ui->CSVTitle->setText(info.baseName());
+        ui->CSVLastEdited->setText(QString::asprintf("Last modified %lld sec ago", lastModified.secsTo(QDateTime::currentDateTime())));
     }
 }
 
