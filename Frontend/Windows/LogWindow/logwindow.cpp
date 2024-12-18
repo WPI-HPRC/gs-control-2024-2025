@@ -53,6 +53,10 @@ void LogWindow::displayCsv(const QString &filepath)
         QTextStream in(&file);
         QString line = in.readLine();
         QStringList headers = line.split(",");
+
+        // Clear the table
+        this->ui->CsvLogViewer->setRowCount(0);
+        
         this->ui->CsvLogViewer->setColumnCount(headers.size());
         this->ui->CsvLogViewer->setHorizontalHeaderLabels(headers);
 
