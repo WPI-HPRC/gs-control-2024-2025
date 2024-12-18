@@ -17,6 +17,7 @@
 #include "../Utility/DataLogger.h"
 #include "Utility/json_struct.h"
 #include "Utility/DataSimulator/DataSimulator.h"
+#include "Utility/UnitConversions.h"
 
 #include "generated/telemetry/RocketTelemetryPacket.pb.h"
 #include "generated/telemetry/PayloadTelemetryPacket.pb.h"
@@ -131,6 +132,13 @@ public:
     DataSimulator *rocketDataSimulator;
     DataSimulator *payloadDataSimulator;
 
+    bool convertToEnglish = false;
+    bool convertFromGees = false;
+
+    RadioModule *groundStationModem;
+
+    DataLogger *dummyLogger;
+
 public slots:
     void portOpened(const QSerialPortInfo&, bool);
     void portClosed(const QSerialPortInfo&);
@@ -161,6 +169,13 @@ signals:
 
 private:
     explicit Backend(QObject *parent = nullptr);
+
+    using ConversionFunction = float (*)(float);
+    static void doConversions(google::protobuf::Message *message, const QMap<std::string, ConversionFunction> &conversionMap);
+
+    static QMap<std::string, ConversionFunction> metricToEnglish;
+    static QMap<std::string, ConversionFunction> geeConversions_English;
+    static QMap<std::string, ConversionFunction> geeConversions_Metric;
 
     RadioModule *getModuleWithName(const QString& name);
 

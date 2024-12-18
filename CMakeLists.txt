@@ -30,11 +30,7 @@ foreach(PROTO_FILE ${PROTO_FILES})
 endforeach()
 
 # Create lists for the generated sources and headers
-set(PROTO_SRCS
-        Utility/TelemetryHandler.cpp
-        Utility/TelemetryHandler.h
-        Frontend/Widgets/DataSimulationButton/DataSimulationButton.cpp
-        Frontend/Widgets/DataSimulationButton/DataSimulationButton.h)
+set(PROTO_SRCS)
 set(PROTO_HDRS)
 
 # Loop over all found .proto files
@@ -189,6 +185,14 @@ add_executable(gs_backend_2024_2025
         Frontend/Widgets/IndicatorWidget/RocketIndicator/RocketConnectionIndicator.h
         Frontend/Widgets/IndicatorWidget/PayloadIndicator/PayloadConnectionIndicator.cpp
         Frontend/Widgets/IndicatorWidget/PayloadIndicator/PayloadConnectionIndicator.h
+        Frontend/Windows/LogWindow/logwindow.cpp
+        Frontend/Windows/LogWindow/logwindow.h
+        Frontend/Windows/LogWindow/logwindow.ui
+        Utility/TelemetryHandler.cpp
+        Utility/TelemetryHandler.h
+        Frontend/Widgets/DataSimulationButton/DataSimulationButton.cpp
+        Frontend/Widgets/DataSimulationButton/DataSimulationButton.h
+        Utility/UnitConversions.h
 )
 
 # Link Protobuf and Qt6 libraries
