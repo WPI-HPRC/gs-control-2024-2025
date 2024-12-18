@@ -545,6 +545,7 @@ void Backend::start()
     if(!modem.isNull())
     {
         connectToModule(GROUND_STATION_MODULE, Default, 921600);
+        groundStationModem = getModuleWithName(GROUND_STATION_MODULE);
     }
 
     timer = new QTimer();
@@ -580,4 +581,6 @@ Backend::Backend(QObject *parent) : QObject(parent)
     loopCount = 0;
     throughputTestTimer = new QTimer();
     connect(throughputTestTimer, &QTimer::timeout, this, &Backend::throughputTestTimerTicked);
+
+    dummyLogger = new DataLogger();
 }

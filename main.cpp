@@ -2,8 +2,7 @@
 #include <QApplication>
 #include "Backend/Backend.h"
 #include "Frontend/Windows/MainWindow/mainwindow.h"
-#include "generated/telemetry/RocketTelemetryPacket.pb.h"
-#include "Utility/TelemetryHandler.h"
+#include "Frontend/Windows/LogWindow/logwindow.h"
 
 int main(int argc, char *argv[])
 {

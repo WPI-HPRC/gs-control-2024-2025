@@ -135,6 +135,10 @@ public:
     bool convertToEnglish = false;
     bool convertFromGees = false;
 
+    RadioModule *groundStationModem;
+
+    DataLogger *dummyLogger;
+
 public slots:
     void portOpened(const QSerialPortInfo&, bool);
     void portClosed(const QSerialPortInfo&);
