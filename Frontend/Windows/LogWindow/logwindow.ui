@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>622</width>
-    <height>479</height>
+    <width>582</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,16 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="7" column="0">
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="text">
-       <string>Show Text File</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="1">
-     <widget class="QTableWidget" name="CsvLogViewer"/>
-    </item>
     <item row="3" column="0">
      <widget class="QPushButton" name="RevealLogs">
       <property name="text">
@@ -32,43 +22,43 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="1">
+    <item row="8" column="0">
      <widget class="QPushButton" name="ShowCSV">
       <property name="text">
        <string>Show CSV</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="7" column="0" colspan="3">
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0" colspan="3">
+     <widget class="QTableWidget" name="CsvLogViewer"/>
+    </item>
+    <item row="6" column="0">
      <widget class="QPushButton" name="OpenLogsDefault">
       <property name="text">
        <string>Open CSVs in External App</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="0">
-     <widget class="QPlainTextEdit" name="TextLogViewer">
-      <property name="undoRedoEnabled">
+    <item row="8" column="2">
+     <widget class="QPushButton" name="RefreshCSV">
+      <property name="text">
+       <string>Refresh</string>
+      </property>
+      <property name="icon">
+       <iconset theme="QIcon::ThemeIcon::ViewRefresh"/>
+      </property>
+      <property name="autoRepeat">
        <bool>false</bool>
       </property>
-      <property name="lineWrapMode">
-       <enum>QPlainTextEdit::LineWrapMode::NoWrap</enum>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="plainText">
-       <string>Text Log Viewer</string>
-      </property>
-      <property name="placeholderText">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0" colspan="2">
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Orientation::Horizontal</enum>
+      <property name="flat">
+       <bool>false</bool>
       </property>
      </widget>
     </item>

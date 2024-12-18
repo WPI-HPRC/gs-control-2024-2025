@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     mainWindow.setWindowTitle("Main Window");
 
     LogWindow logWindow;
-    logWindow.showMaximized();
+    logWindow.showNormal();
     logWindow.setWindowTitle("Logs");
 
     Backend &backend = Backend::getInstance();

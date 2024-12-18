@@ -41,14 +41,24 @@ LogWindow::LogWindow(QWidget *parent) :
         QString filepath = QFileDialog::getOpenFileName(this, "Open CSV", dir, "CSV files (*.CSV)");
         if(!filepath.isEmpty())
         {
+            this->currentCSV = filepath;
             displayCsv(filepath);
         }
+    });
+
+    connect(ui->RefreshCSV, &QPushButton::released, this, [this]()
+    {
+       if(!this->currentCSV.isEmpty())
+       {
+           this->displayCsv(this->currentCSV);
+       }
     });
 }
 
 void LogWindow::displayCsv(const QString &filepath)
 {
     QFile file(filepath);
+    qDebug() << "Opening " << filepath;
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
         QString line = in.readLine();
@@ -56,7 +66,7 @@ void LogWindow::displayCsv(const QString &filepath)
 
         // Clear the table
         this->ui->CsvLogViewer->setRowCount(0);
-        
+
         this->ui->CsvLogViewer->setColumnCount(headers.size());
         this->ui->CsvLogViewer->setHorizontalHeaderLabels(headers);
 

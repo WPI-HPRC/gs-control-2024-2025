@@ -24,6 +24,8 @@ public:
 
     void displayCsv(const QString &filepath);
 
+    QString currentCSV;
+
     ~LogWindow() override;
 
 private:
