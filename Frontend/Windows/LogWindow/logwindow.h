@@ -5,7 +5,7 @@
 #ifndef GS_BACKEND_2024_2025_LOGWINDOW_H
 #define GS_BACKEND_2024_2025_LOGWINDOW_H
 
-#include <QMainWindow>
+#include <QWidget>
 
 
 QT_BEGIN_NAMESPACE
@@ -15,7 +15,7 @@ namespace Ui
 }
 QT_END_NAMESPACE
 
-class LogWindow : public QMainWindow
+class LogWindow : public QWidget
 {
     Q_OBJECT
 

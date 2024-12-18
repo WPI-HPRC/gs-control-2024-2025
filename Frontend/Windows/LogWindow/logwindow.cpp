@@ -11,7 +11,7 @@
 #include <QDesktopServices>
 
 LogWindow::LogWindow(QWidget *parent) :
-        QMainWindow(parent), ui(new Ui::LogWindow)
+        QWidget(parent), ui(new Ui::LogWindow)
 {
     ui->setupUi(this);
 
