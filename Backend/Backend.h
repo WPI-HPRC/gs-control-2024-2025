@@ -132,6 +132,7 @@ public slots:
     void throughputTestTimerTicked();
     void runRadioModuleCycles();
     void updateThroughputSpeeds();
+    void updateRSSIInfo();
 
 signals:
     void foundSerialPorts(QList<QSerialPortInfo>);
@@ -178,6 +179,7 @@ private:
     QElapsedTimer groundFlightTime{};
     uint32_t rocketTimestampStart;
     QTimer *throughputTimer{};
+    QTimer *rssiTimer{};
 
     RadioCountStats lastRocketCount;
     RadioCountStats lastPayloadCount;
