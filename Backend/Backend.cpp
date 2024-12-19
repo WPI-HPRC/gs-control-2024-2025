@@ -500,22 +500,22 @@ void Backend::updateThroughputSpeeds()
 
     int multiple = (1000/throughputTimer->interval());
 
-    RadioThroughputStats rocketStats;
-    RadioThroughputStats payloadStats;
-    RadioThroughputStats combinedStats;
-    RadioCountStats combinedCount;
+    RadioThroughputStats rocketStats{};
+    RadioThroughputStats payloadStats{};
+    RadioThroughputStats combinedStats{};
+    RadioCountStats combinedCount{};
 
     combinedCount.bytesReceivedCount = module->rocketRadioStats.bytesReceivedCount + module->payloadRadioStats.bytesReceivedCount;
     combinedCount.packetsReceivedCount = module->rocketRadioStats.packetsReceivedCount + module->payloadRadioStats.packetsReceivedCount;
 
-    rocketStats.bytesPerSecond = module->rocketRadioStats.bytesReceivedCount - lastRocketCount.bytesReceivedCount;
-    rocketStats.packetsPerSecond = module->rocketRadioStats.packetsReceivedCount - lastRocketCount.packetsReceivedCount;
+    rocketStats.bytesPerSecond = (module->rocketRadioStats.bytesReceivedCount - lastRocketCount.bytesReceivedCount) * multiple;
+    rocketStats.packetsPerSecond = (module->rocketRadioStats.packetsReceivedCount - lastRocketCount.packetsReceivedCount) * multiple;
 
-    payloadStats.bytesPerSecond = module->payloadRadioStats.bytesReceivedCount - lastPayloadCount.bytesReceivedCount;
-    payloadStats.packetsPerSecond = module->payloadRadioStats.packetsReceivedCount - lastPayloadCount.packetsReceivedCount;
+    payloadStats.bytesPerSecond = (module->payloadRadioStats.bytesReceivedCount - lastPayloadCount.bytesReceivedCount) * multiple;
+    payloadStats.packetsPerSecond = (module->payloadRadioStats.packetsReceivedCount - lastPayloadCount.packetsReceivedCount) * multiple;
 
-    combinedStats.bytesPerSecond = rocketStats.bytesPerSecond + payloadStats.bytesPerSecond;
-    combinedStats.packetsPerSecond = rocketStats.packetsPerSecond + payloadStats.packetsPerSecond;
+    combinedStats.bytesPerSecond = (rocketStats.bytesPerSecond + payloadStats.bytesPerSecond) * multiple;
+    combinedStats.packetsPerSecond = (rocketStats.packetsPerSecond + payloadStats.packetsPerSecond) * multiple;
 
     emit rocketThroughputStats(rocketStats);
     emit payloadThroughputStats(payloadStats);
@@ -558,7 +558,7 @@ void Backend::start()
   
     QString simulationFile = "../Utility/DataSimulator/SimulationData/SamplePayloadData.csv";
 
-    dataSimulator = new DataSimulator(
+    payloadDataSimulator = new DataSimulator(
             simulationFile,
             webServer,
             HPRC::PayloadTelemetryPacket::descriptor(),
@@ -578,6 +578,9 @@ void Backend::start()
     {
         connectToModule(GROUND_STATION_MODULE, Default, 921600);
         groundStationModem = getModuleWithName(GROUND_STATION_MODULE);
+        // reset the radio's internal error count
+        groundStationModem->sendNextFrameImmediately = true;
+        Backend::setParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount, 0);
     }
 
     timer = new QTimer();

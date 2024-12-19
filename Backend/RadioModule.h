@@ -87,10 +87,10 @@ public:
 
     void connectPort();
 
-    RadioCountStats rocketRadioStats;
-    RadioCountStats payloadRadioStats;
+    RadioCountStats rocketRadioStats{};
+    RadioCountStats payloadRadioStats{};
 
-    uint32_t droppedPacketsCount;
+    uint32_t droppedPacketsCount = 0;
 
     DataLogger *dataLogger{};
     SerialPort *serialPort{};

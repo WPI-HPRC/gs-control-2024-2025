@@ -544,10 +544,6 @@ void RadioModule::_handleAtCommandResponse(const uint8_t *frame, uint8_t length_
                            frame[XBee::AtCommandResponse::BytesBeforeCommandData + 1];
 
         droppedPacketsCount += errorCount;
-
-        // we want to reset the counter internal to the radio module to simplify the logic on our end
-        sendNextFrameImmediately = true;
-        setParameter(XBee::AtCommand::ErrorCount, nullptr, 1);
     }
 }
 
