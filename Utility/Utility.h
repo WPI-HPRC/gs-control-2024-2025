@@ -20,8 +20,7 @@ namespace GroundStation
 
 #pragma pack(push, 1)
 
-    struct RocketTelemPacket
-    {
+    struct RocketTelemPacket {
         // State Integer
         // 0 - PreLaunch
         // 1 - Launch
@@ -48,6 +47,7 @@ namespace GroundStation
 
         // Calculated Values
         float altitude = 0.0f;
+        float launchAltitude = 0.0f;
         float magX = 0.0f;
         float magY = 0.0f;
         float magZ = 0.0f;
@@ -69,76 +69,37 @@ namespace GroundStation
         float gpsLong = 0.0f;
         float gpsAltMSL = 0.0f;
         float gpsAltAGL = 0.0f;
-        int32_t gpsVelocityN = 0;
-        int32_t gpsVelocityE = 0;
-        int32_t gpsVelocityD = 0;
+        uint32_t gpsVelN = 0.0f;
+        uint32_t gpsVelE = 0.0f;
+        uint32_t gpsVelD = 0.0f;
         uint32_t epochTime = 0;
         uint8_t satellites = 0;
-        uint8_t gpsLock = false;
+        bool gpsLock = false;
 
         uint32_t loopCount = 0;
         uint32_t timestamp = 0;
 
-        JS_OBJ(
-                state,
-
-                accelX,
-                accelY,
-                accelZ,
-
-                gyroX,
-                gyroY,
-                gyroZ,
-
-                rawMagX,
-                rawMagY,
-                rawMagZ,
-
-                pressure,
-                temperature,
-                servoPosition,
-                altitude,
-
-                magX,
-                magY,
-                magZ,
-
-                w,
-                i,
-                j,
-                k,
-
-                posX,
-                posY,
-                posZ,
-
-                velX,
-                velY,
-                velZ,
-
-                gpsLat,
-                gpsLong,
-                gpsAltMSL,
-                gpsAltAGL,
-                gpsVelocityN,
-                gpsVelocityE,
-                gpsVelocityD,
-
-                epochTime,
-                satellites,
-                gpsLock,
-
-                loopCount,
-                timestamp
-        );
+        float covQW = 0.0;
+        float covQX = 0.0;
+        float covQY = 0.0;
+        float covQZ = 0.0;
+        bool drogueDeploy = false;
+        bool mainDeploy = false;
     };
 
-    struct PayloadTelemPacket
-    {
+    struct PayloadTelemPacket {
         // State Integer
         // 0 - PreLaunch
-        // 1 - Test
-        uint8_t state = 0;
+        // 1 - Stowed
+        // 2 - Freefall
+        // 3 - WindLeft
+        // 4 - HoldLeft
+        // 5 - WindRight
+        // 6 - HoldRight
+        // 7 - LandPrep
+        // 8 - Recovery
+        // 9 - Abort
+        uint8_t state;
 
         // Raw Sensor Readings
         float accelX = 0.0f;
@@ -147,17 +108,15 @@ namespace GroundStation
         float gyroX = 0.0f;
         float gyroY = 0.0f;
         float gyroZ = 0.0f;
-        float rawMagX = 0.0f;
-        float rawMagY = 0.0f;
-        float rawMagZ = 0.0f;
+        float magX = 0.0f;
+        float magY = 0.0f;
+        float magZ = 0.0f;
         float pressure = 0.0f;
         float temperature = 0.0f;
 
         // Calculated Values
         float altitude = 0.0f;
-        float magX = 0.0f;
-        float magY = 0.0f;
-        float magZ = 0.0f;
+        float initialAltitude = 0.0f;
 
         // EKF Results
         float w = 0.0f; // Quaternion State
@@ -176,9 +135,6 @@ namespace GroundStation
         float gpsLong = 0.0f;
         float gpsAltMSL = 0.0f;
         float gpsAltAGL = 0.0f;
-        int32_t gpsVelocityN = 0;
-        int32_t gpsVelocityE = 0;
-        int32_t gpsVelocityD = 0;
         uint32_t epochTime = 0;
         uint8_t satellites = 0;
         bool gpsLock = false;
@@ -209,82 +165,9 @@ namespace GroundStation
         float trajB = 0.0f;
         float trajC = 0.0f;
         float trajD = 0.0f;
-
-        JS_OBJ(
-                state,
-
-                accelX,
-                accelY,
-                accelZ,
-
-                gyroX,
-                gyroY,
-                gyroZ,
-
-                rawMagX,
-                rawMagY,
-                rawMagZ,
-
-                pressure,
-                temperature,
-                altitude,
-
-                magX,
-                magY,
-                magZ,
-
-                w,
-                i,
-                j,
-                k,
-
-                posX,
-                posY,
-                posZ,
-
-                velX,
-                velY,
-                velZ,
-
-                gpsLat,
-                gpsLong,
-                gpsAltMSL,
-                gpsAltAGL,
-                gpsVelocityN,
-                gpsVelocityE,
-                gpsVelocityD,
-                epochTime,
-                satellites,
-                gpsLock,
-
-                loopCount,
-                timestamp,
-
-                cx,
-                cy,
-
-                targetGpsLat,
-                targetGpsLong,
-
-                desiredServoPos1,
-                actualServoPos1,
-                desiredServoPos2,
-                actualServoPos2,
-                desiredServoPos3,
-                actualServoPos3,
-                desiredServoPos4,
-                actualServoPos4,
-
-                trajA,
-                trajB,
-                trajC,
-                trajD,
-
-                loopCount
-        );
     };
 
-// For testing purposes
+    // For testing purposes
     struct RocketTxPacket
     {
         uint8_t packetType = 0x01;

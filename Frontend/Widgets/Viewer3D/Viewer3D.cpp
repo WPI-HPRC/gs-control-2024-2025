@@ -94,6 +94,7 @@ void Viewer3D::telemetryAvailable(Backend::Telemetry telemetry) const
 {
     if (telemetry.packetType == GroundStation::Rocket)
     {
-        orientRocket({telemetry.data.rocketData->w(), telemetry.data.rocketData->i(), telemetry.data.rocketData->j(), telemetry.data.rocketData->k()});
+        // Switch k and j to get the right orientation. God knows why
+        orientRocket({telemetry.data.rocketData->w(), telemetry.data.rocketData->i(), telemetry.data.rocketData->k(), telemetry.data.rocketData->j()});
     }
 }

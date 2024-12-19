@@ -570,7 +570,7 @@ void Backend::start()
     );
     rtcTimer->start();
     throughputTimer = new QTimer();
-    throughputTimer->setInterval(100);
+    throughputTimer->setInterval(1000);
 
     connect(throughputTimer, &QTimer::timeout, this, &Backend::updateThroughputSpeeds);
     throughputTimer->start();
@@ -582,5 +582,5 @@ Backend::Backend(QObject *parent) : QObject(parent)
     throughputTestTimer = new QTimer();
     connect(throughputTestTimer, &QTimer::timeout, this, &Backend::throughputTestTimerTicked);
 
-    dummyLogger = new DataLogger();
+//    dummyLogger = new DataLogger();
 }
