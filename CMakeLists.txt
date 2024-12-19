@@ -157,10 +157,6 @@ add_executable(gs_backend_2024_2025
         Frontend/Widgets/TimeDateWidgets/groundflighttimewidget.cpp
         Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.h
         Frontend/Widgets/TimeDateWidgets/rocketflighttimewidget.cpp
-        Frontend/Widgets/RadioPerformanceWidgets/bytespersecwidget.cpp
-        Frontend/Widgets/RadioPerformanceWidgets/bytespersecwidget.h
-        Frontend/Widgets/RadioPerformanceWidgets/packetspersecwidget.cpp
-        Frontend/Widgets/RadioPerformanceWidgets/packetspersecwidget.h
         Frontend/Widgets/RadioPerformanceWidgets/droppedpacketswidget.cpp
         Frontend/Widgets/RadioPerformanceWidgets/droppedpacketswidget.h
         Frontend/Widgets/RadioPerformanceWidgets/rssiwidget.cpp
@@ -193,6 +189,8 @@ add_executable(gs_backend_2024_2025
         Frontend/Widgets/DataSimulationButton/DataSimulationButton.cpp
         Frontend/Widgets/DataSimulationButton/DataSimulationButton.h
         Utility/UnitConversions.h
+        Frontend/Widgets/RadioPerformanceWidgets/throughputdisplaywidget.cpp
+        Frontend/Widgets/RadioPerformanceWidgets/throughputdisplaywidget.h
 )
 
 # Link Protobuf and Qt6 libraries

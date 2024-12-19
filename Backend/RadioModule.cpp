@@ -4,6 +4,8 @@
 
 #include "RadioModule.h"
 #include "Backend.h"
+#include "Utility/Utility.h"
+#include "protobuf/src/google/protobuf/util/json_util.h"
 
 #include <QSerialPortInfo>
 #include <regex>
@@ -45,6 +47,144 @@ QSerialPortInfo getTargetPort()
     return targetPort;
 }
 
+void populateRocketProtobuf(const GroundStation::RocketTelemPacket& myStruct, HPRC::RocketTelemetryPacket& protobufPacket) {
+    // State
+    protobufPacket.set_state(myStruct.state);
+
+    // Raw Sensor Readings
+    protobufPacket.set_accelx(myStruct.accelX);
+    protobufPacket.set_accely(myStruct.accelY);
+    protobufPacket.set_accelz(myStruct.accelZ);
+    protobufPacket.set_gyrox(myStruct.gyroX);
+    protobufPacket.set_gyroy(myStruct.gyroY);
+    protobufPacket.set_gyroz(myStruct.gyroZ);
+    protobufPacket.set_rawmagx(myStruct.rawMagX);
+    protobufPacket.set_rawmagy(myStruct.rawMagY);
+    protobufPacket.set_rawmagz(myStruct.rawMagZ);
+    protobufPacket.set_pressure(myStruct.pressure);
+    protobufPacket.set_temperature(myStruct.temperature);
+
+    // Servo Position
+    protobufPacket.set_servoposition(myStruct.servoPosition);
+
+    // Calculated Values
+    protobufPacket.set_altitude(myStruct.altitude);
+    protobufPacket.set_launchaltitude(myStruct.launchAltitude);
+    protobufPacket.set_magx(myStruct.magX);
+    protobufPacket.set_magy(myStruct.magY);
+    protobufPacket.set_magz(myStruct.magZ);
+
+    // EKF Results
+    protobufPacket.set_w(myStruct.w);
+    protobufPacket.set_i(myStruct.i);
+    protobufPacket.set_j(myStruct.j);
+    protobufPacket.set_k(myStruct.k);
+    protobufPacket.set_posx(myStruct.posX);
+    protobufPacket.set_posy(myStruct.posY);
+    protobufPacket.set_posz(myStruct.posZ);
+    protobufPacket.set_velx(myStruct.velX);
+    protobufPacket.set_vely(myStruct.velY);
+    protobufPacket.set_velz(myStruct.velZ);
+
+    // GPS Inputs
+    protobufPacket.set_gpslat(myStruct.gpsLat);
+    protobufPacket.set_gpslong(myStruct.gpsLong);
+    protobufPacket.set_gpsaltmsl(myStruct.gpsAltMSL);
+    protobufPacket.set_gpsaltagl(myStruct.gpsAltAGL);
+    protobufPacket.set_gpsvelocityn(myStruct.gpsVelN);
+    protobufPacket.set_gpsvelocitye(myStruct.gpsVelE);
+    protobufPacket.set_gpsvelocityd(myStruct.gpsVelD);
+    protobufPacket.set_epochtime(myStruct.epochTime);
+    protobufPacket.set_satellites(myStruct.satellites);
+    protobufPacket.set_gpslock(myStruct.gpsLock);
+
+    // Miscellaneous
+    protobufPacket.set_loopcount(myStruct.loopCount);
+    protobufPacket.set_timestamp(myStruct.timestamp);
+
+    // Covariances
+    protobufPacket.set_covqw(myStruct.covQW);
+    protobufPacket.set_covqx(myStruct.covQX);
+    protobufPacket.set_covqy(myStruct.covQY);
+    protobufPacket.set_covqz(myStruct.covQZ);
+
+    // Deployment Flags
+    protobufPacket.set_droguedeploy(myStruct.drogueDeploy);
+    protobufPacket.set_maindeploy(myStruct.mainDeploy);
+}
+
+void populatePayloadProtobuf(const GroundStation::PayloadTelemPacket& myStruct, HPRC::PayloadTelemetryPacket& protobufPacket) {
+    // State
+    protobufPacket.set_state(myStruct.state);
+
+    // Raw Sensor Readings
+    protobufPacket.set_accelx(myStruct.accelX);
+    protobufPacket.set_accely(myStruct.accelY);
+    protobufPacket.set_accelz(myStruct.accelZ);
+    protobufPacket.set_gyrox(myStruct.gyroX);
+    protobufPacket.set_gyroy(myStruct.gyroY);
+    protobufPacket.set_gyroz(myStruct.gyroZ);
+    protobufPacket.set_rawmagx(myStruct.magX);
+    protobufPacket.set_rawmagy(myStruct.magY);
+    protobufPacket.set_rawmagz(myStruct.magZ);
+    protobufPacket.set_pressure(myStruct.pressure);
+    protobufPacket.set_temperature(myStruct.temperature);
+
+    // Calculated Values
+    protobufPacket.set_altitude(myStruct.altitude);
+    protobufPacket.set_initialaltitude(myStruct.initialAltitude);
+
+    // EKF Results
+    protobufPacket.set_w(myStruct.w);
+    protobufPacket.set_i(myStruct.i);
+    protobufPacket.set_j(myStruct.j);
+    protobufPacket.set_k(myStruct.k);
+    protobufPacket.set_posx(myStruct.posX);
+    protobufPacket.set_posy(myStruct.posY);
+    protobufPacket.set_posz(myStruct.posZ);
+    protobufPacket.set_velx(myStruct.velX);
+    protobufPacket.set_vely(myStruct.velY);
+    protobufPacket.set_velz(myStruct.velZ);
+
+    // GPS Inputs
+    protobufPacket.set_gpslat(myStruct.gpsLat);
+    protobufPacket.set_gpslong(myStruct.gpsLong);
+    protobufPacket.set_gpsaltmsl(myStruct.gpsAltMSL);
+    protobufPacket.set_gpsaltagl(myStruct.gpsAltAGL);
+    protobufPacket.set_epochtime(myStruct.epochTime);
+    protobufPacket.set_satellites(myStruct.satellites);
+    protobufPacket.set_gpslock(myStruct.gpsLock);
+
+    // Miscellaneous
+    protobufPacket.set_loopcount(myStruct.loopCount);
+    protobufPacket.set_timestamp(myStruct.timestamp);
+
+    // CV
+    protobufPacket.set_cx(myStruct.cx);
+    protobufPacket.set_cy(myStruct.cy);
+
+    // Target GPS Estimations
+    protobufPacket.set_targetgpslat(myStruct.targetGpsLat);
+    protobufPacket.set_targetgpslong(myStruct.targetGpsLong);
+
+    // Servo Controls
+    protobufPacket.set_desiredservopos1(myStruct.desiredServoPos1);
+    protobufPacket.set_actualservopos1(myStruct.actualServoPos1);
+    protobufPacket.set_desiredservopos2(myStruct.desiredServoPos2);
+    protobufPacket.set_actualservopos2(myStruct.actualServoPos2);
+    protobufPacket.set_desiredservopos3(myStruct.desiredServoPos3);
+    protobufPacket.set_actualservopos3(myStruct.actualServoPos3);
+    protobufPacket.set_desiredservopos4(myStruct.desiredServoPos4);
+    protobufPacket.set_actualservopos4(myStruct.actualServoPos4);
+
+    // Calculated Trajectory Constants
+    protobufPacket.set_traja(myStruct.trajA);
+    protobufPacket.set_trajb(myStruct.trajB);
+    protobufPacket.set_trajc(myStruct.trajC);
+    protobufPacket.set_trajd(myStruct.trajD);
+}
+
+
 DataLogger::Packet parsePacket(const uint8_t *frame)
 {
     std::string str;
@@ -55,19 +195,39 @@ DataLogger::Packet parsePacket(const uint8_t *frame)
     HPRC::RocketTelemetryPacket rocketPacket;
     HPRC::PayloadTelemetryPacket payloadPacket;
 
+    absl::Status status;
 
     switch (frame[0])
     {
         case GroundStation::Rocket:
+        {
             telemetry.packetType = GroundStation::Rocket;
-            rocketPacket.ParseFromArray(&frame[1], 1);
+            populateRocketProtobuf(*(GroundStation::RocketTelemPacket *)&frame[1], rocketPacket);
+
+            // Convert current packet to JSON
+            status = google::protobuf::util::MessageToJsonString(rocketPacket, &str);
+            if (status != absl::OkStatus())
+            {
+                std::cerr << "Error converting packet to JSON string: " << status << std::endl;
+            }
+
             telemetry.data.rocketData = &rocketPacket;
             break;
+        }
         case GroundStation::Payload:
-            telemetry.packetType = GroundStation::Rocket;
-            payloadPacket.ParseFromArray(&frame[1], 1);
+        {
+            telemetry.packetType = GroundStation::Payload;
+            populatePayloadProtobuf(*(GroundStation::PayloadTelemPacket *) &frame[1], payloadPacket);
+
+            // Convert current packet to JSON
+            status = google::protobuf::util::MessageToJsonString(payloadPacket, &str);
+            if (status != absl::OkStatus())
+            {
+                std::cerr << "Error converting packet to JSON string: " << status << std::endl;
+            }
             telemetry.data.payloadData = &payloadPacket;
             break;
+        }
         default:
             str = "";
             telemetry.packetType = GroundStation::Unknown;
@@ -181,6 +341,24 @@ void RadioModule::handleReceivePacket(XBee::ReceivePacket::Struct *frame)
     }
 
     lastPacket = parsePacket(frame->data);
+
+    if(recordThroughput) // performance statistics
+    {
+        switch (lastPacket.packetType)
+        {
+        case GroundStation::Payload:
+            payloadRadioStats.packetsReceivedCount++;
+            payloadRadioStats.bytesReceivedCount += frame->dataLength_bytes + XBee::ReceivePacket::PacketBytes;
+            break;
+        case GroundStation::Rocket:
+            rocketRadioStats.packetsReceivedCount++;
+            rocketRadioStats.bytesReceivedCount+= frame->dataLength_bytes + XBee::ReceivePacket::PacketBytes;
+            break;
+        case GroundStation::Unknown:
+            break;;
+        }
+    }
+
     dataLogger->dataReady(lastPacket.data.c_str(), lastPacket.packetType);
 }
 
@@ -191,6 +369,24 @@ void RadioModule::handleReceivePacket64Bit(XBee::ReceivePacket64Bit::Struct *fra
         throughputTestPacketsReceived ++;
     }
     lastPacket = parsePacket(frame->data);
+
+    if(recordThroughput) // performance statistics
+    {
+        switch (lastPacket.packetType)
+        {
+        case GroundStation::Payload:
+            payloadRadioStats.packetsReceivedCount++;
+            payloadRadioStats.bytesReceivedCount += frame->dataLength_bytes + XBee::ReceivePacket64Bit::PacketBytes;
+            break;
+        case GroundStation::Rocket:
+            rocketRadioStats.packetsReceivedCount++;
+            rocketRadioStats.bytesReceivedCount+= frame->dataLength_bytes + XBee::ReceivePacket64Bit::PacketBytes;
+            break;
+        case GroundStation::Unknown:
+            break;;
+        }
+    }
+
     dataLogger->dataReady(lastPacket.data.c_str(), lastPacket.packetType, frame->negativeRssi);
 }
 
@@ -233,12 +429,6 @@ void RadioModule::handlingFrame(const uint8_t *frame)
     for(int i = 0; i < length + 4; i++)
     {
         logString.append(QString::asprintf("%02X ", ((int)frame[i] & 0xFF)));
-    }
-
-    if(recordThroughput)
-    {
-        packetsReceivedCount++;
-        bytesReceivedCount += length + 4;
     }
 
     Backend::getInstance().newBytesRead(logString);
@@ -354,9 +544,6 @@ void RadioModule::_handleAtCommandResponse(const uint8_t *frame, uint8_t length_
                            frame[XBee::AtCommandResponse::BytesBeforeCommandData + 1];
 
         droppedPacketsCount += errorCount;
-
-        // we want to reset the counter internal to the radio module to simplify the logic on our end
-        setParameter(XBee::AtCommand::ErrorCount, nullptr, 1);
     }
 }
 

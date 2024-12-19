@@ -12,7 +12,7 @@
 namespace Constants
 {
     const QString LogDirPath = "~/Documents/HPRC/Logs";
-    const QString LogTimeFormat = "yyyy-MM-dd_HH.mm.ss";
+    const QString LogTimeFormat = "yyyy-MM-dd_HH-mm-ss";
 }
 
 #endif //GS_BACKEND_2024_2025_CONSTANTS_H
