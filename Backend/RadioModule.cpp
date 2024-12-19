@@ -341,6 +341,24 @@ void RadioModule::handleReceivePacket(XBee::ReceivePacket::Struct *frame)
     }
 
     lastPacket = parsePacket(frame->data);
+
+    if(recordThroughput) // performance statistics
+    {
+        switch (lastPacket.packetType)
+        {
+        case GroundStation::Payload:
+            payloadRadioStats.packetsReceivedCount++;
+            payloadRadioStats.bytesReceivedCount += frame->dataLength_bytes + XBee::ReceivePacket::PacketBytes;
+            break;
+        case GroundStation::Rocket:
+            rocketRadioStats.packetsReceivedCount++;
+            rocketRadioStats.bytesReceivedCount+= frame->dataLength_bytes + XBee::ReceivePacket::PacketBytes;
+            break;
+        case GroundStation::Unknown:
+            break;;
+        }
+    }
+
     dataLogger->dataReady(lastPacket.data.c_str(), lastPacket.packetType);
 }
 
@@ -351,6 +369,24 @@ void RadioModule::handleReceivePacket64Bit(XBee::ReceivePacket64Bit::Struct *fra
         throughputTestPacketsReceived ++;
     }
     lastPacket = parsePacket(frame->data);
+
+    if(recordThroughput) // performance statistics
+    {
+        switch (lastPacket.packetType)
+        {
+        case GroundStation::Payload:
+            payloadRadioStats.packetsReceivedCount++;
+            payloadRadioStats.bytesReceivedCount += frame->dataLength_bytes + XBee::ReceivePacket64Bit::PacketBytes;
+            break;
+        case GroundStation::Rocket:
+            rocketRadioStats.packetsReceivedCount++;
+            rocketRadioStats.bytesReceivedCount+= frame->dataLength_bytes + XBee::ReceivePacket64Bit::PacketBytes;
+            break;
+        case GroundStation::Unknown:
+            break;;
+        }
+    }
+
     dataLogger->dataReady(lastPacket.data.c_str(), lastPacket.packetType, frame->negativeRssi);
 }
 
@@ -393,12 +429,6 @@ void RadioModule::handlingFrame(const uint8_t *frame)
     for(int i = 0; i < length + 4; i++)
     {
         logString.append(QString::asprintf("%02X ", ((int)frame[i] & 0xFF)));
-    }
-
-    if(recordThroughput)
-    {
-        packetsReceivedCount++;
-        bytesReceivedCount += length + 4;
     }
 
     Backend::getInstance().newBytesRead(logString);
@@ -514,10 +544,6 @@ void RadioModule::_handleAtCommandResponse(const uint8_t *frame, uint8_t length_
                            frame[XBee::AtCommandResponse::BytesBeforeCommandData + 1];
 
         droppedPacketsCount += errorCount;
-
-        // we want to reset the counter internal to the radio module to simplify the logic on our end
-        sendNextFrameImmediately = true;
-        setParameter(XBee::AtCommand::ErrorCount, nullptr, 1);
     }
 }
 

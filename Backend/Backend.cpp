@@ -499,23 +499,55 @@ void Backend::updateThroughputSpeeds()
     if(!module){return;} // safety measure to prevent crashing the program if the radio isn't actually connected
 
     int multiple = (1000/throughputTimer->interval());
-    uint64_t bytesPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount) -lastByteCount ) * multiple;
-    uint32_t packetsPerSec = ( (getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount) -lastPacketCount ) * multiple;
-    emit bytesPerSecond(bytesPerSec);
-    emit packetsPerSecond(packetsPerSec);
-    emit droppedPackets(getModuleWithName(GROUND_STATION_MODULE)->droppedPacketsCount);
+
+    RadioThroughputStats rocketStats{};
+    RadioThroughputStats payloadStats{};
+    RadioThroughputStats combinedStats{};
+    RadioCountStats combinedCount{};
+
+    combinedCount.bytesReceivedCount = module->rocketRadioStats.bytesReceivedCount + module->payloadRadioStats.bytesReceivedCount;
+    combinedCount.packetsReceivedCount = module->rocketRadioStats.packetsReceivedCount + module->payloadRadioStats.packetsReceivedCount;
+
+    rocketStats.bytesPerSecond = (module->rocketRadioStats.bytesReceivedCount - lastRocketCount.bytesReceivedCount) * multiple;
+    rocketStats.packetsPerSecond = (module->rocketRadioStats.packetsReceivedCount - lastRocketCount.packetsReceivedCount) * multiple;
+
+    payloadStats.bytesPerSecond = (module->payloadRadioStats.bytesReceivedCount - lastPayloadCount.bytesReceivedCount) * multiple;
+    payloadStats.packetsPerSecond = (module->payloadRadioStats.packetsReceivedCount - lastPayloadCount.packetsReceivedCount) * multiple;
+
+    combinedStats.bytesPerSecond = (rocketStats.bytesPerSecond + payloadStats.bytesPerSecond) * multiple;
+    combinedStats.packetsPerSecond = (rocketStats.packetsPerSecond + payloadStats.packetsPerSecond) * multiple;
+
+    emit rocketThroughputStats(rocketStats);
+    emit payloadThroughputStats(payloadStats);
+    emit combinedThroughputStats(combinedStats);
+
+    emit rocketCountStats(module->rocketRadioStats);
+    emit payloadCountStats(module->payloadRadioStats);
+    emit combinedCountStats(combinedCount);
+
+    emit droppedPackets(module->droppedPacketsCount);
 
     // update our "last" counters to get the difference next loop cycle
-    lastByteCount = getModuleWithName(GROUND_STATION_MODULE)->bytesReceivedCount;
-    lastPacketCount = getModuleWithName(GROUND_STATION_MODULE)->packetsReceivedCount;
+    lastRocketCount = module->rocketRadioStats;
+    lastPayloadCount = module->payloadRadioStats;
 
     // get the latest error count from the radio module
     module->sendNextFrameImmediately = true;
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount);
-    module->sendNextFrameImmediately = true;
-    Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
+    // reset the radio's internal error count
     module->sendNextFrameImmediately = true;
     Backend::setParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount, 0);
+}
+
+void Backend::updateRSSIInfo()
+{
+    RadioModule *module = getModuleWithName(GROUND_STATION_MODULE);
+
+    if(!module){return;} // safety measure to prevent crashing the program if the radio isn't actually connected
+
+    // ask for the latest RSSI from the radio module
+    module->sendNextFrameImmediately = true;
+    Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
 }
 
 void Backend::start()
@@ -546,6 +578,9 @@ void Backend::start()
     {
         connectToModule(GROUND_STATION_MODULE, Default, 921600);
         groundStationModem = getModuleWithName(GROUND_STATION_MODULE);
+        // reset the radio's internal error count
+        groundStationModem->sendNextFrameImmediately = true;
+        Backend::setParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount, 0);
     }
 
     timer = new QTimer();
@@ -569,11 +604,22 @@ void Backend::start()
             }
     );
     rtcTimer->start();
+
+    // timer to run math for calculating radio throughput
+    // be careful running this too fast, or else it will bog down the radio with too many ATCommandRequests
     throughputTimer = new QTimer();
-    throughputTimer->setInterval(1000);
+    throughputTimer->setInterval(500);
 
     connect(throughputTimer, &QTimer::timeout, this, &Backend::updateThroughputSpeeds);
     throughputTimer->start();
+
+    // use a separate timer for the RSSI data so it gets updated quicker
+    // be careful running this too fast, or else it will bog down the radio with too many ATCommandRequests
+    rssiTimer = new QTimer();
+    rssiTimer->setInterval(50);
+
+    connect(rssiTimer, &QTimer::timeout, this, &Backend::updateRSSIInfo);
+    rssiTimer->start();
 }
 
 Backend::Backend(QObject *parent) : QObject(parent)

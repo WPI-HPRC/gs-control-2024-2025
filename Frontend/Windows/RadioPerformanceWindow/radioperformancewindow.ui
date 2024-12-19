@@ -6,41 +6,115 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>427</height>
+    <width>953</width>
+    <height>718</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>RadioPerformanceWindow</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="BytesPerSecWidget" name="widget_4" native="true"/>
+    <layout class="QHBoxLayout" name="RocketData">
+     <item>
+      <widget class="QLabel" name="RocketLabel">
+       <property name="font">
+        <font>
+         <pointsize>48</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Rocket:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="ThroughputDisplayWidget" name="RocketPacketCount" native="true"/>
+         </item>
+         <item>
+          <widget class="ThroughputDisplayWidget" name="RocketPacketSpeed" native="true"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="ThroughputDisplayWidget" name="RocketByteCount" native="true"/>
+         </item>
+         <item>
+          <widget class="ThroughputDisplayWidget" name="RocketByteSpeed" native="true"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="PacketsPerSecWidget" name="widget" native="true"/>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="font">
+        <font>
+         <pointsize>48</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Payload:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="ThroughputDisplayWidget" name="PayloadPacketCount" native="true"/>
+         </item>
+         <item>
+          <widget class="ThroughputDisplayWidget" name="PayloadPacketSpeed" native="true"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="ThroughputDisplayWidget" name="PayloadByteCount" native="true"/>
+         </item>
+         <item>
+          <widget class="ThroughputDisplayWidget" name="PayloadByteSpeed" native="true"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="DroppedPacketsWidget" name="widget_2" native="true"/>
-   </item>
-   <item>
-    <widget class="RSSIWidget" name="widget_3" native="true"/>
+    <layout class="QVBoxLayout" name="misc">
+     <item>
+      <widget class="DroppedPacketsWidget" name="DroppedPackets" native="true">
+       <layout class="QVBoxLayout" name="verticalLayout"/>
+      </widget>
+     </item>
+     <item>
+      <widget class="RSSIWidget" name="RSSI" native="true"/>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>BytesPerSecWidget</class>
-   <extends>QWidget</extends>
-   <header>Frontend/Widgets/RadioPerformanceWidgets/bytespersecwidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PacketsPerSecWidget</class>
-   <extends>QWidget</extends>
-   <header>Frontend/Widgets/RadioPerformanceWidgets/packetspersecwidget.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>DroppedPacketsWidget</class>
    <extends>QWidget</extends>
@@ -51,6 +125,12 @@
    <class>RSSIWidget</class>
    <extends>QWidget</extends>
    <header>Frontend/Widgets/RadioPerformanceWidgets/rssiwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ThroughputDisplayWidget</class>
+   <extends>QWidget</extends>
+   <header>Frontend/Widgets/RadioPerformanceWidgets/ThroughputDisplayWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
