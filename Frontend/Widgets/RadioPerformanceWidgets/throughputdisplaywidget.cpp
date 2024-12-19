@@ -15,7 +15,7 @@ ThroughputDisplayWidget::ThroughputDisplayWidget(QWidget *parent) :
 
 void ThroughputDisplayWidget::throughPutStatsUpdate(RadioThroughputStats stats)
 {
-    switch(currentStatType)
+    switch(currentDataType)
     {
         case RadioPerformanceStat::DataType::Packets:
             ui->Data->setText(QString::number(stats.packetsPerSecond));
@@ -32,7 +32,7 @@ void ThroughputDisplayWidget::throughPutStatsUpdate(RadioThroughputStats stats)
 
 void ThroughputDisplayWidget::countStatsUpdate(RadioCountStats stats)
 {
-    switch(currentStatType)
+    switch(currentDataType)
     {
     case RadioPerformanceStat::DataType::Packets:
         ui->Data->setText(QString::number(stats.packetsReceivedCount));
