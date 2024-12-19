@@ -534,12 +534,20 @@ void Backend::updateThroughputSpeeds()
     // get the latest error count from the radio module
     module->sendNextFrameImmediately = true;
     Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount);
-    // ask for the latest RSSI from the radio module
-    module->sendNextFrameImmediately = true;
-    Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
     // reset the radio's internal error count
     module->sendNextFrameImmediately = true;
     Backend::setParameter(GROUND_STATION_MODULE, XBee::AtCommand::ErrorCount, 0);
+}
+
+void Backend::updateRSSIInfo()
+{
+    RadioModule *module = getModuleWithName(GROUND_STATION_MODULE);
+
+    if(!module){return;} // safety measure to prevent crashing the program if the radio isn't actually connected
+
+    // ask for the latest RSSI from the radio module
+    module->sendNextFrameImmediately = true;
+    Backend::queryParameter(GROUND_STATION_MODULE, XBee::AtCommand::LastPacketRSSI);
 }
 
 void Backend::start()
@@ -550,7 +558,7 @@ void Backend::start()
   
     QString simulationFile = "../Utility/DataSimulator/SimulationData/SamplePayloadData.csv";
 
-    payloadDataSimulator = new DataSimulator(
+    dataSimulator = new DataSimulator(
             simulationFile,
             webServer,
             HPRC::PayloadTelemetryPacket::descriptor(),
@@ -593,11 +601,22 @@ void Backend::start()
             }
     );
     rtcTimer->start();
+
+    // timer to run math for calculating radio throughput
+    // be careful running this too fast, or else it will bog down the radio with too many ATCommandRequests
     throughputTimer = new QTimer();
-    throughputTimer->setInterval(1000);
+    throughputTimer->setInterval(500);
 
     connect(throughputTimer, &QTimer::timeout, this, &Backend::updateThroughputSpeeds);
     throughputTimer->start();
+
+    // use a separate timer for the RSSI data so it gets updated quicker
+    // be careful running this too fast, or else it will bog down the radio with too many ATCommandRequests
+    rssiTimer = new QTimer();
+    rssiTimer->setInterval(50);
+
+    connect(rssiTimer, &QTimer::timeout, this, &Backend::updateRSSIInfo);
+    rssiTimer->start();
 }
 
 Backend::Backend(QObject *parent) : QObject(parent)
